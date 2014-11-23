@@ -70,7 +70,7 @@ var AnslemServer = {
                 AnslemServer.nodeServer.update(AnslemServer.universe.getPacket(), AnslemServer.universe.contents['player'][index].id);
             }
         }
-        console.log(AnslemServer.lastFrame);
+        setImmediate(AnslemServer.update);
     }
 };
 
