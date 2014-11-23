@@ -19,6 +19,7 @@ var Goals = require("./universe/Goals");
  * @type Object
  */
 var AnslemServer = {
+    currentFps: 0,
     nodeServer: new NodeServer(),
     running: false,
     targetFps: 60,
@@ -62,12 +63,13 @@ var AnslemServer = {
         AnslemServer.running = false;
     },
     update: function () {
-        AnslemServer.universe.run();
-        for (var index in AnslemServer.universe.contents['player']) {
-            AnslemServer.nodeServer.update(AnslemServer.universe.getPacket(), AnslemServer.universe.contents['player'][index].id);
+        if (!AnslemServer.lastFrame || (Date.now() > AnslemServer.lastFrame + (1000 / AnslemServer.targetFps))) {
+            AnslemServer.lastFrame = Date.now();
+            AnslemServer.universe.run();
+            for (var index in AnslemServer.universe.contents['player']) {
+                AnslemServer.nodeServer.update(AnslemServer.universe.getPacket(), AnslemServer.universe.contents['player'][index].id);
+            }
         }
-        if (AnslemServer.running)
-            setTimeout(AnslemServer.update, Math.floor(1000 / AnslemServer.targetFps));
     }
 };
 
