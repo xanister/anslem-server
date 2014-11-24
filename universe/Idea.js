@@ -247,7 +247,9 @@ function Idea(categories, id) {
                 this.ySpeed += this.gravity;
             else
                 this.y = this.position.container.position.height - (this.position.height / 2);
-            this.xSpeed -= (this.linerDampening * Math.sign(this.xSpeed));
+            this.xSpeed -= (this.xSpeed > 0 ? this.linerDampening : -this.linerDampening);
+            if (this.xSpeed < this.linerDampening)
+                this.xSpeed = 0;
         }
 
         // AI

@@ -3,6 +3,6 @@ Actions.Move = function Move(params) {
     Move.label = "Move";
     this.params = params;
     Move.prototype.run = function (params) {
-        this.position.x += params.dir;
+        this.position.x += (params.dir * 5);
     };
 };
