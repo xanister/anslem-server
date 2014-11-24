@@ -28,6 +28,7 @@ var AnslemServer = {
     clientConnected: function (client) {
         var newIdea = new Idea(['player', 'human'], client.id);
         newIdea.setImage("sprCoin");
+        newIdea.gravity = 0.8;
         newIdea.baseGoal = Goals.Player;
         newIdea.clientConnection = AnslemServer.nodeServer.clients[client.id];
         newIdea.warp(

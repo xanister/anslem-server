@@ -82,7 +82,7 @@ function Idea(categories, id) {
      * @access public
      * @var {Number}
      */
-    this.gravity = 0.8;
+    this.gravity = 0;
 
     /**
      * Short description
@@ -243,7 +243,6 @@ function Idea(categories, id) {
     Idea.prototype.run = function () {
         // Physics
         if (this.gravity > 0) {
-            console.log(this);
             if (this.position.y + (this.position.height / 2) + this.gravity < this.position.container.position.height)
                 this.ySpeed += this.gravity;
             else
