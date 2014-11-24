@@ -78,8 +78,7 @@ var AnslemServer = {
             AnslemServer.universe.run();
             for (var id in AnslemServer.nodeServer.clients) {
                 var player = AnslemServer.nodeServer.clients[id].player;
-                var packet = player.position.container.getPacket();
-                AnslemServer.nodeServer.update(packet, id);
+                AnslemServer.nodeServer.update(AnslemServer.getPlayerScene(player), id);
             }
         }
         setImmediate(AnslemServer.update);
