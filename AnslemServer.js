@@ -26,8 +26,8 @@ var AnslemServer = {
     targetFps: 60,
     universe: false,
     clientConnected: function (client) {
-        var newIdea = new Idea(client.id, ['player', 'human']);
-        newIdea.sprite = "sprCoin";
+        var newIdea = new Idea(['player', 'human'], client.id);
+        newIdea.setImage("sprCoin");
         newIdea.baseGoal = Goals.Player;
         newIdea.clientConnection = AnslemServer.nodeServer.clients[client.id];
         newIdea.warp(
@@ -64,9 +64,8 @@ var AnslemServer = {
         AnslemServer.universe.position.width = 1000;
         AnslemServer.universe.position.height = 500;
 
-        var mountains = new Idea();
-        mountains.sprite = "bgMountains";
-        mountains.spriteTileX = true;
+        var mountains = new Idea(['background']);
+        mountains.setImage("bgMountains", true, false, 0.5);
         mountains.warp(0, AnslemServer.universe.position.height - 500, AnslemServer.universe);
     },
     logServerInfo: function () {

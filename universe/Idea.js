@@ -10,16 +10,17 @@
  * Includes
  */
 var Position = require("./Position");
+var Sprites = require("./Sprites");
 var Synapse = require("./Synapse");
 var Goals = require("./Goals");
 
 /**
  * Basic universal construct
- * @param {String} id short description
  * @param {Array} categories
+ * @param {String} id short description
  * @returns {Idea}
  */
-function Idea(id, categories) {
+function Idea(categories, id) {
     /**
      * Global id counter
      * @access static
@@ -105,25 +106,14 @@ function Idea(id, categories) {
     this.sprite = false;
 
     /**
-     * Current frame for animation
-     * @access public
-     * @var {Number}
+     * Destroy self
      */
-    this.spriteFrame = 0;
-
-    /**
-     * Should the sprite tile horizontally
-     * @access public
-     * @var {Boolean}
-     */
-    this.spriteTileX = false;
-
-    /**
-     * Should the sprite tile vertically
-     * @access public
-     * @var {Boolean}
-     */
-    this.spriteTileY = false;
+    Idea.prototype.destoy = function () {
+        delete this.position.container.contents[0][this.id];
+        for (var index in this.categories) {
+            delete this.position.container.contents[this.categories[index]][this.id];
+        }
+    };
 
     /**
      * Generates small object representation
@@ -133,9 +123,6 @@ function Idea(id, categories) {
         var packet = {
             contents: [],
             sprite: this.sprite,
-            spriteFrame: 0,
-            spriteTileX: this.spriteTileX,
-            spriteTileY: this.spriteTileY,
             x: this.position.x,
             y: this.position.y,
             width: this.position.width,
@@ -148,13 +135,21 @@ function Idea(id, categories) {
     };
 
     /**
-     * Remove from container
+     *
+     * @param {String} sprite
+     * @param {Boolean} tileX
+     * @param {Boolean} tileY
+     * @param {Number} scrollSpeed
      */
-    Idea.prototype.remove = function () {
-        delete this.position.container.contents[0][this.id];
-        for (var index in this.categories) {
-            delete this.position.container.contents[this.categories[index]][this.id];
-        }
+    Idea.prototype.setImage = function (sprite, tileX, tileY, scrollSpeed) {
+        this.sprite = {
+            frame: 0,
+            frameSpeed: Sprites[sprite].frameSpeed,
+            image: sprite,
+            tileX: tileX || false,
+            tileY: tileY || false,
+            scrollSpeed: scrollSpeed || 1
+        };
     };
 
     /**
