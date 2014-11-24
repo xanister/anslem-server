@@ -39,7 +39,6 @@ var AnslemServer = {
         newIdea.viewHeight = 500;
 
         AnslemServer.players[client.id] = newIdea;
-        console.log("Sending welcome!");
         AnslemServer.nodeServer.welcome(client.id, {message: 'Welcome ' + client.id, assets: {sprites: Sprites}});
         AnslemServer.nodeServer.broadcast(client.id + " has connected.");
     },
@@ -70,19 +69,25 @@ var AnslemServer = {
         mountains.spriteTileX = true;
         mountains.warp(0, AnslemServer.universe.position.ySize - 500, AnslemServer.universe);
     },
+    logServerInfo: function () {
+        console.log("Server FPS: " + AnslemServer.currentFps);
+    },
     start: function () {
         AnslemServer.running = true;
         AnslemServer.populate();
         AnslemServer.nodeServer = new NodeServer(AnslemServer.clientConnected, AnslemServer.clientDisconnected, AnslemServer.clientInfoUpdate);
         AnslemServer.nodeServer.start();
         AnslemServer.update();
+        setInterval(AnslemServer.logServerInfo, 5000);
     },
     stop: function () {
         AnslemServer.running = false;
     },
     update: function () {
-        if (!AnslemServer.lastFrameTime || (Date.now() > AnslemServer.lastFrameTime + (1000 / AnslemServer.targetFps))) {
-            AnslemServer.lastFrameTime = Date.now();
+        var thisFrameTime = Date.now();
+        if (!AnslemServer.lastFrameTime || (thisFrameTime > AnslemServer.lastFrameTime + (1000 / AnslemServer.targetFps))) {
+            AnslemServer.currentFps = 1000 / (thisFrameTime - AnslemServer.lastFrameTime);
+            AnslemServer.lastFrameTime = thisFrameTime;
             AnslemServer.universe.run();
             for (var id in AnslemServer.players) {
                 var player = AnslemServer.players[id];
