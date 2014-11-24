@@ -78,11 +78,25 @@ function Idea(categories, id) {
     this.goal = false;
 
     /**
+     * Falling speed
+     * @access public
+     * @var {Number}
+     */
+    this.gravity = 0.8;
+
+    /**
      * Short description
      * @access public
      * @var {String}
      */
     this.label = false;
+
+    /**
+     * Slow in x direction
+     * @access public
+     * @var {Number}
+     */
+    this.linerDampening = 0.1;
 
     /**
      * Memories
@@ -104,6 +118,51 @@ function Idea(categories, id) {
      * @var {String}
      */
     this.sprite = false;
+
+    /**
+     * Horizontal speed
+     * @access public
+     * @var {Number}
+     */
+    this.xSpeed = 0;
+
+    /**
+     * Vertical speed
+     * @access public
+     * @var {Number}
+     */
+    this.ySpeed = 0;
+
+    /**
+     * Return bounding box
+     * @access public
+     * @returns {Object}
+     */
+    Idea.prototype.bbox = function () {
+        return {
+            left: this.position.x - (this.position.width / 2),
+            right: this.position.x + (this.position.width / 2),
+            top: this.position.y - (this.position.height / 2),
+            bottom: this.position.y + (this.position.height / 2)
+        };
+    };
+
+
+    /**
+     * Returns true if self collides with given bbox
+     * @param {Object} bbox
+     * @returns {Boolean}
+     */
+    Idea.prototype.collides = function (bbox) {
+        var rect1 = this.bbox();
+        var rect2 = bbox;
+        return (
+                rect1.left < rect2.right &&
+                rect1.right > rect2.left &&
+                rect1.top < rect2.bottom &&
+                rect1.bottom > rect2.top
+                );
+    };
 
     /**
      * Destroy self
@@ -135,6 +194,32 @@ function Idea(categories, id) {
     };
 
     /**
+     * Return idea that collides at given position
+     * @param {String} category
+     * @param {Number} x
+     * @param {Number} y
+     * @returns {Idea}
+     */
+    Idea.prototype.instancePlace = function (category, x, y) {
+        var oldX = this.position.x;
+        var oldY = this.position.y;
+        category = category || 0;
+        this.position.x = x || this.position.x;
+        this.position.y = y || this.position.y;
+        for (var id in this.position.container.contents[category]) {
+            var e = this.position.container.contents[category][id];
+            if (e.id !== this.id && this.collides(e.bbox())) {
+                this.x = oldX;
+                this.y = oldY;
+                return e;
+            }
+        }
+        this.x = oldX;
+        this.y = oldY;
+        return false;
+    };
+
+    /**
      *
      * @param {String} sprite
      * @param {Boolean} tileX
@@ -157,6 +242,13 @@ function Idea(categories, id) {
      */
     Idea.prototype.run = function () {
         // Physics
+        if (this.gravity > 0) {
+            if (this.position.y + (this.position.height / 2) + this.gravity < this.position.container.position.height)
+                this.ySpeed += this.gravity;
+            else
+                this.y = this.position.container.position.height - (this.position.height / 2);
+            this.xSpeed -= (this.linerDampening * Math.sign(this.xSpeed));
+        }
 
         // AI
         this.goal = this.goal ? this.goal : this.baseGoal;
