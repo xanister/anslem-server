@@ -43,6 +43,15 @@ var AnslemServer = {
         AnslemServer.nodeServer.message(client.id, "Goodbye " + client.id);
         AnslemServer.nodeServer.broadcast(client.id + " has disconnected.");
     },
+    getPlayerScene: function (player) {
+        player.viewWidth = 500;
+        player.viewHeight = 500;
+        var packet = player.position.container.getPacket();
+        for (var index in packet.contents) {
+            packet.contents[index].x -= (player.x - (player.viewWidth / 2));
+            packet.contents[index].y -= (player.y - (player.viewHeight / 2));
+        }
+    },
     populate: function () {
         AnslemServer.universe = new Idea(42);
         AnslemServer.universe.position.xSize = 1000;
