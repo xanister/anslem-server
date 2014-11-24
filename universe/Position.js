@@ -11,11 +11,11 @@
  * @param {Idea} container
  * @param {Number} x
  * @param {Number} y
- * @param {Number} xSize
- * @param {Number} ySize
+ * @param {Number} width
+ * @param {Number} height
  * @returns {Position}
  */
-function Position(container, x, y, xSize, ySize) {
+function Position(container, x, y, width, height) {
     /**
      * Parent object
      * @access public
@@ -42,14 +42,14 @@ function Position(container, x, y, xSize, ySize) {
      * @access public
      * @var {Number}
      */
-    this.xSize = xSize || 1;
+    this.width = width || 1;
 
     /**
      * Size in y dimension
      * @access public
      * @var {Number}
      */
-    this.ySize = ySize || 1;
+    this.height = height || 1;
 }
 
 module.exports = Position;

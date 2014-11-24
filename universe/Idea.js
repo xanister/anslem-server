@@ -103,13 +103,31 @@ function Idea(id, categories) {
      * @var {String}
      */
     this.sprite = false;
+
+    /**
+     * Current frame for animation
+     * @access public
+     * @var {Number}
+     */
     this.spriteFrame = 0;
+
+    /**
+     * Should the sprite tile horizontally
+     * @access public
+     * @var {Boolean}
+     */
     this.spriteTileX = false;
+
+    /**
+     * Should the sprite tile vertically
+     * @access public
+     * @var {Boolean}
+     */
     this.spriteTileY = false;
 
     /**
      * Generates small object representation
-     * @returns {object}
+     * @returns {Object}
      */
     Idea.prototype.getPacket = function () {
         var packet = {
@@ -119,7 +137,9 @@ function Idea(id, categories) {
             spriteTileX: this.spriteTileX,
             spriteTileY: this.spriteTileY,
             x: this.position.x,
-            y: this.position.y
+            y: this.position.y,
+            width: this.position.width,
+            height: this.position.height
         };
         for (var index in this.contents[0]) {
             packet.contents.push(this.contents[0][index].getPacket());

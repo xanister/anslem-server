@@ -31,8 +31,8 @@ var AnslemServer = {
         newIdea.baseGoal = Goals.Player;
         newIdea.clientConnection = AnslemServer.nodeServer.clients[client.id];
         newIdea.warp(
-                Math.floor(Math.random() * AnslemServer.universe.position.xSize),
-                Math.floor(Math.random() * AnslemServer.universe.position.ySize),
+                Math.floor(Math.random() * AnslemServer.universe.position.width),
+                Math.floor(Math.random() * AnslemServer.universe.position.height),
                 AnslemServer.universe
                 );
         newIdea.viewWidth = 500;
@@ -61,13 +61,13 @@ var AnslemServer = {
     },
     populate: function () {
         AnslemServer.universe = new Idea(42);
-        AnslemServer.universe.position.xSize = 1000;
-        AnslemServer.universe.position.ySize = 500;
+        AnslemServer.universe.position.width = 1000;
+        AnslemServer.universe.position.height = 500;
 
         var mountains = new Idea();
         mountains.sprite = "bgMountains";
         mountains.spriteTileX = true;
-        mountains.warp(0, AnslemServer.universe.position.ySize - 500, AnslemServer.universe);
+        mountains.warp(0, AnslemServer.universe.position.height - 500, AnslemServer.universe);
     },
     logServerInfo: function () {
         console.log("Server FPS: " + AnslemServer.currentFps);
