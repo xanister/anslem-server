@@ -39,6 +39,7 @@ var AnslemServer = {
         newIdea.viewHeight = 500;
 
         AnslemServer.players[client.id] = newIdea;
+        console.log("Sending welcome!");
         AnslemServer.nodeServer.welcome(client.id, {message: 'Welcome ' + client.id, assets: {sprites: Sprites}});
         AnslemServer.nodeServer.broadcast(client.id + " has connected.");
     },
