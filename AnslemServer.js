@@ -43,7 +43,9 @@ var AnslemServer = {
         AnslemServer.nodeServer.broadcast(client.id + " has connected.");
     },
     clientDisconnected: function (client) {
-        AnslemServer.universe.contents[0][client.id].remove();
+        AnslemServer.players[client.id].remove();
+        delete AnslemServer.players[client.id];
+        //AnslemServer.universe.contents[0][client.id].remove();
         AnslemServer.nodeServer.message(client.id, "Goodbye " + client.id);
         AnslemServer.nodeServer.broadcast(client.id + " has disconnected.");
     },
