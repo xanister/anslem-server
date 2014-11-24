@@ -248,6 +248,7 @@ function Idea(categories, id) {
             else
                 this.y = this.position.container.position.height - (this.position.height / 2);
             this.xSpeed -= (this.xSpeed > 0 ? this.linerDampening : -this.linerDampening);
+            this.position.x += this.xSpeed;
             if (this.xSpeed < this.linerDampening)
                 this.xSpeed = 0;
         }
