@@ -51,6 +51,7 @@ var AnslemServer = {
             packet.contents[index].x -= (player.x - (player.viewWidth / 2));
             packet.contents[index].y -= (player.y - (player.viewHeight / 2));
         }
+        return packet;
     },
     populate: function () {
         AnslemServer.universe = new Idea(42);
