@@ -21,6 +21,7 @@ var Goals = require("./universe/Goals");
 var AnslemServer = {
     currentFps: 0,
     nodeServer: new NodeServer(),
+    players: [],
     running: false,
     targetFps: 60,
     universe: false,
@@ -37,7 +38,7 @@ var AnslemServer = {
         newIdea.viewWidth = 500;
         newIdea.viewHeight = 500;
 
-        AnslemServer.nodeServer.clients[client.id].player = newIdea;
+        AnslemServer.players[client.id] = newIdea;
         AnslemServer.nodeServer.welcome(client.id, {message: 'Welcome ' + client.id, assets: {sprites: Sprites}});
         AnslemServer.nodeServer.broadcast(client.id + " has connected.");
     },
@@ -47,8 +48,8 @@ var AnslemServer = {
         AnslemServer.nodeServer.broadcast(client.id + " has disconnected.");
     },
     clientInfoUpdate: function (clientId, info) {
-        AnslemServer.nodeServer.clients[clientId].player.viewWidth = info.viewWidth;
-        AnslemServer.nodeServer.clients[clientId].player.viewWidth = info.viewHeight;
+        AnslemServer.players[clientId].viewWidth = info.viewWidth;
+        AnslemServer.players[clientId].viewHeight = info.viewHeight;
     },
     getPlayerScene: function (player) {
         var packet = player.position.container.getPacket();
@@ -82,8 +83,8 @@ var AnslemServer = {
         if (!AnslemServer.lastFrameTime || (Date.now() > AnslemServer.lastFrameTime + (1000 / AnslemServer.targetFps))) {
             AnslemServer.lastFrameTime = Date.now();
             AnslemServer.universe.run();
-            for (var id in AnslemServer.nodeServer.clients) {
-                var player = AnslemServer.nodeServer.clients[id].player;
+            for (var id in AnslemServer.players) {
+                var player = AnslemServer.players[id];
                 AnslemServer.nodeServer.update(AnslemServer.getPlayerScene(player), id);
             }
         }
