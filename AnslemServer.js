@@ -48,8 +48,8 @@ var AnslemServer = {
         player.viewHeight = 500;
         var packet = player.position.container.getPacket();
         for (var index in packet.contents) {
-            packet.contents[index].x -= (player.x - (player.viewWidth / 2));
-            packet.contents[index].y -= (player.y - (player.viewHeight / 2));
+            packet.contents[index].x -= (player.position.x - (player.viewWidth / 2));
+            packet.contents[index].y -= (player.position.y - (player.viewHeight / 2));
         }
         return packet;
     },
