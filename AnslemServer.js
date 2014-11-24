@@ -85,7 +85,7 @@ var AnslemServer = {
     },
     update: function () {
         var thisFrameTime = Date.now();
-        if (!AnslemServer.lastFrameTime || (thisFrameTime > AnslemServer.lastFrameTime + (1000 / AnslemServer.targetFps))) {
+        if (thisFrameTime > (AnslemServer.lastFrameTime + (1000 / AnslemServer.targetFps))) {
             AnslemServer.currentFps = 1000 / (thisFrameTime - AnslemServer.lastFrameTime);
             AnslemServer.lastFrameTime = thisFrameTime;
             AnslemServer.universe.run();
