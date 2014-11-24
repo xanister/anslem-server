@@ -29,6 +29,7 @@ var AnslemServer = {
         newIdea.sprite = "sprCoin";
         newIdea.baseGoal = Goals.Player;
         newIdea.clientConnection = AnslemServer.nodeServer.clients[client.id];
+        AnslemServer.nodeServer.clients[client.id].player = newIdea;
         newIdea.warp(
                 Math.floor(Math.random() * AnslemServer.universe.position.xSize),
                 Math.floor(Math.random() * AnslemServer.universe.position.ySize),
@@ -63,11 +64,13 @@ var AnslemServer = {
         AnslemServer.running = false;
     },
     update: function () {
-        if (!AnslemServer.lastFrame || (Date.now() > AnslemServer.lastFrame + (1000 / AnslemServer.targetFps))) {
-            AnslemServer.lastFrame = Date.now();
+        if (!AnslemServer.lastFrameTime || (Date.now() > AnslemServer.lastFrameTime + (1000 / AnslemServer.targetFps))) {
+            AnslemServer.lastFrameTime = Date.now();
             AnslemServer.universe.run();
-            for (var index in AnslemServer.universe.contents['player']) {
-                AnslemServer.nodeServer.update(AnslemServer.universe.getPacket(), AnslemServer.universe.contents['player'][index].id);
+            for (var id in AnslemServer.nodeServer.clients) {
+                var player = AnslemServer.nodeServer.clients[id].player;
+                var packet = player.position.container.getPacket();
+                AnslemServer.nodeServer.update(packet, id);
             }
         }
         setImmediate(AnslemServer.update);
