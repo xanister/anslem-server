@@ -243,6 +243,7 @@ function Idea(categories, id) {
     Idea.prototype.run = function () {
         // Physics
         if (this.gravity > 0) {
+            console.log(this.position);
             if (this.position.y + (this.position.height / 2) + this.gravity < this.position.container.position.height)
                 this.ySpeed += this.gravity;
             else
