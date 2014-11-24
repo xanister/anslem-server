@@ -167,7 +167,7 @@ function Idea(categories, id) {
     /**
      * Destroy self
      */
-    Idea.prototype.destoy = function () {
+    Idea.prototype.destroy = function () {
         delete this.position.container.contents[0][this.id];
         for (var index in this.categories) {
             delete this.position.container.contents[this.categories[index]][this.id];
