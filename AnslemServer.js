@@ -29,12 +29,15 @@ var AnslemServer = {
         newIdea.sprite = "sprCoin";
         newIdea.baseGoal = Goals.Player;
         newIdea.clientConnection = AnslemServer.nodeServer.clients[client.id];
-        AnslemServer.nodeServer.clients[client.id].player = newIdea;
         newIdea.warp(
                 Math.floor(Math.random() * AnslemServer.universe.position.xSize),
                 Math.floor(Math.random() * AnslemServer.universe.position.ySize),
                 AnslemServer.universe
                 );
+        newIdea.viewWidth = 500;
+        newIdea.viewHeight = 500;
+
+        AnslemServer.nodeServer.clients[client.id].player = newIdea;
         AnslemServer.nodeServer.welcome(client.id, {message: 'Welcome ' + client.id, assets: {sprites: Sprites}});
         AnslemServer.nodeServer.broadcast(client.id + " has connected.");
     },
@@ -43,9 +46,11 @@ var AnslemServer = {
         AnslemServer.nodeServer.message(client.id, "Goodbye " + client.id);
         AnslemServer.nodeServer.broadcast(client.id + " has disconnected.");
     },
+    clientInfoUpdate: function (clientId, info) {
+        AnslemServer.nodeServer.clients[clientId].player.viewWidth = info.viewWidth;
+        AnslemServer.nodeServer.clients[clientId].player.viewWidth = info.viewHeight;
+    },
     getPlayerScene: function (player) {
-        player.viewWidth = 500;
-        player.viewHeight = 500;
         var packet = player.position.container.getPacket();
         for (var index in packet.contents) {
             packet.contents[index].x -= (player.position.x - (player.viewWidth / 2));
@@ -66,7 +71,7 @@ var AnslemServer = {
     start: function () {
         AnslemServer.running = true;
         AnslemServer.populate();
-        AnslemServer.nodeServer = new NodeServer(AnslemServer.clientConnected, AnslemServer.clientDisconnected);
+        AnslemServer.nodeServer = new NodeServer(AnslemServer.clientConnected, AnslemServer.clientDisconnected, AnslemServer.clientInfoUpdate);
         AnslemServer.nodeServer.start();
         AnslemServer.update();
     },
