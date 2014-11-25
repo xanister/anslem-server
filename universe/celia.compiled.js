@@ -4,7 +4,7 @@ Actions.Move = function Move(params) {
     Move.label = "Move";
     this.params = params;
     Move.prototype.run = function (params) {
-        this.position.x += params.dir;
+        this.xSpeed += (params.dir * 5);
     };
 };
 Goals.EatBrains = {
@@ -20,7 +20,7 @@ Goals.Player = {
     getAction: function () {
         if (this.clientConnection.inputs.A) {
             return new Actions.Move({dir: -1});
-        } else if (this.clientConnection.inputs.D) {
+        } else if (this.clientConnection.inputs.D || this.clientConnection.inputs.touchCount > 0) {
             return new Actions.Move({dir: 1});
         }
         return false;

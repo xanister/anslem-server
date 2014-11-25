@@ -96,7 +96,7 @@ function Idea(categories, id) {
      * @access public
      * @var {Number}
      */
-    this.linerDampening = 0.1;
+    this.linerDampening = 0.5;
 
     /**
      * Memories
@@ -249,7 +249,7 @@ function Idea(categories, id) {
                 this.y = this.position.container.position.height - (this.position.height / 2);
             this.xSpeed -= (this.xSpeed > 0 ? this.linerDampening : -this.linerDampening);
             this.position.x += this.xSpeed;
-            if (Math.abs(this.xSpeed) < this.linerDampening)
+            if (Math.abs(this.xSpeed) <= this.linerDampening)
                 this.xSpeed = 0;
         }
 

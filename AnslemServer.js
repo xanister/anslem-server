@@ -13,6 +13,7 @@ var NodeServer = require("./lib/NodeServer");
 var Idea = require("./universe/Idea");
 var Sprites = require("./universe/Sprites");
 var Goals = require("./universe/Goals");
+var gameloop = require('node-gameloop');
 
 /*
  * Anslem game server wrapper
@@ -23,7 +24,7 @@ var AnslemServer = {
     nodeServer: new NodeServer(),
     players: [],
     running: false,
-    targetFps: 60,
+    targetFps: 30,
     universe: false,
     clientConnected: function (client) {
         var newIdea = new Idea(['player', 'human'], client.id);
@@ -36,8 +37,6 @@ var AnslemServer = {
                 Math.floor(Math.random() * AnslemServer.universe.position.height),
                 AnslemServer.universe
                 );
-        newIdea.viewWidth = 500;
-        newIdea.viewHeight = 500;
 
         AnslemServer.players[client.id] = newIdea;
         AnslemServer.nodeServer.welcome(client.id, {message: 'Welcome ' + client.id, assets: {sprites: Sprites}});
@@ -49,8 +48,7 @@ var AnslemServer = {
         AnslemServer.nodeServer.broadcast(client.id + " has disconnected.");
     },
     clientInfoUpdate: function (clientId, info) {
-        AnslemServer.players[clientId].viewWidth = info.viewWidth;
-        AnslemServer.players[clientId].viewHeight = info.viewHeight;
+        console.log("Recieved welcome info from client " + clientId, info);
     },
     getPlayerScene: function (player) {
         var packet = player.position.container.getPacket();
@@ -68,33 +66,37 @@ var AnslemServer = {
         var mountains = new Idea(['background']);
         mountains.setImage("bgMountains", true, false, 0.5);
         mountains.warp(0, AnslemServer.universe.position.height - 500, AnslemServer.universe);
+
+        var coin = new Idea();
+        coin.setImage("sprCoin");
+        coin.gravity = 0.8;
+        coin.warp(50, 50, AnslemServer.universe);
     },
     logServerInfo: function () {
         console.log("Server FPS: " + AnslemServer.currentFps);
+        console.log(Object.keys(AnslemServer.players).length + " player(s) currently connected");
     },
     start: function () {
         AnslemServer.running = true;
         AnslemServer.populate();
         AnslemServer.nodeServer = new NodeServer(AnslemServer.clientConnected, AnslemServer.clientDisconnected, AnslemServer.clientInfoUpdate);
         AnslemServer.nodeServer.start();
-        AnslemServer.update();
         setInterval(AnslemServer.logServerInfo, 5000);
+        AnslemServer.gameloopId = gameloop.setGameLoop(AnslemServer.update, 1000 / AnslemServer.targetFps);
     },
     stop: function () {
         AnslemServer.running = false;
+        gameloop.clearGameLoop(AnslemServer.gameloopId);
     },
-    update: function () {
-        var thisFrameTime = Date.now();
-        if (!AnslemServer.lastFrameTime || (thisFrameTime > AnslemServer.lastFrameTime + (1000 / AnslemServer.targetFps))) {
-            AnslemServer.currentFps = 1000 / (thisFrameTime - AnslemServer.lastFrameTime);
-            AnslemServer.lastFrameTime = thisFrameTime;
-            AnslemServer.universe.run();
-            for (var id in AnslemServer.players) {
-                var player = AnslemServer.players[id];
-                AnslemServer.nodeServer.update(AnslemServer.getPlayerScene(player), id);
-            }
+    update: function (delta) {
+        AnslemServer.currentFps = 1 / delta;
+        AnslemServer.universe.run();
+        for (var id in AnslemServer.players) {
+            var player = AnslemServer.players[id];
+            var packet = player.position.container.getPacket();
+            packet.player = player.getPacket();
+            AnslemServer.nodeServer.update(packet, id);
         }
-        setImmediate(AnslemServer.update);
     }
 };
 
