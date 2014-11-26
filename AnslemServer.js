@@ -19,7 +19,7 @@ var anslemConfig = {
     gravity: 0.8,
     linearDampening: 0.5,
     port: 3000,
-    viewSpeed: 5,
+    viewSpeed: 0.3,
     viewXBuffer: 0.2,
     viewYBuffer: 0.1
 };
@@ -42,39 +42,31 @@ var AnslemServer = {
         var packet = player.position.container.getPacket();
         packet.player = player.getPacket();
 
-        // TODO: figure out view follow issue
-        // Update the view
-//        if ((player.position.x - player.view.x) < (player.view.xBuffer)) {
-//            player.view.x = player.position.x - player.view.xBuffer;
-//            if (player.view.x < 0)
-//                player.view.x = 0;
-//        } else if ((player.position.x + player.view.xBuffer) > (player.view.x + player.view.width)) {
-//            player.view.x = player.position.x + player.view.xBuffer;
-//            if (player.view.x + player.view.width > player.position.container.position.width)
-//                player.view.x = player.position.container.position.width;
-//        }
-//
-//        if (player.position.y - player.view.y < player.view.yBuffer) {
-//            player.view.y = player.position.y - player.view.yBuffer;
-//            if (player.view.y < 0)
-//                player.view.y = 0;
-//        } else if (player.position.y + player.view.yBuffer > player.view.y + player.view.height) {
-//            player.view.y = player.position.y + player.view.yBuffer;
-//            if (player.view.y + player.view.height > player.position.container.position.height)
-//                player.view.y = player.position.container.position.height - player.view.height;
-//        }
-//
-//        packet.viewX = player.view.x;
-//        packet.viewY = player.view.y;
+        var xDist = player.position.x - (player.view.x + (player.view.width / 2));
+        if (xDist < -player.view.xBuffer)
+            player.view.x -= ((-xDist - player.view.xBuffer) * anslemConfig.viewSpeed);
+        else if (xDist > player.view.xBuffer)
+            player.view.x += ((xDist - player.view.xBuffer) * anslemConfig.viewSpeed);
 
-        packet.viewX = player.position.x - (player.view.width * 0.5);
-        packet.viewY = player.position.y - (player.view.height * 0.5);
+        var yDist = player.position.y - (player.view.y + (player.view.height / 2));
+        if (yDist < -player.view.yBuffer)
+            player.view.y -= ((-yDist - player.view.xBuffer) * anslemConfig.viewSpeed);
+        else if (yDist > player.view.yBuffer)
+            player.view.y += ((yDist - player.view.xBuffer) * anslemConfig.viewSpeed);
+
+        if (player.view.x < 0)
+            player.view.x = 0;
+        if (player.view.y > (player.position.container.position.height - player.view.height))
+            player.view.y = player.position.container.position.height - player.view.height;
+
+        packet.viewX = player.view.x;
+        packet.viewY = player.view.y;
         return packet;
     },
     loadPlayer: function (client) {
         var player = new Idea();
         player.describe(['physical', 'human', 'player'], "A player label", "A player description", "sprGoblin", anslemConfig.gravity, Goals.Player);
-        player.warp(40, 400, AnslemServer.universe);
+        player.warp(400, 400, AnslemServer.universe);
 
         var dim = client.handshake.query.initialData ? client.handshake.query.initialData.split(',') : [500, 500];
         player.view = {
@@ -99,7 +91,7 @@ var AnslemServer = {
     nodeServer: new NodeServer(anslemConfig.port),
     populate: function () {
         AnslemServer.universe = new Idea();
-        AnslemServer.universe.position.width = 4000;
+        AnslemServer.universe.position.width = 40000;
         AnslemServer.universe.position.height = 2048;
 
         var mountains = new Idea();
