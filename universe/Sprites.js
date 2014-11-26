@@ -67,6 +67,13 @@ var Sprites = {
         frameSpeed: 0,
         scale: 1,
         singleImage: false
+    },
+    sprGoblin: {
+        imagePath: "assets/sprites/goblin-walking/goblin-walking__",
+        frameCount: 32,
+        frameSpeed: 0.5,
+        scale: 1,
+        singleImage: false
     }
 };
 

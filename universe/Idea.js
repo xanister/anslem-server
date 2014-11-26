@@ -16,11 +16,10 @@ var Goals = require("./Goals");
 
 /**
  * Basic universal construct
- * @param {Array} categories
- * @param {String} id short description
+ * @param {String} id
  * @returns {Idea}
  */
-function Idea(categories, id) {
+function Idea(id) {
     /**
      * Global id counter
      * @access static
@@ -54,7 +53,7 @@ function Idea(categories, id) {
      * @access public
      * @var {Array}
      */
-    this.categories = categories || [];
+    this.categories = [];
 
     /**
      * Contained objects
@@ -165,6 +164,25 @@ function Idea(categories, id) {
     };
 
     /**
+     * Sets common attributes
+     * @param {Array} categories
+     * @param {String} label
+     * @param {String} description
+     * @param {String} sprite
+     * @param {Number} gravity
+     * @param {Goal} baseGoal
+     */
+    Idea.prototype.describe = function (categories, label, description, sprite, gravity, baseGoal) {
+        this.categories = categories || this.categories;
+        this.label = label;
+        this.description = description || this.description;
+        if (sprite)
+            this.setSprite(sprite);
+        this.gravity = gravity || this.gravity;
+        this.baseGoal = baseGoal || this.baseGoal;
+    };
+
+    /**
      * Destroy self
      */
     Idea.prototype.destroy = function () {
@@ -226,7 +244,7 @@ function Idea(categories, id) {
      * @param {Boolean} tileY
      * @param {Number} scrollSpeed
      */
-    Idea.prototype.setImage = function (sprite, tileX, tileY, scrollSpeed) {
+    Idea.prototype.setSprite = function (sprite, tileX, tileY, scrollSpeed) {
         this.sprite = {
             frame: 0,
             frameSpeed: Sprites[sprite].frameSpeed,
