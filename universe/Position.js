@@ -42,14 +42,14 @@ function Position(container, x, y, width, height) {
      * @access public
      * @var {Number}
      */
-    this.width = width || 1;
+    this.width = width || 0;
 
     /**
      * Size in y dimension
      * @access public
      * @var {Number}
      */
-    this.height = height || 1;
+    this.height = height || 0;
 }
 
 module.exports = Position;

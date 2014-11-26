@@ -16,63 +16,54 @@ var Sprites = {
         imagePath: 'assets/sprites/bg-night/bg-night_',
         frameCount: 1,
         frameSpeed: 0,
-        scale: 1,
         singleImage: false
     },
     bgClouds: {
         imagePath: 'assets/sprites/bg-clouds/bg-clouds_',
         frameCount: 1,
         frameSpeed: 0,
-        scale: 1,
         singleImage: false
     },
     bgMountains: {
         imagePath: 'assets/sprites/bg-mountains/bg-mountains_',
         frameCount: 1,
         frameSpeed: 0,
-        scale: 1,
         singleImage: false
     },
     bgMountainsMidground: {
         imagePath: 'assets/sprites/bg-mountains-midground/bg-mountains-midground_',
         frameCount: 1,
         frameSpeed: 0,
-        scale: 1,
         singleImage: false
     },
     bgTrees: {
         imagePath: 'assets/sprites/bg-trees/bg-trees_',
         frameCount: 1,
         frameSpeed: 0,
-        scale: 1,
         singleImage: false
     },
     bgGround: {
         imagePath: 'assets/sprites/bg-ground/bg-ground_',
         frameCount: 1,
         frameSpeed: 0,
-        scale: 1,
         singleImage: false
     },
     sprMan: {
         imagePath: "assets/sprites/man-single/man-single_",
         frameCount: 6,
         frameSpeed: 0.5,
-        scale: 1,
         singleImage: true
     },
     sprCoin: {
         imagePath: "assets/sprites/coin/coin_",
         frameCount: 1,
         frameSpeed: 0,
-        scale: 1,
         singleImage: false
     },
     sprGoblin: {
         imagePath: "assets/sprites/goblin-walking/goblin-walking__",
-        frameCount: 32,
-        frameSpeed: 0.5,
-        scale: 1,
+        frameCount: 31,
+        frameSpeed: 1,
         singleImage: false
     }
 };

@@ -2,18 +2,20 @@ Goals.Player = {
     description: "Player",
     label: "Player Goal",
     getAction: function () {
-        var inputs = this.clientConnection.inputs;
-        var touches = inputs.touches || false;
-
-        if (touches) {
+        if (this.inputs.keyboard.A) {
+            return new Actions.Move({dir: -1});
+        } else if (this.inputs.keyboard.D) {
             return new Actions.Move({dir: 1});
-        } else {
-            if (inputs.A) {
+        }
+
+        if (this.inputs.touches.x) {
+            if (this.inputs.touches.x < this.view.width / 2) {
                 return new Actions.Move({dir: -1});
-            } else if (this.clientConnection.inputs.D || this.clientConnection.inputs.touchCount > 0) {
+            } else if (this.inputs.touches.x > this.view.width / 2) {
                 return new Actions.Move({dir: 1});
             }
         }
+
         return false;
     }
 };

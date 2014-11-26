@@ -70,6 +70,20 @@ function Idea(id) {
     this.description = false;
 
     /**
+     * Current focus position x
+     * @access public
+     * @var {Number}
+     */
+    this.focusX = 0;
+
+    /**
+     * Current focus position y
+     * @access public
+     * @var {Number}
+     */
+    this.focusY = 0;
+
+    /**
      * Current goal
      * @access public
      * @var {Goal}
@@ -95,7 +109,7 @@ function Idea(id) {
      * @access public
      * @var {Number}
      */
-    this.linerDampening = 0.5;
+    this.linerDampening = 0.25;
 
     /**
      * Memories
@@ -204,6 +218,10 @@ function Idea(id) {
             y: this.position.y,
             width: this.position.width,
             height: this.position.height
+
+            , // Bigger packet for debugging
+            gravity: this.gravity,
+            containerHeight: this.position.container ? this.position.container.position.height : 0
         };
         for (var index in this.contents[0]) {
             packet.contents.push(this.contents[0][index].getPacket());
@@ -227,13 +245,13 @@ function Idea(id) {
         for (var id in this.position.container.contents[category]) {
             var e = this.position.container.contents[category][id];
             if (e.id !== this.id && this.collides(e.bbox())) {
-                this.x = oldX;
-                this.y = oldY;
+                this.position.x = oldX;
+                this.position.y = oldY;
                 return e;
             }
         }
-        this.x = oldX;
-        this.y = oldY;
+        this.position.x = oldX;
+        this.position.y = oldY;
         return false;
     };
 
@@ -248,11 +266,16 @@ function Idea(id) {
         this.sprite = {
             frame: 0,
             frameSpeed: Sprites[sprite].frameSpeed,
+            frameCount: Sprites[sprite].frameCount,
             image: sprite,
             tileX: tileX || false,
             tileY: tileY || false,
             scrollSpeed: scrollSpeed || 1
         };
+        if (this.position.width === 0)
+            this.position.width = Sprites[sprite].width;
+        if (this.position.height === 0)
+            this.position.height = Sprites[sprite].height;
     };
 
     /**
@@ -261,14 +284,25 @@ function Idea(id) {
     Idea.prototype.run = function () {
         // Physics
         if (this.gravity > 0) {
-            if (this.position.y + (this.position.height / 2) + this.gravity < this.position.container.position.height)
+            if ((this.position.y + this.gravity) < (this.position.container.position.height - (this.position.height / 2))) {
                 this.ySpeed += this.gravity;
-            else
-                this.y = this.position.container.position.height - (this.position.height / 2);
+                this.position.y += this.ySpeed;
+            } else {
+                this.ySpeed = 0;
+                this.position.y = this.position.container.position.height - (this.position.height / 2);
+            }
+
             this.xSpeed -= (this.xSpeed > 0 ? this.linerDampening : -this.linerDampening);
-            this.position.x += this.xSpeed;
             if (Math.abs(this.xSpeed) <= this.linerDampening)
                 this.xSpeed = 0;
+            this.position.x += this.xSpeed;
+            if (this.position.x < 0) {
+                this.xSpeed = 0;
+                this.position.x = 0;
+            } else if (this.position.x > this.position.container.position.width) {
+                this.xSpeed = 0;
+                this.position.x = this.position.container.position.width;
+            }
         }
 
         // AI
@@ -276,6 +310,13 @@ function Idea(id) {
         this.action = this.goal ? this.goal.getAction.call(this) : false;
         if (this.action)
             this.action.run.call(this, this.action.params);
+
+        // Sprite
+        if (this.sprite && this.sprite.frameSpeed > 0) {
+            this.sprite.frame += this.sprite.frameSpeed;
+            if (this.sprite.frame >= this.sprite.frameCount)
+                this.sprite.frame = 0;
+        }
 
         // Run contents
         for (var id in this.contents[0]) {
@@ -290,8 +331,6 @@ function Idea(id) {
      * @param {Idea} container
      */
     Idea.prototype.warp = function (targetX, targetY, container) {
-        if (!this.position)
-            this.position = new Position();
         this.position.x = targetX;
         this.position.y = targetY;
         if (container) {
