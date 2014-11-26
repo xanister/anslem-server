@@ -19,6 +19,7 @@ var anslemConfig = {
     gravity: 0.8,
     linearDampening: 0.5,
     port: 3000,
+    viewScale: 2,
     viewSpeed: 0.3,
     viewXBuffer: 0.2,
     viewYBuffer: 0.1
@@ -31,7 +32,7 @@ var anslemConfig = {
 var AnslemServer = {
     clientConnected: function (client) {
         AnslemServer.players[client.id] = AnslemServer.loadPlayer(client);
-        return {message: 'Welcome to Anslem!', assets: {sprites: Sprites}};
+        return {message: 'Welcome to Anslem!', assets: {sprites: Sprites}, viewScale: AnslemServer.players[client.id].view.scale};
     },
     clientDisconnected: function (clientId) {
         AnslemServer.players[clientId].destroy();
@@ -69,11 +70,14 @@ var AnslemServer = {
         player.warp(400, 400, AnslemServer.universe);
 
         var dim = client.handshake.query.initialData ? client.handshake.query.initialData.split(',') : [500, 500];
+        dim[0] *= anslemConfig.viewScale;
+        dim[1] *= anslemConfig.viewScale;
         player.view = {
             x: player.position.x - (dim[0] / 2),
             y: player.position.y - (dim[1] / 2),
             xBuffer: parseInt(dim[0] * anslemConfig.viewXBuffer),
             yBuffer: parseInt(dim[1] * anslemConfig.viewYBuffer),
+            scale: anslemConfig.viewScale,
             speed: anslemConfig.viewSpeed,
             width: dim[0],
             height: dim[1]
