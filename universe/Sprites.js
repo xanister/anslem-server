@@ -1,18 +1,23 @@
 /**
- * sprites.js
+ * Sprites.js
  * List of available sprites and their info
  *
  * Author: Nicholas Frees
  * Date: 11/23/2014
- */
-
-/**
- * Includes
+ *
+ * @module Anslem.Sprites
+ * @requires anslemConfig, image-size
  */
 var sizeOf = require('image-size');
 var anslemConfig = require('../anslemConfig');
 
-var sprites = {
+/**
+ * Available sprites
+ *
+ * @class Sprites
+ * @static
+ */
+var Sprites = {
     bgNight: {
         imagePath: '/sprites/bg-night/bg-night_',
         frameCount: 1,
@@ -70,10 +75,10 @@ var sprites = {
 };
 
 // Grab the size
-for (var index in sprites) {
-    var dim = sizeOf(anslemConfig.assetPath + sprites[index].imagePath + "000.png");
-    sprites[index].width = dim.width;
-    sprites[index].height = dim.height;
+for (var index in Sprites) {
+    var dim = sizeOf(anslemConfig.assetPath + Sprites[index].imagePath + "000.png");
+    Sprites[index].width = dim.width;
+    Sprites[index].height = dim.height;
 }
 
-module.exports = sprites;
+module.exports = Sprites;

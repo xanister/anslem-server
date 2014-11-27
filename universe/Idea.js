@@ -9,7 +9,7 @@
 /**
  * Includes
  */
-var sprites = require("./sprites");
+var Sprites = require("./Sprites");
 var Position = require("./Position");
 var Synapse = require("./Synapse");
 
@@ -264,17 +264,17 @@ function Idea(id) {
     Idea.prototype.setSprite = function (sprite, tileX, tileY, scrollSpeed) {
         this.sprite = {
             frame: 0,
-            frameSpeed: sprites[sprite].frameSpeed,
-            frameCount: sprites[sprite].frameCount,
+            frameSpeed: Sprites[sprite].frameSpeed,
+            frameCount: Sprites[sprite].frameCount,
             image: sprite,
             tileX: tileX || false,
             tileY: tileY || false,
             scrollSpeed: scrollSpeed || 1
         };
         if (this.position.width === 0)
-            this.position.width = sprites[sprite].width;
+            this.position.width = Sprites[sprite].width;
         if (this.position.height === 0)
-            this.position.height = sprites[sprite].height;
+            this.position.height = Sprites[sprite].height;
     };
 
     /**

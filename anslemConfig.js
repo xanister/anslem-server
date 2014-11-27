@@ -1,13 +1,17 @@
 /**
- * config.js
+ * anslemConfig.js
  * Basic configuration
  *
  * Author: Nicholas Frees
  * Date: 11/25/2014
+ *
+ * @module Anslem
  */
 
 /**
  * Server and world config
+ *
+ * @property anslemConfig
  * @type {Object}
  */
 var anslemConfig = {

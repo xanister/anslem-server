@@ -1,3 +1,9 @@
+/**
+ * Player
+ *
+ * @class Player
+ * @for Goals
+ */
 Goals.Player = {
     description: "Player",
     label: "Player Goal",

@@ -4,27 +4,28 @@
  *
  * Author: Nicholas Frees
  * Date: 11/23/2014
- */
-
-/**
- * Includes
+ *
+ * @module Anslem
+ * @requires anslemConfig, gameloop, Goals, Idea, NodeServer
  */
 var anslemConfig = require('./anslemConfig');
 var gameloop = require('node-gameloop');
-var goals = require("./universe/goals");
-var sprites = require("./universe/sprites");
+var goals = require("./universe/compileGoals");
 var Idea = require("./universe/Idea");
 var NodeServer = require("./lib/NodeServer");
+var Sprites = require("./universe/Sprites");
 
 /*
  * Anslem game server wrapper
- * @type Object
+ *
+ * @class AnslemServer
+ * @static
  */
 var AnslemServer = {
     clientConnected: function (client) {
         var newPlayer = AnslemServer.loadPlayer(client);
         AnslemServer.players[client.id] = newPlayer;
-        return {message: 'Welcome to Anslem!', assets: {sprites: sprites}, viewScale: newPlayer.view.scale};
+        return {message: 'Welcome to Anslem!', assets: {sprites: Sprites}, viewScale: newPlayer.view.scale};
     },
     clientDisconnected: function (clientId) {
         AnslemServer.players[clientId].destroy();
@@ -82,7 +83,7 @@ var AnslemServer = {
         if (AnslemServer.running)
             setTimeout(AnslemServer.logServerInfo, anslemConfig.serverInfoInterval);
     },
-    nodeServer: new NodeServer(anslemConfig.port),
+    nodeServer: new NodeServer(),
     populate: function () {
         AnslemServer.universe = new Idea();
         AnslemServer.universe.position.width = 40000;
@@ -95,7 +96,7 @@ var AnslemServer = {
                 'Clouds'
                 );
         i.setSprite("bgClouds", true, false, 0.2);
-        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -104,7 +105,7 @@ var AnslemServer = {
                 'Mountains'
                 );
         i.setSprite("bgMountains", true, false, 0.4);
-        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -113,7 +114,7 @@ var AnslemServer = {
                 'Misty and ominous'
                 );
         i.setSprite("bgMountainsMidground", true, false, 0.6);
-        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -122,7 +123,7 @@ var AnslemServer = {
                 'Forest'
                 );
         i.setSprite("bgTrees", true, false, 0.8);
-        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -131,7 +132,7 @@ var AnslemServer = {
                 'Ground'
                 );
         i.setSprite("bgGround", true, false, 1);
-        i.warp(0, AnslemServer.universe.position.height + (sprites[i.sprite.image].height / 2), AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.position.height + (Sprites[i.sprite.image].height / 2), AnslemServer.universe);
     },
     running: false,
     players: [],

@@ -1,20 +1,27 @@
-var Actions = {}; var Goals = {};
-Actions.Jump = function Jump() {
-    Jump.description = "Jump";
-    Jump.label = "Jump";
-    this.params = false;
-    Jump.prototype.run = function () {
-        this.ySpeed -= 20;
-    };
-};
-Actions.Move = function Move(params) {
-    Move.description = "Move";
-    Move.label = "Move";
-    this.params = params;
-    Move.prototype.run = function (params) {
-        this.xSpeed += (params.dir * 2);
-    };
-};
+/**
+ * Goals.js
+ * Compile all actions and goals and return Goals module
+ *
+ * Author: Nicholas Frees
+ * Date: 11/23/2014
+ *
+ * @module Anslem
+ */
+var Actions = require('./compileActions');
+
+/**
+ * Goals
+ *
+ * @class Goals
+ * @static
+ */
+var Goals = {};
+/**
+ * Eat Brains
+ *
+ * @class EatBrains
+ * @for Goals
+ */
 Goals.EatBrains = {
     description: "Eat brains",
     label: "Eat brains",
@@ -22,6 +29,12 @@ Goals.EatBrains = {
         return false;
     }
 };
+/**
+ * Player
+ *
+ * @class Player
+ * @for Goals
+ */
 Goals.Player = {
     description: "Player",
     label: "Player Goal",

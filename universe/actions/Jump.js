@@ -1,3 +1,9 @@
+/**
+ * Jump
+ *
+ * @class Jump
+ * @for Actions
+ */
 Actions.Jump = function Jump() {
     Jump.description = "Jump";
     Jump.label = "Jump";
