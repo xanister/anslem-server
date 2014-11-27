@@ -5,7 +5,7 @@
  * Author: Nicholas Frees
  * Date: 11/23/2014
  *
- * @module Anslem.Assets
+ * @module Anslem.assets
  * @requires AnslemConfig, image-size
  */
 var sizeOf = require('image-size');

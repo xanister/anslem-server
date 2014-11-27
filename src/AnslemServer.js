@@ -34,16 +34,16 @@ var AnslemServer = {
     },
     currentFps: AnslemConfig.serverFps,
     getPlayerPacket: function (player) {
-        var packet = player.position.container.getPacket();
+        var packet = player.container.getPacket();
         packet.player = player.getPacket();
 
-        var xDist = player.position.x - (player.view.x + (player.view.width / 2));
+        var xDist = player.x - (player.view.x + (player.view.width / 2));
         if (xDist < -player.view.xBuffer)
             player.view.x -= ((-xDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
         else if (xDist > player.view.xBuffer)
             player.view.x += ((xDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
 
-        var yDist = player.position.y - (player.view.y + (player.view.height / 2));
+        var yDist = player.y - (player.view.y + (player.view.height / 2));
         if (yDist < -player.view.yBuffer)
             player.view.y -= ((-yDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
         else if (yDist > player.view.yBuffer)
@@ -51,8 +51,8 @@ var AnslemServer = {
 
         if (player.view.x < 0)
             player.view.x = 0;
-        if (player.view.y > (player.position.container.position.height - player.view.height))
-            player.view.y = player.position.container.position.height - player.view.height;
+        if (player.view.y > (player.container.height - player.view.height))
+            player.view.y = player.container.height - player.view.height;
 
         packet.viewX = player.view.x;
         packet.viewY = player.view.y;
@@ -64,8 +64,8 @@ var AnslemServer = {
         player.warp(400, 400, AnslemServer.universe);
 
         player.view = {
-            x: player.position.x - ((client.info.screenWidth * AnslemConfig.viewScale) / 2),
-            y: player.position.y - ((client.info.screenHeight * AnslemConfig.viewScale) / 2),
+            x: player.x - ((client.info.screenWidth * AnslemConfig.viewScale) / 2),
+            y: player.y - ((client.info.screenHeight * AnslemConfig.viewScale) / 2),
             xBuffer: parseInt((client.info.screenWidth * AnslemConfig.viewScale) * AnslemConfig.viewXBuffer),
             yBuffer: parseInt((client.info.screenHeight * AnslemConfig.viewScale) * AnslemConfig.viewYBuffer),
             scale: AnslemConfig.viewScale,
@@ -86,8 +86,8 @@ var AnslemServer = {
     nodeServer: new NodeServer(),
     populate: function () {
         AnslemServer.universe = new Idea();
-        AnslemServer.universe.position.width = 40000;
-        AnslemServer.universe.position.height = 2048;
+        AnslemServer.universe.width = 40000;
+        AnslemServer.universe.height = 2048;
 
         var i = new Idea();
         i.describe(
@@ -96,7 +96,7 @@ var AnslemServer = {
                 'Clouds'
                 );
         i.setSprite("bgClouds", true, false, 0.2);
-        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -105,7 +105,7 @@ var AnslemServer = {
                 'Mountains'
                 );
         i.setSprite("bgMountains", true, false, 0.4);
-        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -114,7 +114,7 @@ var AnslemServer = {
                 'Misty and ominous'
                 );
         i.setSprite("bgMountainsMidground", true, false, 0.6);
-        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -123,7 +123,7 @@ var AnslemServer = {
                 'Forest'
                 );
         i.setSprite("bgTrees", true, false, 0.8);
-        i.warp(0, AnslemServer.universe.position.height - Sprites[i.sprite.image].height, AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
         i.describe(
@@ -132,7 +132,7 @@ var AnslemServer = {
                 'Ground'
                 );
         i.setSprite("bgGround", true, false, 1);
-        i.warp(0, AnslemServer.universe.position.height + (Sprites[i.sprite.image].height / 2), AnslemServer.universe);
+        i.warp(0, AnslemServer.universe.height + (Sprites[i.sprite.image].height / 2), AnslemServer.universe);
     },
     running: false,
     players: [],

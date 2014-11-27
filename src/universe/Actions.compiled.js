@@ -5,8 +5,8 @@
  * Author: Nicholas Frees
  * Date: 11/23/2014
  *
- * @module Anslem
- * @requires fs, Actions
+ * @module Anslem.scripts
+ * @requires fs
  */
 var fs = require('fs');
 

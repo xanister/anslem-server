@@ -5,7 +5,8 @@
  * Author: Nicholas Frees
  * Date: 11/23/2014
  *
- * @module Anslem
+ * @module Anslem.scripts
+ * @requires compileActions
  */
 var Actions = require('./compileActions');
 

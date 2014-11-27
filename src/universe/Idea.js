@@ -4,166 +4,204 @@
  *
  * Author: Nicholas Frees
  * Date: 11/23/2014
- */
-
-/**
- * Includes
+ *
+ * @module Anslem
+ * @requires Sprites, Synapse
  */
 var Sprites = require("./Sprites");
-var Position = require("./Position");
 var Synapse = require("./Synapse");
 
 /**
  * Basic universal construct
+ *
+ * @class Idea
+ * @constructor
  * @param {String} id
- * @returns {Idea}
  */
 function Idea(id) {
     /**
      * Global id counter
-     * @access static
-     * @var {Number}
+     *
+     * @property idCounter
+     * @static
+     * @type {Number}
      */
     Idea.idCounter = Idea.idCounter || 1;
 
     /**
      * Unique id
-     * @access public
-     * @var {String}
+     *
+     * @property id
+     * @type {String}
      */
     this.id = id || Idea.idCounter++;
 
     /**
      * Current action
-     * @access public
-     * @var {Action}
+     *
+     * @property action
+     * @type {Action}
      */
     this.action = false;
 
     /**
      * Basic driving goal
-     * @access public
-     * @var {Goal}
+     *
+     * @property baseGoal
+     * @type {Goal}
      */
     this.baseGoal = false;
 
     /**
      * Categories
-     * @access public
-     * @var {Array}
+     *
+     * @property categories
+     * @type {Array}
      */
     this.categories = [];
 
     /**
+     * Parent object
+     *
+     * @property container
+     * @type {Idea}
+     */
+    this.container = false;
+
+    /**
      * Contained objects
-     * @access public
-     * @var {Array}
+     *
+     * @property contents
+     * @type {Array}
      */
     this.contents = {0: {}};
 
     /**
      * Basic description
-     * @access public
-     * @var {String}
+     *
+     * @property description
+     * @type {String}
      */
     this.description = false;
 
     /**
-     * Current focus position x
-     * @access public
-     * @var {Number}
-     */
-    this.focusX = 0;
-
-    /**
-     * Current focus position y
-     * @access public
-     * @var {Number}
-     */
-    this.focusY = 0;
-
-    /**
      * Current goal
-     * @access public
-     * @var {Goal}
+     *
+     * @property goal
+     * @type {Goal}
      */
     this.goal = false;
 
     /**
      * Falling speed
-     * @access public
-     * @var {Number}
+     *
+     * @property gravity
+     * @type {Number}
      */
     this.gravity = 0;
 
     /**
      * Short description
-     * @access public
-     * @var {String}
+     *
+     * @property label
+     * @type {String}
      */
     this.label = false;
 
     /**
      * Slow in x direction
-     * @access public
-     * @var {Number}
+     *
+     * @property linearDampening
+     * @type {Number}
      */
     this.linerDampening = 0.25;
 
     /**
      * Memories
-     * @access public
-     * @var {Array}
+     *
+     * @property memory
+     * @type {Array}
      */
     this.memory = [];
 
     /**
-     * Basic position
-     * @access public
-     * @var {Position}
-     */
-    this.position = new Position();
-
-    /**
      * Visual representation
-     * @access public
-     * @var {String}
+     *
+     * @property sprite
+     * @type {String}
      */
     this.sprite = false;
 
     /**
+     * Size in x dimension
+     *
+     * @property width
+     * @type {Number}
+     */
+    this.width = 0;
+
+    /**
+     * Size in y dimension
+     *
+     * @property height
+     * @type {Number}
+     */
+    this.height = 0;
+
+    /**
+     * Local x coord
+     *
+     * @property x
+     * @type {Number}
+     */
+    this.x = 0;
+
+    /**
+     * Local y coord
+     *
+     * @property y
+     * @type {Number}
+     */
+    this.y = 0;
+
+    /**
      * Horizontal speed
-     * @access public
-     * @var {Number}
+     *
+     * @property xSpeed
+     * @type {Number}
      */
     this.xSpeed = 0;
 
     /**
      * Vertical speed
-     * @access public
-     * @var {Number}
+     *
+     * @property ySpeed
+     * @type {Number}
      */
     this.ySpeed = 0;
 
     /**
      * Return bounding box
-     * @access public
-     * @returns {Object}
+     *
+     * @method bbox
+     * @return {Object}
      */
     Idea.prototype.bbox = function () {
         return {
-            left: this.position.x - (this.position.width / 2),
-            right: this.position.x + (this.position.width / 2),
-            top: this.position.y - (this.position.height / 2),
-            bottom: this.position.y + (this.position.height / 2)
+            left: this.x - (this.width / 2),
+            right: this.x + (this.width / 2),
+            top: this.y - (this.height / 2),
+            bottom: this.y + (this.height / 2)
         };
     };
 
 
     /**
      * Returns true if self collides with given bbox
+     *
+     * @method collides
      * @param {Object} bbox
-     * @returns {Boolean}
+     * @return {Boolean}
      */
     Idea.prototype.collides = function (bbox) {
         var rect1 = this.bbox();
@@ -178,6 +216,8 @@ function Idea(id) {
 
     /**
      * Sets common attributes
+     *
+     * @method describe
      * @param {Array} categories
      * @param {String} label
      * @param {String} description
@@ -197,30 +237,34 @@ function Idea(id) {
 
     /**
      * Destroy self
+     *
+     * @method destroy
      */
     Idea.prototype.destroy = function () {
-        delete this.position.container.contents[0][this.id];
+        delete this.container.contents[0][this.id];
         for (var index in this.categories) {
-            delete this.position.container.contents[this.categories[index]][this.id];
+            delete this.container.contents[this.categories[index]][this.id];
         }
     };
 
     /**
      * Generates small object representation
-     * @returns {Object}
+     *
+     * @method getPacket
+     * @return {Object}
      */
     Idea.prototype.getPacket = function () {
         var packet = {
             contents: [],
             sprite: this.sprite,
-            x: this.position.x,
-            y: this.position.y,
-            width: this.position.width,
-            height: this.position.height
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height
 
             , // Bigger packet for debugging
             gravity: this.gravity,
-            containerHeight: this.position.container ? this.position.container.position.height : 0
+            containerHeight: this.container ? this.container.height : 0
         };
         for (var index in this.contents[0]) {
             packet.contents.push(this.contents[0][index].getPacket());
@@ -230,32 +274,36 @@ function Idea(id) {
 
     /**
      * Return idea that collides at given position
+     *
+     * @method instancePlace
      * @param {String} category
      * @param {Number} x
      * @param {Number} y
-     * @returns {Idea}
+     * @return {Idea}
      */
     Idea.prototype.instancePlace = function (category, x, y) {
-        var oldX = this.position.x;
-        var oldY = this.position.y;
+        var oldX = this.x;
+        var oldY = this.y;
         category = category || 0;
-        this.position.x = x || this.position.x;
-        this.position.y = y || this.position.y;
-        for (var id in this.position.container.contents[category]) {
-            var e = this.position.container.contents[category][id];
+        this.x = x || this.x;
+        this.y = y || this.y;
+        for (var id in this.container.contents[category]) {
+            var e = this.container.contents[category][id];
             if (e.id !== this.id && this.collides(e.bbox())) {
-                this.position.x = oldX;
-                this.position.y = oldY;
+                this.x = oldX;
+                this.y = oldY;
                 return e;
             }
         }
-        this.position.x = oldX;
-        this.position.y = oldY;
+        this.x = oldX;
+        this.y = oldY;
         return false;
     };
 
     /**
+     * Sets image
      *
+     * @method setSprite
      * @param {String} sprite
      * @param {Boolean} tileX
      * @param {Boolean} tileY
@@ -271,35 +319,37 @@ function Idea(id) {
             tileY: tileY || false,
             scrollSpeed: scrollSpeed || 1
         };
-        if (this.position.width === 0)
-            this.position.width = Sprites[sprite].width;
-        if (this.position.height === 0)
-            this.position.height = Sprites[sprite].height;
+        if (this.width === 0)
+            this.width = Sprites[sprite].width;
+        if (this.height === 0)
+            this.height = Sprites[sprite].height;
     };
 
     /**
      * Runs single frame
+     *
+     * @method run
      */
     Idea.prototype.run = function () {
         // Physics
         if (this.gravity > 0) {
             this.ySpeed += this.gravity;
-            this.position.y += this.ySpeed;
-            if (this.position.y > (this.position.container.position.height - (this.position.height / 2))) {
+            this.y += this.ySpeed;
+            if (this.y > (this.container.height - (this.height / 2))) {
                 this.ySpeed = 0;
-                this.position.y = this.position.container.position.height - (this.position.height / 2);
+                this.y = this.container.height - (this.height / 2);
             }
 
             this.xSpeed -= (this.xSpeed > 0 ? this.linerDampening : -this.linerDampening);
             if (Math.abs(this.xSpeed) <= this.linerDampening)
                 this.xSpeed = 0;
-            this.position.x += this.xSpeed;
-            if (this.position.x < 0) {
+            this.x += this.xSpeed;
+            if (this.x < 0) {
                 this.xSpeed = 0;
-                this.position.x = 0;
-            } else if (this.position.x > this.position.container.position.width) {
+                this.x = 0;
+            } else if (this.x > this.container.width) {
                 this.xSpeed = 0;
-                this.position.x = this.position.container.position.width;
+                this.x = this.container.width;
             }
         }
 
@@ -324,28 +374,30 @@ function Idea(id) {
 
     /**
      * Warp to given coords and maintain associative lists
+     *
+     * @method warp
      * @param {Number} targetX
      * @param {Number} targetY
      * @param {Idea} container
      */
     Idea.prototype.warp = function (targetX, targetY, container) {
-        this.position.x = targetX;
-        this.position.y = targetY;
+        this.x = targetX;
+        this.y = targetY;
         if (container) {
-            if (this.position.container) {
-                delete this.position.container.contents[0][this.id];
+            if (this.container) {
+                delete this.container.contents[0][this.id];
                 for (var index in this.categories) {
                     var c = this.categories[index];
-                    delete this.position.container.contents[c][this.id];
+                    delete this.container.contents[c][this.id];
                 }
             }
-            this.position.container = container;
-            this.position.container.contents[0][this.id] = this;
+            this.container = container;
+            this.container.contents[0][this.id] = this;
             for (var index in this.categories) {
                 var c = this.categories[index];
-                if (!this.position.container.contents[c])
-                    this.position.container.contents[c] = {};
-                this.position.container.contents[c][this.id] = this;
+                if (!this.container.contents[c])
+                    this.container.contents[c] = {};
+                this.container.contents[c][this.id] = this;
             }
         }
     };

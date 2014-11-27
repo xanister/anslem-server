@@ -23,9 +23,9 @@ Goals.Player = {
         if (this.ySpeed === 0 && this.inputs.events.swipe.up) {
             return new Actions.Jump();
         } else if (this.inputs.touches[0]) {
-            if ((this.inputs.touches[0].x * this.view.scale) + this.view.x > this.position.x) {
+            if ((this.inputs.touches[0].x * this.view.scale) + this.view.x > this.x) {
                 return new Actions.Move({dir: 1});
-            } else if ((this.inputs.touches[0].x * this.view.scale) + this.view.x < this.position.x) {
+            } else if ((this.inputs.touches[0].x * this.view.scale) + this.view.x < this.x) {
                 return new Actions.Move({dir: -1});
             }
         }

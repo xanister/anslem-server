@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "url": "http://docs.anslemgalaxy.com",
     "options": {
-        "exclude": "Actions.js,Goals.js,Idea.js,Position.js,goals,actions",
+        "exclude": "Actions.js,Goals.js,goals,actions",
         "outdir": "../docs.anslemgalaxy.com",
         "paths": [
             "./src"
