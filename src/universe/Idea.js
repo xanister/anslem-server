@@ -5,11 +5,10 @@
  * Author: Nicholas Frees
  * Date: 11/23/2014
  *
- * @module Anslem
- * @requires Sprites, Synapse
+ * @module Anslem.universe
+ * @requires Sprites
  */
 var Sprites = require("./Sprites");
-var Synapse = require("./Synapse");
 
 /**
  * Basic universal construct
@@ -35,22 +34,6 @@ function Idea(id) {
      * @type {String}
      */
     this.id = id || Idea.idCounter++;
-
-    /**
-     * Current action
-     *
-     * @property action
-     * @type {Action}
-     */
-    this.action = false;
-
-    /**
-     * Basic driving goal
-     *
-     * @property baseGoal
-     * @type {Goal}
-     */
-    this.baseGoal = false;
 
     /**
      * Categories
@@ -85,14 +68,6 @@ function Idea(id) {
     this.description = false;
 
     /**
-     * Current goal
-     *
-     * @property goal
-     * @type {Goal}
-     */
-    this.goal = false;
-
-    /**
      * Falling speed
      *
      * @property gravity
@@ -115,14 +90,6 @@ function Idea(id) {
      * @type {Number}
      */
     this.linerDampening = 0.25;
-
-    /**
-     * Memories
-     *
-     * @property memory
-     * @type {Array}
-     */
-    this.memory = [];
 
     /**
      * Visual representation
@@ -233,16 +200,14 @@ function Idea(id) {
      * @param {String} description
      * @param {String} sprite
      * @param {Number} gravity
-     * @param {Goal} baseGoal
      */
-    Idea.prototype.describe = function (categories, label, description, sprite, gravity, baseGoal) {
+    Idea.prototype.describe = function (categories, label, description, sprite, gravity) {
         this.categories = categories || this.categories;
         this.label = label;
         this.description = description || this.description;
         if (sprite)
             this.setSprite(sprite);
         this.gravity = gravity || this.gravity;
-        this.baseGoal = baseGoal || this.baseGoal;
     };
 
     /**
@@ -271,10 +236,6 @@ function Idea(id) {
             y: this.y,
             width: this.width,
             height: this.height
-
-            , // Bigger packet for debugging
-            gravity: this.gravity,
-            containerHeight: this.container ? this.container.height : 0
         };
         for (var index in this.contents[0]) {
             packet.contents.push(this.contents[0][index].getPacket());
@@ -362,12 +323,6 @@ function Idea(id) {
                 this.x = this.container.width;
             }
         }
-
-        // AI
-        this.goal = this.goal ? this.goal : this.baseGoal;
-        this.action = this.goal ? this.goal.getAction.call(this) : false;
-        if (this.action)
-            this.action.run.call(this, this.action.params);
 
         // Sprite
         if (this.sprite && this.sprite.frameSpeed > 0) {

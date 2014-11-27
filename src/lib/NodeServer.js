@@ -178,7 +178,9 @@ function NodeServer() {
 
             // Accept client info
             client.on("clientInfo", function (info) {
-                nodeServer.clients[client.id].info = info;
+                for (var index in info) {
+                    nodeServer.clients[client.id].info[index] = info[index];
+                }
                 if (nodeServer.clientInfoCallback)
                     nodeServer.clientInfoCallback.call(nodeServer, client.id, info);
             });

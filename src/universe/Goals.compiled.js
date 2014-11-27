@@ -33,15 +33,14 @@ Goals.EatBrains = {
     }
 };
 /**
- * Player.js
- * Player
+ * PlayerInput
  *
- * @property Player
+ * @property PlayerInput
  * @for Goals
  * @type {Object}
  */
-Goals.Player = {
-    description: "Player",
+Goals.PlayerInput = {
+    description: "PlayerInput",
     label: "Player Goal",
     getAction: function () {
         // Desktop Controls

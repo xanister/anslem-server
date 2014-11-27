@@ -9,10 +9,12 @@
  * @requires AnslemConfig, gameloop, Goals, Idea, NodeServer
  */
 var AnslemConfig = require('./AnslemConfig');
+var Entity = require("./universe/Entity");
 var gameloop = require('node-gameloop');
-var goals = require("./universe/compileGoals");
+var Goals = require("./universe/compileGoals");
 var Idea = require("./universe/Idea");
 var NodeServer = require("./lib/NodeServer");
+var Player = require("./universe/Player");
 var Sprites = require("./universe/Sprites");
 
 /**
@@ -23,7 +25,8 @@ var Sprites = require("./universe/Sprites");
  */
 var AnslemServer = {
     clientConnected: function (client) {
-        var newPlayer = AnslemServer.loadPlayer(client);
+        var newPlayer = new Player();
+        newPlayer.load(client, AnslemServer.universe);
         AnslemServer.players[client.id] = newPlayer;
         return {message: 'Welcome to Anslem!', assets: {sprites: Sprites}, viewScale: newPlayer.view.scale};
     },
@@ -33,50 +36,6 @@ var AnslemServer = {
         console.log("Client disconnected ", clientId);
     },
     currentFps: AnslemConfig.serverFps,
-    getPlayerPacket: function (player) {
-        var packet = player.container.getPacket();
-        packet.player = player.getPacket();
-
-        var xDist = player.x - (player.view.x + (player.view.width / 2));
-        if (xDist < -player.view.xBuffer)
-            player.view.x -= ((-xDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
-        else if (xDist > player.view.xBuffer)
-            player.view.x += ((xDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
-
-        var yDist = player.y - (player.view.y + (player.view.height / 2));
-        if (yDist < -player.view.yBuffer)
-            player.view.y -= ((-yDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
-        else if (yDist > player.view.yBuffer)
-            player.view.y += ((yDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
-
-        if (player.view.x < 0)
-            player.view.x = 0;
-        if (player.view.y > (player.container.height - player.view.height))
-            player.view.y = player.container.height - player.view.height;
-
-        packet.viewX = player.view.x;
-        packet.viewY = player.view.y;
-        return packet;
-    },
-    loadPlayer: function (client) {
-        var player = new Idea();
-        player.describe(['physical', 'human', 'player'], "A player label", "A player description", "sprGoblin", AnslemConfig.gravity, goals.Player);
-        player.warp(400, 400, AnslemServer.universe);
-
-        player.view = {
-            x: player.x - ((client.info.screenWidth * AnslemConfig.viewScale) / 2),
-            y: player.y - ((client.info.screenHeight * AnslemConfig.viewScale) / 2),
-            xBuffer: parseInt((client.info.screenWidth * AnslemConfig.viewScale) * AnslemConfig.viewXBuffer),
-            yBuffer: parseInt((client.info.screenHeight * AnslemConfig.viewScale) * AnslemConfig.viewYBuffer),
-            scale: AnslemConfig.viewScale,
-            speed: AnslemConfig.viewSpeed,
-            width: (client.info.screenWidth * AnslemConfig.viewScale),
-            height: (client.info.screenHeight * AnslemConfig.viewScale)
-        };
-        player.inputs = client.inputs;
-
-        return player;
-    },
     logServerInfo: function () {
         console.log("Server FPS: " + AnslemServer.currentFps);
         console.log(Object.keys(AnslemServer.players).length + " player(s) currently connected");
@@ -133,7 +92,9 @@ var AnslemServer = {
         AnslemServer.currentFps = 1 / delta;
         AnslemServer.universe.run();
         for (var id in AnslemServer.players) {
-            var packet = AnslemServer.getPlayerPacket(AnslemServer.players[id]);
+            var packet = AnslemServer.players[id].container.getPacket();
+            packet.viewX = AnslemServer.players[id].view.x;
+            packet.viewY = AnslemServer.players[id].view.y;
             AnslemServer.nodeServer.update(id, packet);
         }
     }
