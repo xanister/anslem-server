@@ -9,10 +9,9 @@
 /**
  * Includes
  */
+var sprites = require("./sprites");
 var Position = require("./Position");
-var Sprites = require("./Sprites");
 var Synapse = require("./Synapse");
-var Goals = require("./Goals");
 
 /**
  * Basic universal construct
@@ -265,17 +264,17 @@ function Idea(id) {
     Idea.prototype.setSprite = function (sprite, tileX, tileY, scrollSpeed) {
         this.sprite = {
             frame: 0,
-            frameSpeed: Sprites[sprite].frameSpeed,
-            frameCount: Sprites[sprite].frameCount,
+            frameSpeed: sprites[sprite].frameSpeed,
+            frameCount: sprites[sprite].frameCount,
             image: sprite,
             tileX: tileX || false,
             tileY: tileY || false,
             scrollSpeed: scrollSpeed || 1
         };
         if (this.position.width === 0)
-            this.position.width = Sprites[sprite].width;
+            this.position.width = sprites[sprite].width;
         if (this.position.height === 0)
-            this.position.height = Sprites[sprite].height;
+            this.position.height = sprites[sprite].height;
     };
 
     /**
