@@ -90,47 +90,27 @@ var AnslemServer = {
         AnslemServer.universe.height = 2048;
 
         var i = new Idea();
-        i.describe(
-                ['background'],
-                'Clouds',
-                'Clouds'
-                );
+        i.describe(['background'], 'Clouds', 'Clouds');
         i.setSprite("bgClouds", true, false, 0.2);
         i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
-        i.describe(
-                ['background'],
-                'Mountains',
-                'Mountains'
-                );
+        i.describe(['background'], 'Mountains', 'Mountains');
         i.setSprite("bgMountains", true, false, 0.4);
         i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
-        i.describe(
-                ['background'],
-                'Blue Ridge Mountains',
-                'Misty and ominous'
-                );
+        i.describe(['background'], 'Blue Ridge Mountains', 'Misty and ominous');
         i.setSprite("bgMountainsMidground", true, false, 0.6);
         i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
-        i.describe(
-                ['background'],
-                'Forest',
-                'Forest'
-                );
+        i.describe(['background'], 'Forest', 'Forest');
         i.setSprite("bgTrees", true, false, 0.8);
         i.warp(0, AnslemServer.universe.height - Sprites[i.sprite.image].height, AnslemServer.universe);
 
         var i = new Idea();
-        i.describe(
-                ['background'],
-                'Ground',
-                'Ground'
-                );
+        i.describe(['background'], 'Ground', 'Ground');
         i.setSprite("bgGround", true, false, 1);
         i.warp(0, AnslemServer.universe.height + (Sprites[i.sprite.image].height / 2), AnslemServer.universe);
     },

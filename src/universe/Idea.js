@@ -126,9 +126,19 @@ function Idea(id) {
 
     /**
      * Visual representation
+     * Format:
+     * {
+     *       frame: {Number},
+     *       frameSpeed: {Number},
+     *       frameCount: {Number},
+     *       image: {String},
+     *       tileX: {Boolean},
+     *       tileY: {Boolean},
+     *       scrollSpeed: {Number}
+     * }
      *
      * @property sprite
-     * @type {String}
+     * @type {Object}
      */
     this.sprite = false;
 
