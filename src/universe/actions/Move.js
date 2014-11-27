@@ -1,7 +1,7 @@
 /**
  * Move
  *
- * @class Move
+ * @method Move
  * @for Actions
  * @param {Object} params direction to move
  */

@@ -5,11 +5,11 @@
  * Author: Nicholas Frees
  * Date: 11/23/2014
  *
- * @module Anslem.Sprites
- * @requires anslemConfig, image-size
+ * @module Anslem.Assets
+ * @requires AnslemConfig, image-size
  */
 var sizeOf = require('image-size');
-var anslemConfig = require('../anslemConfig');
+var AnslemConfig = require('../AnslemConfig');
 
 /**
  * Available sprites
@@ -76,7 +76,7 @@ var Sprites = {
 
 // Grab the size
 for (var index in Sprites) {
-    var dim = sizeOf(anslemConfig.assetPath + Sprites[index].imagePath + "000.png");
+    var dim = sizeOf(AnslemConfig.assetPath + Sprites[index].imagePath + "000.png");
     Sprites[index].width = dim.width;
     Sprites[index].height = dim.height;
 }

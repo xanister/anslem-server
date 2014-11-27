@@ -1,5 +1,5 @@
 /**
- * anslemConfig.js
+ * AnslemConfig.js
  * Basic configuration
  *
  * Author: Nicholas Frees
@@ -11,10 +11,10 @@
 /**
  * Server and world config
  *
- * @property anslemConfig
- * @type {Object}
+ * @class AnslemConfig
+ * @static
  */
-var anslemConfig = {
+var AnslemConfig = {
     assetPath: "/var/www/assets.anslemgalaxy.com",
     gravity: 1.8,
     serverInfoInterval: 10000,
@@ -27,4 +27,4 @@ var anslemConfig = {
     viewYBuffer: 0.1
 };
 
-module.exports = anslemConfig;
+module.exports = AnslemConfig;

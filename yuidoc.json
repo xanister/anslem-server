@@ -2,9 +2,12 @@
     "name": "Anslem Server",
     "description": "Node game server for Anslem",
     "version": "0.0.1",
-    "url": "http://celia.anslemgalaxy.com",
+    "url": "http://docs.anslemgalaxy.com",
     "options": {
-        "exclude": "Idea.js,Position.js,goals,actions",
-        "outdir": "../docs.anslemgalaxy.com"
+        "exclude": "Actions.js,Goals.js,Idea.js,Position.js,goals,actions",
+        "outdir": "../docs.anslemgalaxy.com",
+        "paths": [
+            "./src"
+        ]
     }
 }

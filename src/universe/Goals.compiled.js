@@ -1,8 +1,43 @@
 /**
+ * Goals.js
+ * Compile all actions and goals and return Goals module
+ *
+ * Author: Nicholas Frees
+ * Date: 11/23/2014
+ *
+ * @module Anslem
+ */
+var Actions = require('./compileActions');
+
+/**
+ * Goals
+ *
+ * @class Goals
+ * @static
+ */
+var Goals = {};
+/**
+ * EatBrains.js
+ * Eat Brains
+ *
+ * @property EatBrains
+ * @for Goals
+ * @type {Object}
+ */
+Goals.EatBrains = {
+    description: "Eat brains",
+    label: "Eat brains",
+    getAction: function () {
+        return false;
+    }
+};
+/**
+ * Player.js
  * Player
  *
- * @class Player
+ * @property Player
  * @for Goals
+ * @type {Object}
  */
 Goals.Player = {
     description: "Player",
@@ -32,3 +67,4 @@ Goals.Player = {
         return false;
     }
 };
+module.exports = Goals;

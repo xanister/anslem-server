@@ -1,8 +1,10 @@
 /**
+ * EatBrains.js
  * Eat Brains
  *
- * @class EatBrains
+ * @property EatBrains
  * @for Goals
+ * @type {Object}
  */
 Goals.EatBrains = {
     description: "Eat brains",

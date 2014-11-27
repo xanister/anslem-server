@@ -20,7 +20,7 @@ var Actions = {};
 /**
  * Jump
  *
- * @class Jump
+ * @method Jump
  * @for Actions
  */
 Actions.Jump = function Jump() {
@@ -34,7 +34,7 @@ Actions.Jump = function Jump() {
 /**
  * Move
  *
- * @class Move
+ * @method Move
  * @for Actions
  * @param {Object} params direction to move
  */

@@ -6,16 +6,16 @@
  * Date: 11/23/2014
  *
  * @module Anslem
- * @requires anslemConfig, gameloop, Goals, Idea, NodeServer
+ * @requires AnslemConfig, gameloop, Goals, Idea, NodeServer
  */
-var anslemConfig = require('./anslemConfig');
+var AnslemConfig = require('./AnslemConfig');
 var gameloop = require('node-gameloop');
 var goals = require("./universe/compileGoals");
 var Idea = require("./universe/Idea");
 var NodeServer = require("./lib/NodeServer");
 var Sprites = require("./universe/Sprites");
 
-/*
+/**
  * Anslem game server wrapper
  *
  * @class AnslemServer
@@ -32,22 +32,22 @@ var AnslemServer = {
         delete AnslemServer.players[clientId];
         console.log("Client disconnected ", clientId);
     },
-    currentFps: anslemConfig.serverFps,
+    currentFps: AnslemConfig.serverFps,
     getPlayerPacket: function (player) {
         var packet = player.position.container.getPacket();
         packet.player = player.getPacket();
 
         var xDist = player.position.x - (player.view.x + (player.view.width / 2));
         if (xDist < -player.view.xBuffer)
-            player.view.x -= ((-xDist - player.view.xBuffer) * anslemConfig.viewSpeed);
+            player.view.x -= ((-xDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
         else if (xDist > player.view.xBuffer)
-            player.view.x += ((xDist - player.view.xBuffer) * anslemConfig.viewSpeed);
+            player.view.x += ((xDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
 
         var yDist = player.position.y - (player.view.y + (player.view.height / 2));
         if (yDist < -player.view.yBuffer)
-            player.view.y -= ((-yDist - player.view.xBuffer) * anslemConfig.viewSpeed);
+            player.view.y -= ((-yDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
         else if (yDist > player.view.yBuffer)
-            player.view.y += ((yDist - player.view.xBuffer) * anslemConfig.viewSpeed);
+            player.view.y += ((yDist - player.view.xBuffer) * AnslemConfig.viewSpeed);
 
         if (player.view.x < 0)
             player.view.x = 0;
@@ -60,18 +60,18 @@ var AnslemServer = {
     },
     loadPlayer: function (client) {
         var player = new Idea();
-        player.describe(['physical', 'human', 'player'], "A player label", "A player description", "sprGoblin", anslemConfig.gravity, goals.Player);
+        player.describe(['physical', 'human', 'player'], "A player label", "A player description", "sprGoblin", AnslemConfig.gravity, goals.Player);
         player.warp(400, 400, AnslemServer.universe);
 
         player.view = {
-            x: player.position.x - ((client.info.screenWidth * anslemConfig.viewScale) / 2),
-            y: player.position.y - ((client.info.screenHeight * anslemConfig.viewScale) / 2),
-            xBuffer: parseInt((client.info.screenWidth * anslemConfig.viewScale) * anslemConfig.viewXBuffer),
-            yBuffer: parseInt((client.info.screenHeight * anslemConfig.viewScale) * anslemConfig.viewYBuffer),
-            scale: anslemConfig.viewScale,
-            speed: anslemConfig.viewSpeed,
-            width: (client.info.screenWidth * anslemConfig.viewScale),
-            height: (client.info.screenHeight * anslemConfig.viewScale)
+            x: player.position.x - ((client.info.screenWidth * AnslemConfig.viewScale) / 2),
+            y: player.position.y - ((client.info.screenHeight * AnslemConfig.viewScale) / 2),
+            xBuffer: parseInt((client.info.screenWidth * AnslemConfig.viewScale) * AnslemConfig.viewXBuffer),
+            yBuffer: parseInt((client.info.screenHeight * AnslemConfig.viewScale) * AnslemConfig.viewYBuffer),
+            scale: AnslemConfig.viewScale,
+            speed: AnslemConfig.viewSpeed,
+            width: (client.info.screenWidth * AnslemConfig.viewScale),
+            height: (client.info.screenHeight * AnslemConfig.viewScale)
         };
         player.inputs = client.inputs;
 
@@ -81,7 +81,7 @@ var AnslemServer = {
         console.log("Server FPS: " + AnslemServer.currentFps);
         console.log(Object.keys(AnslemServer.players).length + " player(s) currently connected");
         if (AnslemServer.running)
-            setTimeout(AnslemServer.logServerInfo, anslemConfig.serverInfoInterval);
+            setTimeout(AnslemServer.logServerInfo, AnslemConfig.serverInfoInterval);
     },
     nodeServer: new NodeServer(),
     populate: function () {
@@ -147,7 +147,7 @@ var AnslemServer = {
         AnslemServer.running = false;
         gameloop.clearGameLoop(AnslemServer.gameloopId);
     },
-    targetFps: anslemConfig.serverFps,
+    targetFps: AnslemConfig.serverFps,
     universe: false,
     update: function (delta) {
         AnslemServer.currentFps = 1 / delta;
@@ -159,4 +159,4 @@ var AnslemServer = {
     }
 };
 
-AnslemServer.start();
+module.exports = AnslemServer;
