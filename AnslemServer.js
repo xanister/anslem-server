@@ -1,6 +1,6 @@
 /**
  * AnslemServer.js
- * Compile all actions and goals and return Goals module
+ * Run the world
  *
  * Author: Nicholas Frees
  * Date: 11/23/2014
@@ -9,21 +9,12 @@
 /**
  * Includes
  */
-var NodeServer = require("./lib/NodeServer");
-var Idea = require("./universe/Idea");
-var Sprites = require("./universe/Sprites");
-var Goals = require("./universe/Goals");
+var anslemConfig = require('./anslemConfig');
 var gameloop = require('node-gameloop');
-
-var anslemConfig = {
-    gravity: 0.8,
-    linearDampening: 0.5,
-    port: 3000,
-    viewScale: 2,
-    viewSpeed: 0.3,
-    viewXBuffer: 0.2,
-    viewYBuffer: 0.1
-};
+var goals = require("./universe/goals");
+var sprites = require("./universe/sprites");
+var Idea = require("./universe/Idea");
+var NodeServer = require("./lib/NodeServer");
 
 /*
  * Anslem game server wrapper
@@ -31,14 +22,16 @@ var anslemConfig = {
  */
 var AnslemServer = {
     clientConnected: function (client) {
-        AnslemServer.players[client.id] = AnslemServer.loadPlayer(client);
-        return {message: 'Welcome to Anslem!', assets: {sprites: Sprites}, viewScale: AnslemServer.players[client.id].view.scale};
+        var newPlayer = AnslemServer.loadPlayer(client);
+        AnslemServer.players[client.id] = newPlayer;
+        return {message: 'Welcome to Anslem!', assets: {sprites: sprites}, viewScale: newPlayer.view.scale};
     },
     clientDisconnected: function (clientId) {
         AnslemServer.players[clientId].destroy();
         delete AnslemServer.players[clientId];
+        console.log("Client disconnected ", clientId);
     },
-    currentFps: 0,
+    currentFps: anslemConfig.serverFps,
     getPlayerPacket: function (player) {
         var packet = player.position.container.getPacket();
         packet.player = player.getPacket();
@@ -66,21 +59,18 @@ var AnslemServer = {
     },
     loadPlayer: function (client) {
         var player = new Idea();
-        player.describe(['physical', 'human', 'player'], "A player label", "A player description", "sprGoblin", anslemConfig.gravity, Goals.Player);
+        player.describe(['physical', 'human', 'player'], "A player label", "A player description", "sprGoblin", anslemConfig.gravity, goals.Player);
         player.warp(400, 400, AnslemServer.universe);
 
-        var dim = client.handshake.query.initialData ? client.handshake.query.initialData.split(',') : [500, 500];
-        dim[0] *= anslemConfig.viewScale;
-        dim[1] *= anslemConfig.viewScale;
         player.view = {
-            x: player.position.x - (dim[0] / 2),
-            y: player.position.y - (dim[1] / 2),
-            xBuffer: parseInt(dim[0] * anslemConfig.viewXBuffer),
-            yBuffer: parseInt(dim[1] * anslemConfig.viewYBuffer),
+            x: player.position.x - ((client.info.screenWidth * anslemConfig.viewScale) / 2),
+            y: player.position.y - ((client.info.screenHeight * anslemConfig.viewScale) / 2),
+            xBuffer: parseInt((client.info.screenWidth * anslemConfig.viewScale) * anslemConfig.viewXBuffer),
+            yBuffer: parseInt((client.info.screenHeight * anslemConfig.viewScale) * anslemConfig.viewYBuffer),
             scale: anslemConfig.viewScale,
             speed: anslemConfig.viewSpeed,
-            width: dim[0],
-            height: dim[1]
+            width: (client.info.screenWidth * anslemConfig.viewScale),
+            height: (client.info.screenHeight * anslemConfig.viewScale)
         };
         player.inputs = client.inputs;
 
@@ -90,7 +80,7 @@ var AnslemServer = {
         console.log("Server FPS: " + AnslemServer.currentFps);
         console.log(Object.keys(AnslemServer.players).length + " player(s) currently connected");
         if (AnslemServer.running)
-            setTimeout(AnslemServer.logServerInfo, 5000);
+            setTimeout(AnslemServer.logServerInfo, anslemConfig.serverInfoInterval);
     },
     nodeServer: new NodeServer(anslemConfig.port),
     populate: function () {
@@ -98,27 +88,50 @@ var AnslemServer = {
         AnslemServer.universe.position.width = 40000;
         AnslemServer.universe.position.height = 2048;
 
-        var mountains = new Idea();
-        mountains.describe(
+        var i = new Idea();
+        i.describe(
+                ['background'],
+                'Clouds',
+                'Clouds'
+                );
+        i.setSprite("bgClouds", true, false, 0.2);
+        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
+
+        var i = new Idea();
+        i.describe(
+                ['background'],
+                'Mountains',
+                'Mountains'
+                );
+        i.setSprite("bgMountains", true, false, 0.4);
+        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
+
+        var i = new Idea();
+        i.describe(
                 ['background'],
                 'Blue Ridge Mountains',
                 'Misty and ominous'
                 );
-        mountains.setSprite("bgMountains", true, false, 0.5);
-        mountains.warp(0, AnslemServer.universe.position.height - (mountains.position.height / 2), AnslemServer.universe);
+        i.setSprite("bgMountainsMidground", true, false, 0.6);
+        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
 
-        var ground = new Idea();
-        ground.describe(
+        var i = new Idea();
+        i.describe(
                 ['background'],
-                'Black ground',
-                '...'
+                'Forest',
+                'Forest'
                 );
-        ground.setSprite("bgGround", true, false);
-        ground.warp(0, AnslemServer.universe.position.height + (ground.position.height / 2), AnslemServer.universe);
+        i.setSprite("bgTrees", true, false, 0.8);
+        i.warp(0, AnslemServer.universe.position.height - sprites[i.sprite.image].height, AnslemServer.universe);
 
-        var coin = new Idea();
-        coin.describe(['physical', 'coin'], "Rupie", "Simple currency", "sprCoin", anslemConfig.gravity);
-        coin.warp(50, 50, AnslemServer.universe);
+        var i = new Idea();
+        i.describe(
+                ['background'],
+                'Ground',
+                'Ground'
+                );
+        i.setSprite("bgGround", true, false, 1);
+        i.warp(0, AnslemServer.universe.position.height + (sprites[i.sprite.image].height / 2), AnslemServer.universe);
     },
     running: false,
     players: [],
@@ -127,13 +140,13 @@ var AnslemServer = {
         AnslemServer.populate();
         AnslemServer.nodeServer.start(AnslemServer.clientConnected, AnslemServer.clientDisconnected);
         AnslemServer.gameloopId = gameloop.setGameLoop(AnslemServer.update, 1000 / AnslemServer.targetFps);
-        setTimeout(AnslemServer.logServerInfo, 5000);
+        AnslemServer.logServerInfo();
     },
     stop: function () {
         AnslemServer.running = false;
         gameloop.clearGameLoop(AnslemServer.gameloopId);
     },
-    targetFps: 30,
+    targetFps: anslemConfig.serverFps,
     universe: false,
     update: function (delta) {
         AnslemServer.currentFps = 1 / delta;

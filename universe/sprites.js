@@ -1,5 +1,5 @@
 /**
- * Sprites.js
+ * sprites.js
  * List of available sprites and their info
  *
  * Author: Nicholas Frees
@@ -12,57 +12,57 @@
 var sizeOf = require('image-size');
 var anslemConfig = require('../anslemConfig');
 
-var Sprites = {
+var sprites = {
     bgNight: {
-        imagePath: 'assets/sprites/bg-night/bg-night_',
+        imagePath: '/sprites/bg-night/bg-night_',
         frameCount: 1,
         frameSpeed: 0,
         singleImage: false
     },
     bgClouds: {
-        imagePath: 'assets/sprites/bg-clouds/bg-clouds_',
+        imagePath: '/sprites/bg-clouds/bg-clouds_',
         frameCount: 1,
         frameSpeed: 0,
         singleImage: false
     },
     bgMountains: {
-        imagePath: 'assets/sprites/bg-mountains/bg-mountains_',
+        imagePath: '/sprites/bg-mountains/bg-mountains_',
         frameCount: 1,
         frameSpeed: 0,
         singleImage: false
     },
     bgMountainsMidground: {
-        imagePath: 'assets/sprites/bg-mountains-midground/bg-mountains-midground_',
+        imagePath: '/sprites/bg-mountains-midground/bg-mountains-midground_',
         frameCount: 1,
         frameSpeed: 0,
         singleImage: false
     },
     bgTrees: {
-        imagePath: 'assets/sprites/bg-trees/bg-trees_',
+        imagePath: '/sprites/bg-trees/bg-trees_',
         frameCount: 1,
         frameSpeed: 0,
         singleImage: false
     },
     bgGround: {
-        imagePath: 'assets/sprites/bg-ground/bg-ground_',
+        imagePath: '/sprites/bg-ground/bg-ground_',
         frameCount: 1,
         frameSpeed: 0,
         singleImage: false
     },
     sprMan: {
-        imagePath: "assets/sprites/man-single/man-single_",
+        imagePath: "/sprites/man-single/man-single_",
         frameCount: 6,
         frameSpeed: 0.5,
         singleImage: true
     },
     sprCoin: {
-        imagePath: "assets/sprites/coin/coin_",
+        imagePath: "/sprites/coin/coin_",
         frameCount: 1,
         frameSpeed: 0,
         singleImage: false
     },
     sprGoblin: {
-        imagePath: "assets/sprites/goblin-walking/goblin-walking__",
+        imagePath: "/sprites/goblin-walking/goblin-walking__",
         frameCount: 31,
         frameSpeed: 1,
         singleImage: false
@@ -70,10 +70,10 @@ var Sprites = {
 };
 
 // Grab the size
-for (var index in Sprites) {
-    var dim = sizeOf('./../' + Sprites[index].imagePath + "000.png");
-    Sprites[index].width = dim.width;
-    Sprites[index].height = dim.height;
+for (var index in sprites) {
+    var dim = sizeOf(anslemConfig.assetPath + sprites[index].imagePath + "000.png");
+    sprites[index].width = dim.width;
+    sprites[index].height = dim.height;
 }
 
-module.exports = Sprites;
+module.exports = sprites;
