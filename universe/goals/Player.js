@@ -2,20 +2,27 @@ Goals.Player = {
     description: "Player",
     label: "Player Goal",
     getAction: function () {
-        if (this.inputs.keyboard.A) {
+        // Desktop Controls
+        if (this.ySpeed === 0 && this.inputs.events.keydown.W) {
+            return new Actions.Jump();
+        } else if (this.inputs.keyboard.A) {
             return new Actions.Move({dir: -1});
         } else if (this.inputs.keyboard.D) {
             return new Actions.Move({dir: 1});
         }
 
-        if (this.inputs.touches.x) {
-            if (this.inputs.touches.x < (this.view.width / this.view.scale) / 2) {
-                return new Actions.Move({dir: -1});
-            } else if (this.inputs.touches.x > (this.view.width / this.view.scale) / 2) {
+        // Mobile controls
+        if (this.ySpeed === 0 && this.inputs.events.swipe.up) {
+            return new Actions.Jump();
+        } else if (this.inputs.touches[0]) {
+            if ((this.inputs.touches[0].x * this.view.scale) + this.view.x > this.position.x) {
                 return new Actions.Move({dir: 1});
+            } else if ((this.inputs.touches[0].x * this.view.scale) + this.view.x < this.position.x) {
+                return new Actions.Move({dir: -1});
             }
         }
 
+        // No action
         return false;
     }
 };

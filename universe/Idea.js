@@ -284,10 +284,9 @@ function Idea(id) {
     Idea.prototype.run = function () {
         // Physics
         if (this.gravity > 0) {
-            if ((this.position.y + this.gravity) < (this.position.container.position.height - (this.position.height / 2))) {
-                this.ySpeed += this.gravity;
-                this.position.y += this.ySpeed;
-            } else {
+            this.ySpeed += this.gravity;
+            this.position.y += this.ySpeed;
+            if (this.position.y > (this.position.container.position.height - (this.position.height / 2))) {
                 this.ySpeed = 0;
                 this.position.y = this.position.container.position.height - (this.position.height / 2);
             }
