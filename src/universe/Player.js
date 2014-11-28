@@ -94,22 +94,25 @@ function Player() {
         Entity.prototype.run.call(this);
 
         // Maintain view
+        if (this.view.y > (this.container.height - this.view.height))
+            this.view.y = this.container.height - this.view.height;
+
         var xDist = this.x - (this.view.x + (this.view.width / 2));
         if (xDist < -this.view.xBuffer)
-            this.view.x -= ((-xDist - this.view.xBuffer) * AnslemConfig.viewSpeed);
+            this.view.x = this.x - (this.view.width / 2) + this.view.xBuffer;
         else if (xDist > this.view.xBuffer)
-            this.view.x += ((xDist - this.view.xBuffer) * AnslemConfig.viewSpeed);
+            this.view.x = this.x - (this.view.width / 2) - this.view.xBuffer;
 
         var yDist = this.y - (this.view.y + (this.view.height / 2));
         if (yDist < -this.view.yBuffer)
-            this.view.y -= ((-yDist - this.view.xBuffer) * AnslemConfig.viewSpeed);
+            this.view.y = this.y - (this.view.height / 2) + this.view.yBuffer;
         else if (yDist > this.view.yBuffer)
-            this.view.y += ((yDist - this.view.xBuffer) * AnslemConfig.viewSpeed);
+            this.view.y = this.y - (this.view.height / 2) - this.view.yBuffer;
 
         if (this.view.x < 0)
             this.view.x = 0;
-        if (this.view.y > (this.container.height - this.view.height))
-            this.view.y = this.container.height - this.view.height;
+        if (this.view.x + this.view.width > this.container.width)
+            this.view.x = this.container.width - this.view.width;
     };
 }
 Player.prototype = new Entity();

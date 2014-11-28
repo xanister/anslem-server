@@ -19,8 +19,8 @@ var AnslemConfig = {
     serverFps: 60,
     viewScale: 2,
     viewSpeed: 0.3,
-    viewXBuffer: 0.2,
-    viewYBuffer: 0.1
+    viewXBuffer: 0.3,
+    viewYBuffer: 0.4
 };
 
 module.exports = AnslemConfig;

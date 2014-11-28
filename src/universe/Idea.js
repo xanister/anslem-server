@@ -238,6 +238,7 @@ function Idea(id) {
             sprite: {
                 frame: this.sprite.frame,
                 image: this.sprite.image,
+                mirror: this.sprite.mirror,
                 scrollSpeed: this.sprite.scrollSpeed,
                 tileX: this.sprite.tileX,
                 tileY: this.sprite.tileY
@@ -297,6 +298,7 @@ function Idea(id) {
             frameCount: Sprites[sprite].frameCount,
             frameSpeed: Sprites[sprite].frameSpeed,
             image: sprite,
+            mirror: false,
             scrollSpeed: scrollSpeed || 1,
             src: Sprites[sprite],
             tileX: tileX || false,

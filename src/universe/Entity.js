@@ -107,7 +107,7 @@ function Entity() {
      * @method updateSprite
      */
     Entity.prototype.updateSprite = function () {
-        this.sprite.frameSpeed = this.sprite.src.frameSpeed * (this.xSpeed / this.stats.speed);
+        this.sprite.frameSpeed = this.sprite.src.frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
     };
 }
 Entity.prototype = new Idea();
