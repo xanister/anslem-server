@@ -1,14 +1,8 @@
 /**
- * Actions.js
  * Available actions
  *
- * Author: Nicholas Frees
- * Date: 11/23/2014
- *
- * @module Anslem.scripts
- * @requires fs
+ * @module Anslem.Universe.scripts
  */
-var fs = require('fs');
 
 /**
  * Actions

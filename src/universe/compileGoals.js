@@ -1,12 +1,8 @@
 /**
- * compileGoals.js
  * Compile all goals and return module
  *
- * Author: Nicholas Frees
- * Date: 11/23/2014
- *
- * @module Anslem
- * @requires fs, Actions
+ * @module Anslem.Universe.scripts
+ * @requires fs
  */
 var fs = require('fs');
 

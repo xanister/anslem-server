@@ -1,12 +1,12 @@
 /**
  * Player
  *
- * @module Anslem.universe
+ * @module Anslem.Universe
  * @requires AnslemConfig, Entity, Goals
  */
 var AnslemConfig = require("./../AnslemConfig");
-var Goals = require("./Goals.compiled");
 var Entity = require("./Entity");
+var Goals = require("./Goals.compiled");
 
 /**
  * Player

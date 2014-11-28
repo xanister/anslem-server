@@ -1,14 +1,8 @@
 /**
- * Actions.js
  * Available actions
  *
- * Author: Nicholas Frees
- * Date: 11/23/2014
- *
- * @module Anslem.scripts
- * @requires fs
+ * @module Anslem.Universe.scripts
  */
-var fs = require('fs');
 
 /**
  * Actions
@@ -28,7 +22,7 @@ Actions.Jump = function Jump() {
     Jump.label = "Jump";
     this.params = false;
     Jump.prototype.run = function () {
-        this.ySpeed -= 20;
+        this.ySpeed -= this.stats.jump;
     };
 };
 /**
@@ -43,7 +37,8 @@ Actions.Move = function Move(params) {
     Move.label = "Move";
     this.params = params;
     Move.prototype.run = function (params) {
-        this.xSpeed += (params.dir * 2);
+        if ((this.xSpeed < this.stats.speed && params.dir === 1) || (this.xSpeed > -this.stats.speed && params.dir === -1))
+            this.xSpeed += (params.dir * this.stats.accel);
     };
 };
 module.exports = Actions;

@@ -1,15 +1,11 @@
 /**
- * Sprites.js
  * List of available sprites and their info
- *
- * Author: Nicholas Frees
- * Date: 11/23/2014
  *
  * @module Anslem.assets
  * @requires AnslemConfig, image-size
  */
-var sizeOf = require('image-size');
 var AnslemConfig = require('../AnslemConfig');
+var sizeOf = require('image-size');
 
 /**
  * Available sprites

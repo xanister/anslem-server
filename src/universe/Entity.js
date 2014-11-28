@@ -1,7 +1,7 @@
 /**
  * Entity
  *
- * @module Anslem.universe
+ * @module Anslem.Universe
  * @requires AnslemConfig, Idea, Synapse
  */
 var AnslemConfig = require("./../AnslemConfig");
@@ -33,6 +33,14 @@ function Entity() {
     this.baseGoal = false;
 
     /**
+     * Categories
+     *
+     * @property categories
+     * @type {Array}
+     */
+    this.categories = ['physical', 'entity'];
+
+    /**
      * Current goal
      *
      * @property goal
@@ -57,6 +65,18 @@ function Entity() {
     this.memory = [];
 
     /**
+     * Stats
+     *
+     * @property
+     * @type {Object}
+     */
+    this.stats = {
+        accel: 0.7,
+        jump: 30,
+        speed: 20
+    };
+
+    /**
      * Entities default to higher depth
      *
      * @property z
@@ -76,6 +96,17 @@ function Entity() {
         this.action = this.goal ? this.goal.getAction.call(this) : false;
         if (this.action)
             this.action.run.call(this, this.action.params);
+
+        this.updateSprite();
+    };
+
+    /**
+     * Set sprite based upon current action
+     *
+     * @method updateSprite
+     */
+    Entity.prototype.updateSprite = function () {
+        this.sprite.frameSpeed = this.sprite.src.frameSpeed * (this.xSpeed / this.stats.speed);
     };
 }
 Entity.prototype = new Idea();

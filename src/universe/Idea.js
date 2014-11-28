@@ -1,11 +1,7 @@
 /**
- * Idea.js
  * Basic universal contruct used to define the world
  *
- * Author: Nicholas Frees
- * Date: 11/23/2014
- *
- * @module Anslem.universe
+ * @module Anslem.Universe
  * @requires Sprites
  */
 var Sprites = require("./Sprites");
@@ -239,7 +235,13 @@ function Idea(id) {
     Idea.prototype.getPacket = function () {
         var packet = {
             contents: [],
-            sprite: this.sprite,
+            sprite: {
+                frame: this.sprite.frame,
+                image: this.sprite.image,
+                scrollSpeed: this.sprite.scrollSpeed,
+                tileX: this.sprite.tileX,
+                tileY: this.sprite.tileY
+            },
             x: this.x,
             y: this.y,
             z: this.z,
@@ -292,12 +294,13 @@ function Idea(id) {
     Idea.prototype.setSprite = function (sprite, tileX, tileY, scrollSpeed) {
         this.sprite = {
             frame: 0,
-            frameSpeed: Sprites[sprite].frameSpeed,
             frameCount: Sprites[sprite].frameCount,
+            frameSpeed: Sprites[sprite].frameSpeed,
             image: sprite,
+            scrollSpeed: scrollSpeed || 1,
+            src: Sprites[sprite],
             tileX: tileX || false,
-            tileY: tileY || false,
-            scrollSpeed: scrollSpeed || 1
+            tileY: tileY || false
         };
         if (this.width === 0)
             this.width = Sprites[sprite].width;

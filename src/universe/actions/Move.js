@@ -10,6 +10,7 @@ Actions.Move = function Move(params) {
     Move.label = "Move";
     this.params = params;
     Move.prototype.run = function (params) {
-        this.xSpeed += (params.dir * 2);
+        if ((this.xSpeed < this.stats.speed && params.dir === 1) || (this.xSpeed > -this.stats.speed && params.dir === -1))
+            this.xSpeed += (params.dir * this.stats.accel);
     };
 };

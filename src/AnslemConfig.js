@@ -1,9 +1,5 @@
 /**
- * AnslemConfig.js
- * Basic configuration
- *
- * Author: Nicholas Frees
- * Date: 11/25/2014
+ * Basic global configuration
  *
  * @module Anslem
  */
@@ -18,7 +14,7 @@ var AnslemConfig = {
     assetPath: "/var/www/assets.anslemgalaxy.com",
     gravity: 1.8,
     serverInfoInterval: 10000,
-    linearDampening: 0.7,
+    linearDampening: 0.5,
     port: 3000,
     serverFps: 60,
     viewScale: 2,

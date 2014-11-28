@@ -9,6 +9,6 @@ Actions.Jump = function Jump() {
     Jump.label = "Jump";
     this.params = false;
     Jump.prototype.run = function () {
-        this.ySpeed -= 20;
+        this.ySpeed -= this.stats.jump;
     };
 };

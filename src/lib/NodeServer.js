@@ -1,6 +1,5 @@
 /**
- * NodeServer.js
- * Basic live data server
+ * Node live data server
  *
  * Author: Nicholas Frees
  * Date: 09/06/2014
