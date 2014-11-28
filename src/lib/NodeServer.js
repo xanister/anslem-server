@@ -29,6 +29,7 @@ function NodeServer() {
      * Connected clients
      *
      * @property clients
+     * @protected
      * @type {Object}
      */
     this.clients = {};
@@ -37,6 +38,7 @@ function NodeServer() {
      * Port to listen on
      *
      * @property port
+     * @protected
      * @type {Number}
      * @default 3000
      */
@@ -45,7 +47,7 @@ function NodeServer() {
     /**
      * On new client connect, return initial data to send to client
      *
-     * @method clientConnectCallback
+     * @event clientConnectCallback
      * @param {Object} client
      * @return {Object} Return initial data to send to client
      */
@@ -57,7 +59,7 @@ function NodeServer() {
     /**
      * On client disconnect callback
      *
-     * @method clientDisconnectCallback
+     * @event clientDisconnectCallback
      * @param {Number} clientId
      */
     this.clientDisconnectCallback = function (clientId) {
@@ -67,14 +69,14 @@ function NodeServer() {
     /**
      * Client updated info callback
      *
-     * @method clientInfoCallback
+     * @event clientInfoCallback
      */
     this.clientInfoCallback = false;
 
     /**
      * On client input callback
      *
-     * @method clientInputCallback
+     * @event clientInputCallback
      */
     this.clientInputCallback = false;
 
