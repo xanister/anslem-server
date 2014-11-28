@@ -57,6 +57,14 @@ function Entity() {
     this.memory = [];
 
     /**
+     * Entities default to higher depth
+     *
+     * @property z
+     * @type {Number}
+     */
+    this.z = 100;
+
+    /**
      * Runs single frame
      *
      * @method run

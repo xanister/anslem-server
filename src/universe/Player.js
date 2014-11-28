@@ -52,10 +52,12 @@ function Player() {
      * Initialize player view
      *
      * @method initializeView
-     * @param {Number} viewWidth
-     * @param {Number} viewHeight
+     * @param {Number} screenWidth
+     * @param {Number} screenHeight
      */
-    Player.prototype.initializeView = function (viewWidth, viewHeight) {
+    Player.prototype.initializeView = function (screenWidth, screenHeight) {
+        var viewWidth = screenWidth * AnslemConfig.viewScale;
+        var viewHeight = screenHeight * AnslemConfig.viewScale;
         this.view = {
             x: this.x - (viewWidth / 2),
             y: this.y - (viewHeight / 2),
@@ -80,7 +82,7 @@ function Player() {
         this.client = client;
         this.warp(400, 400, universe);
         this.inputs = client.inputs;
-        this.initializeView(client.info.screenWidth * AnslemConfig.viewScale, client.info.screenHeight * AnslemConfig.viewScale);
+        this.initializeView(client.info.screenWidth, client.info.screenHeight);
     };
 
     /**

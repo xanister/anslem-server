@@ -142,6 +142,14 @@ function Idea(id) {
     this.y = 0;
 
     /**
+     * Depth
+     *
+     * @property z
+     * @type {Number}
+     */
+    this.z = 0;
+
+    /**
      * Horizontal speed
      *
      * @property xSpeed
@@ -234,6 +242,7 @@ function Idea(id) {
             sprite: this.sprite,
             x: this.x,
             y: this.y,
+            z: this.z,
             width: this.width,
             height: this.height
         };

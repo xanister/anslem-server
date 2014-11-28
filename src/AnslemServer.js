@@ -35,6 +35,9 @@ var AnslemServer = {
         delete AnslemServer.players[clientId];
         console.log("Client disconnected ", clientId);
     },
+    clientInfoRecieved: function (clientId, info) {
+        AnslemServer.players[clientId].initializeView(info.screenWidth, info.screenHeight);
+    },
     currentFps: AnslemConfig.serverFps,
     logServerInfo: function () {
         console.log("Server FPS: " + AnslemServer.currentFps);
@@ -79,6 +82,7 @@ var AnslemServer = {
         AnslemServer.running = true;
         AnslemServer.populate();
         AnslemServer.nodeServer.start(AnslemServer.clientConnected, AnslemServer.clientDisconnected);
+        AnslemServer.nodeServer.clientInfoCallback = AnslemServer.clientInfoRecieved;
         AnslemServer.gameloopId = gameloop.setGameLoop(AnslemServer.update, 1000 / AnslemServer.targetFps);
         AnslemServer.logServerInfo();
     },
@@ -95,6 +99,9 @@ var AnslemServer = {
             var packet = AnslemServer.players[id].container.getPacket();
             packet.viewX = AnslemServer.players[id].view.x;
             packet.viewY = AnslemServer.players[id].view.y;
+            packet.contents.sort(function (a, b) {
+                return a.z > b.z;
+            });
             AnslemServer.nodeServer.update(id, packet);
         }
     }
