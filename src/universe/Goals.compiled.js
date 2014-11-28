@@ -1,11 +1,7 @@
 /**
- * Goals.js
  * Compile all actions and goals and return Goals module
  *
- * Author: Nicholas Frees
- * Date: 11/23/2014
- *
- * @module Anslem.scripts
+ * @module Anslem.Universe.scripts
  * @requires compileActions
  */
 var Actions = require('./compileActions');

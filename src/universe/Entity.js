@@ -5,6 +5,7 @@
  * @requires AnslemConfig, Idea, Synapse
  */
 var AnslemConfig = require("./../AnslemConfig");
+var Goals = require("./compileGoals");
 var Idea = require("./Idea");
 var Synapse = require("./Synapse");
 
