@@ -2,9 +2,9 @@
  * Listen for client connections and run the universe
  *
  * @module Anslem
- * @requires AnslemConfig, gameloop, idea, NodeServer, Player, Sprites, Universe
+ * @requires AnslemServerConfig, gameloop, idea, NodeServer, Player, Sprites, Universe
  */
-var AnslemConfig = require('./AnslemConfig');
+var AnslemServerConfig = require('./AnslemServerConfig');
 var gameloop = require('node-gameloop');
 var Idea = require("./universe/Idea");
 var NodeServer = require("./lib/NodeServer");
@@ -60,7 +60,7 @@ var AnslemServer = {
      * @property currentFps
      * @type {Number}
      */
-    currentFps: AnslemConfig.serverFps,
+    currentFps: AnslemServerConfig.serverFps,
     /**
      * Log general server info on an interval
      *
@@ -70,7 +70,7 @@ var AnslemServer = {
         console.log("Server FPS: " + AnslemServer.currentFps);
         console.log(Object.keys(AnslemServer.players).length + " player(s) currently connected");
         if (AnslemServer.running)
-            setTimeout(AnslemServer.logServerInfo, AnslemConfig.serverInfoInterval);
+            setTimeout(AnslemServer.logServerInfo, AnslemServerConfig.serverInfoInterval);
     },
     /**
      * Node server object
@@ -103,7 +103,7 @@ var AnslemServer = {
         AnslemServer.universe.populate();
         AnslemServer.nodeServer.start(AnslemServer.clientConnected, AnslemServer.clientDisconnected);
         AnslemServer.nodeServer.clientInfoCallback = AnslemServer.clientInfoRecieved;
-        AnslemServer.gameloopId = gameloop.setGameLoop(AnslemServer.update, 1000 / AnslemConfig.serverFps);
+        AnslemServer.gameloopId = gameloop.setGameLoop(AnslemServer.update, 1000 / AnslemServerConfig.serverFps);
         AnslemServer.logServerInfo();
     },
     /**

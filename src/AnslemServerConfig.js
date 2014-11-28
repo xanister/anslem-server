@@ -7,10 +7,10 @@
 /**
  * Server and world config
  *
- * @class AnslemConfig
+ * @class AnslemServerConfig
  * @static
  */
-var AnslemConfig = {
+var AnslemServerConfig = {
     /**
      * Path to asset server
      *
@@ -78,4 +78,4 @@ var AnslemConfig = {
     viewYBuffer: 0.4
 };
 
-module.exports = AnslemConfig;
+module.exports = AnslemServerConfig;

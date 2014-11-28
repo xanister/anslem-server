@@ -2,9 +2,9 @@
  * Player
  *
  * @module Anslem.Universe
- * @requires AnslemConfig, Entity, Goals
+ * @requires AnslemServerConfig, Entity, Goals
  */
-var AnslemConfig = require("./../AnslemConfig");
+var AnslemServerConfig = require("./../AnslemServerConfig");
 var Entity = require("./Entity");
 var Goals = require("./Goals.compiled");
 
@@ -57,15 +57,15 @@ function Player() {
      * @param {Number} screenHeight
      */
     Player.prototype.initializeView = function (screenWidth, screenHeight) {
-        var viewWidth = screenWidth * AnslemConfig.viewScale;
-        var viewHeight = screenHeight * AnslemConfig.viewScale;
+        var viewWidth = screenWidth * AnslemServerConfig.viewScale;
+        var viewHeight = screenHeight * AnslemServerConfig.viewScale;
         this.view = {
             x: this.x - (viewWidth / 2),
             y: this.y - (viewHeight / 2),
-            xBuffer: parseInt(viewWidth * AnslemConfig.viewXBuffer),
-            yBuffer: parseInt(viewHeight * AnslemConfig.viewYBuffer),
-            scale: AnslemConfig.viewScale,
-            speed: AnslemConfig.viewSpeed,
+            xBuffer: parseInt(viewWidth * AnslemServerConfig.viewXBuffer),
+            yBuffer: parseInt(viewHeight * AnslemServerConfig.viewYBuffer),
+            scale: AnslemServerConfig.viewScale,
+            speed: AnslemServerConfig.viewSpeed,
             width: viewWidth,
             height: viewHeight
         };

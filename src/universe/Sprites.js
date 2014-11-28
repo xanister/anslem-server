@@ -2,9 +2,9 @@
  * List of available sprites and their info
  *
  * @module Anslem.assets
- * @requires AnslemConfig, image-size
+ * @requires AnslemServerConfig, image-size
  */
-var AnslemConfig = require('../AnslemConfig');
+var AnslemServerConfig = require('../AnslemServerConfig');
 var sizeOf = require('image-size');
 
 /**
@@ -72,7 +72,7 @@ var Sprites = {
 
 // Grab the size
 for (var index in Sprites) {
-    var dim = sizeOf(AnslemConfig.assetPath + Sprites[index].imagePath + "000.png");
+    var dim = sizeOf(AnslemServerConfig.assetPath + Sprites[index].imagePath + "000.png");
     Sprites[index].width = dim.width;
     Sprites[index].height = dim.height;
 }
