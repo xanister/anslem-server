@@ -98,17 +98,6 @@ function Entity() {
         this.action = this.goal ? this.goal.getAction.call(this) : false;
         if (this.action)
             this.action.run.call(this, this.action.params);
-
-        this.updateSprite();
-    };
-
-    /**
-     * Set sprite based upon current action
-     *
-     * @method updateSprite
-     */
-    Entity.prototype.updateSprite = function () {
-        this.sprite.frameSpeed = this.sprite.src.frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
     };
 }
 Entity.prototype = new Idea();

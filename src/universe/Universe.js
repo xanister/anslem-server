@@ -63,7 +63,7 @@ function Universe() {
 
         var i = new Idea();
         i.setSprite("bgGround", true, false, 1);
-        i.warp(0, this.height + (Sprites[i.sprite.image].height / 2), this);
+        i.warp(0, this.height + (Sprites[i.sprite.image].height / 2) - 20, this);
     };
 }
 Universe.prototype = new Idea();

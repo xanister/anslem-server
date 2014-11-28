@@ -63,8 +63,14 @@ var Sprites = {
         singleImage: false
     },
     sprGoblin: {
+        imagePath: "/sprites/goblin-idle/goblin-idle__",
+        frameCount: 24,
+        frameSpeed: 0.5,
+        singleImage: true
+    },
+    sprGoblinWalking: {
         imagePath: "/sprites/goblin-walking/goblin-walking__",
-        frameCount: 31,
+        frameCount: 32,
         frameSpeed: 1,
         singleImage: false
     }
@@ -73,7 +79,7 @@ var Sprites = {
 // Grab the size
 for (var index in Sprites) {
     var dim = sizeOf(AnslemServerConfig.assetPath + Sprites[index].imagePath + "000.png");
-    Sprites[index].width = dim.width;
+    Sprites[index].width = Sprites[index].singleImage ? dim.width / Sprites[index].frameCount : dim.width;
     Sprites[index].height = dim.height;
 }
 

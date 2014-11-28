@@ -10,8 +10,15 @@ Actions.Move = function Move(params) {
     Move.label = "Move";
     this.params = params;
     Move.prototype.run = function (params) {
-        this.sprite.mirror = params.dir > 0 ? false : true;
-        if ((this.xSpeed < this.stats.speed && params.dir === 1) || (this.xSpeed > -this.stats.speed && params.dir === -1))
-            this.xSpeed += (params.dir * this.stats.accel);
+        if (this.sprite.image !== "sprGoblinWalking")
+            this.setSprite("sprGoblinWalking");
+        if (params.dir === 0) {
+
+        } else {
+            this.sprite.mirror = params.dir > 0 ? false : true;
+            this.sprite.frameSpeed = this.sprite.src.frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
+            if ((this.xSpeed < this.stats.speed && params.dir === 1) || (this.xSpeed > -this.stats.speed && params.dir === -1))
+                this.xSpeed += (params.dir * this.stats.accel);
+        }
     };
 };

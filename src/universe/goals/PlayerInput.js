@@ -29,7 +29,10 @@ Goals.PlayerInput = {
             }
         }
 
-        // No action
-        return false;
+        // Idle
+        if (this.xSpeed != 0)
+            return new Actions.Move({dir: 0});
+        else
+            return new Actions.Idle();
     }
 };
