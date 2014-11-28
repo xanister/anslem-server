@@ -98,6 +98,7 @@ function NodeServer() {
         return {
             keydown: {},
             keyup: {},
+            message: false,
             swipe: {},
             touchstart: false,
             touchend: false

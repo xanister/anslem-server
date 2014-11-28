@@ -7,29 +7,27 @@
 var Sprites = require("./Sprites");
 
 /**
+ * Global id counter
+ *
+ * @property idCounter
+ * @type {Number}
+ */
+global.idCounter = global.idCounter || 1;
+
+/**
  * Basic universal construct
  *
  * @class Idea
  * @constructor
- * @param {String} id
  */
-function Idea(id) {
-    /**
-     * Global id counter
-     *
-     * @property idCounter
-     * @static
-     * @type {Number}
-     */
-    Idea.idCounter = Idea.idCounter || 1;
-
+function Idea() {
     /**
      * Unique id
      *
      * @property id
      * @type {String}
      */
-    this.id = id || Idea.idCounter++;
+    this.id = global.idCounter++;
 
     /**
      * Categories
@@ -243,6 +241,7 @@ function Idea(id) {
                 tileX: this.sprite.tileX,
                 tileY: this.sprite.tileY
             },
+            text: false,
             x: this.x,
             y: this.y,
             z: this.z,

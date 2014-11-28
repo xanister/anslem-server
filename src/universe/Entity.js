@@ -17,6 +17,7 @@ var Synapse = require("./Synapse");
  * @extends Idea
  */
 function Entity() {
+    Idea.call(this);
     /**
      * Current action
      *

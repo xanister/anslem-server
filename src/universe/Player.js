@@ -16,6 +16,7 @@ var Goals = require("./Goals.compiled");
  * @extends Entity
  */
 function Player() {
+    Entity.call(this);
     /**
      * Basic driving goal
      *
