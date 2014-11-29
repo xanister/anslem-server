@@ -1,9 +1,6 @@
 /**
  * Node live data server
  *
- * Author: Nicholas Frees
- * Date: 09/06/2014
- *
  * @module NodeServer
  * @requires socket.io
  */
