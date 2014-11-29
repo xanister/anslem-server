@@ -79,7 +79,7 @@ function Player() {
      * @param {Idea} universe
      */
     Player.prototype.load = function (client, universe) {
-        this.setSprite("sprGoblin");
+        this.setSprite("sprGoblinIdle");
         this.client = client;
         this.warp(400, 400, universe);
         this.inputs = client.inputs;

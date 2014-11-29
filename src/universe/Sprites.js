@@ -15,70 +15,70 @@ var sizeOf = require('image-size');
  */
 var Sprites = {
     bgNight: {
-        imagePath: '/sprites/bg-night/bg-night_',
+        imagePath: '/sprites/bg-night/bg-night',
         frameCount: 1,
         frameSpeed: 0,
-        singleImage: false
+        singleImage: true
     },
     bgClouds: {
-        imagePath: '/sprites/bg-clouds/bg-clouds_',
+        imagePath: '/sprites/bg-clouds/bg-clouds',
         frameCount: 1,
         frameSpeed: 0,
-        singleImage: false
+        singleImage: true
     },
     bgMountains: {
-        imagePath: '/sprites/bg-mountains/bg-mountains_',
+        imagePath: '/sprites/bg-mountains/bg-mountains',
         frameCount: 1,
         frameSpeed: 0,
-        singleImage: false
+        singleImage: true
     },
     bgMountainsMidground: {
-        imagePath: '/sprites/bg-mountains-midground/bg-mountains-midground_',
+        imagePath: '/sprites/bg-mountains-midground/bg-mountains-midground',
         frameCount: 1,
         frameSpeed: 0,
-        singleImage: false
+        singleImage: true
     },
     bgTrees: {
-        imagePath: '/sprites/bg-trees/bg-trees_',
+        imagePath: '/sprites/bg-trees/bg-trees',
         frameCount: 1,
         frameSpeed: 0,
-        singleImage: false
+        singleImage: true
     },
     bgGround: {
-        imagePath: '/sprites/bg-ground/bg-ground_',
+        imagePath: '/sprites/bg-ground/bg-ground',
         frameCount: 1,
         frameSpeed: 0,
-        singleImage: false
-    },
-    sprMan: {
-        imagePath: "/sprites/man-single/man-single_",
-        frameCount: 6,
-        frameSpeed: 0.5,
         singleImage: true
     },
     sprCoin: {
-        imagePath: "/sprites/coin/coin_",
+        imagePath: "/sprites/coin/coin",
         frameCount: 1,
         frameSpeed: 0,
-        singleImage: false
+        singleImage: true
     },
-    sprGoblin: {
-        imagePath: "/sprites/goblin-idle/goblin-idle__",
+    sprGoblinIdle: {
+        imagePath: "/sprites/goblin/idle/goblin-idle",
         frameCount: 24,
         frameSpeed: 0.5,
         singleImage: true
     },
-    sprGoblinWalking: {
-        imagePath: "/sprites/goblin-walking/goblin-walking__",
+    sprGoblinJump: {
+        imagePath: "/sprites/goblin/jump/goblin-jump",
+        frameCount: 9,
+        frameSpeed: 0.5,
+        singleImage: true
+    },
+    sprGoblinWalk: {
+        imagePath: "/sprites/goblin/walk/goblin-walk",
         frameCount: 32,
         frameSpeed: 1,
-        singleImage: false
+        singleImage: true
     }
 };
 
 // Grab the size
 for (var index in Sprites) {
-    var dim = sizeOf(AnslemServerConfig.assetPath + Sprites[index].imagePath + "000.png");
+    var dim = sizeOf(AnslemServerConfig.assetPath + Sprites[index].imagePath + (Sprites[index].singleImage ? "" : "__000") + ".png");
     Sprites[index].width = Sprites[index].singleImage ? dim.width / Sprites[index].frameCount : dim.width;
     Sprites[index].height = dim.height;
 }

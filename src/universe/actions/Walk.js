@@ -1,17 +1,17 @@
 /**
- * Move
+ * Walk
  *
- * @class Move
+ * @class Walk
  * @constructor
  * @for Actions
  * @param {Object} params direction to move
  */
-Actions.Move = function Move(params) {
-    Move.description = "Move";
-    Move.label = "Move";
+Actions.Walk = function Walk(params) {
+    Walk.description = "Walk";
+    Walk.label = "Walk";
     this.params = params;
-    Move.prototype.run = function (params) {
-        this.setSprite("sprGoblinWalking");
+    Walk.prototype.run = function (params) {
+        this.setSprite("sprGoblinWalk");
 
         this.sprite.mirror = params.dir < 0 ? true : (params.dir > 0 ? false : this.sprite.mirror);
         this.sprite.frameSpeed = this.sprite.src.frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
