@@ -45,7 +45,7 @@ var AnslemServerConfig = {
      * @property port
      * @type Number
      */
-    port: 3010,
+    port: 3011,
     /**
      * Target server fps
      *
