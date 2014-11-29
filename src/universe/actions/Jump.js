@@ -1,7 +1,8 @@
 /**
  * Jump
  *
- * @method Jump
+ * @class Jump
+ * @constructor
  * @for Actions
  */
 Actions.Jump = function Jump() {

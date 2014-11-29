@@ -10,5 +10,6 @@
  */
 var AnslemServer = require('./src/AnslemServer');
 
-AnslemServer.start();
+var anslemServer = new AnslemServer();
+anslemServer.start();
 

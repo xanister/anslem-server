@@ -87,16 +87,6 @@ function Idea() {
 
     /**
      * Visual representation
-     * Format:
-     * {
-     *       frame: {Number},
-     *       frameSpeed: {Number},
-     *       frameCount: {Number},
-     *       image: {String},
-     *       tileX: {Boolean},
-     *       tileY: {Boolean},
-     *       scrollSpeed: {Number}
-     * }
      *
      * @property sprite
      * @type {Object}
@@ -292,6 +282,8 @@ function Idea() {
      * @param {Number} scrollSpeed
      */
     Idea.prototype.setSprite = function (sprite, tileX, tileY, scrollSpeed) {
+        if (this.sprite && this.sprite.src === Sprites[sprite])
+            return false;
         this.sprite = {
             frame: 0,
             frameCount: Sprites[sprite].frameCount,

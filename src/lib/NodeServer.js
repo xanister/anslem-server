@@ -60,10 +60,10 @@ function NodeServer() {
      * On client disconnect callback
      *
      * @event clientDisconnectCallback
-     * @param {Number} clientId
+     * @param {Object} client
      */
-    this.clientDisconnectCallback = function (clientId) {
-        this.log("Client has disconnected", clientId);
+    this.clientDisconnectCallback = function (client) {
+        this.log("Client has disconnected", client.id);
     };
 
     /**
@@ -143,13 +143,9 @@ function NodeServer() {
      * Start server
      *
      * @method start
-     * @param {Function} clientConnectCallback
-     * @param {Function} clientDisconnectCallback
      */
-    NodeServer.prototype.start = function (clientConnectCallback, clientDisconnectCallback) {
+    NodeServer.prototype.start = function () {
         // Open connection
-        this.clientConnectCallback = clientConnectCallback || this.clientConnectCallback;
-        this.clientDisconnectCallback = clientDisconnectCallback || this.clientDisconnectCallback;
         socket = IO.listen(this.port);
 
         // Bind events
@@ -175,7 +171,7 @@ function NodeServer() {
                 nodeServer.clients[client.id].inputs.touches = inputs.touches;
                 nodeServer.clients[client.id].inputs.events = inputs.events;
                 if (nodeServer.clientInputCallback)
-                    nodeServer.clientInputCallback.call(nodeServer, client.id, inputs);
+                    nodeServer.clientInputCallback.call(nodeServer, client, inputs);
             });
 
             // Accept client info
@@ -184,14 +180,14 @@ function NodeServer() {
                     nodeServer.clients[client.id].info[index] = info[index];
                 }
                 if (nodeServer.clientInfoCallback)
-                    nodeServer.clientInfoCallback.call(nodeServer, client.id, info);
+                    nodeServer.clientInfoCallback.call(nodeServer, client, info);
             });
 
             // Update on disconnect
             client.on("disconnect", function () {
-                delete nodeServer.clients[client.id];
                 if (nodeServer.clientDisconnectCallback)
-                    nodeServer.clientDisconnectCallback.call(nodeServer, client.id);
+                    nodeServer.clientDisconnectCallback.call(nodeServer, client);
+                delete nodeServer.clients[client.id];
             });
         });
     };
@@ -199,11 +195,11 @@ function NodeServer() {
     /**
      * Sync data to client
      *
-     * @method update
+     * @method updateClient
      * @param {Object} clientId
      * @param {Object} packet
      */
-    NodeServer.prototype.update = function (clientId, packet) {
+    NodeServer.prototype.updateClient = function (clientId, packet) {
         if (this.clients[clientId]) {
             this.clients[clientId].emit("update", {packet: packet});
         }

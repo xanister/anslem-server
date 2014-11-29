@@ -1,7 +1,8 @@
 /**
  * Idle
  *
- * @method Idle
+ * @class Idle
+ * @constructor
  * @for Actions
  */
 Actions.Idle = function Idle() {
@@ -9,7 +10,6 @@ Actions.Idle = function Idle() {
     Idle.label = "Idle";
     this.params = false;
     Idle.prototype.run = function () {
-        if (this.sprite.image !== "sprGoblin")
-            this.setSprite("sprGoblin");
+        this.setSprite("sprGoblin");
     };
 };

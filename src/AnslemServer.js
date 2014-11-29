@@ -16,9 +16,35 @@ var Universe = require("./universe/Universe");
  * Anslem game server wrapper
  *
  * @class AnslemServer
- * @static
+ * @constructor
+ * @extends NodeServer
  */
-var AnslemServer = {
+function AnslemServer() {
+    NodeServer.call(this);
+    /**
+     * Last calculated fps
+     *
+     * @property currentFps
+     * @type {Number}
+     */
+    this.currentFps = AnslemServerConfig.serverFps;
+
+    /**
+     * Is the server running
+     *
+     * @property running
+     * @type {Boolean}
+     */
+    this.running = false;
+
+    /**
+     * Universe instance
+     *
+     * @property universe
+     * @type {Universe}
+     */
+    this.universe = new Universe();
+
     /**
      * Client connected callback
      *
@@ -26,121 +52,105 @@ var AnslemServer = {
      * @param {Object} client
      * @return {Object} initial data to send to client
      */
-    clientConnected: function (client) {
-        console.log("Client connected");
-        var newPlayer = new Player();
-        newPlayer.load(client, AnslemServer.universe);
-        AnslemServer.players[client.id] = newPlayer;
-        return {message: 'Welcome to Anslem!', assets: {sprites: Sprites}, viewScale: newPlayer.view.scale};
-    },
+    this.clientConnectCallback = function (client) {
+        client.player = new Player();
+        client.player.load(client, this.universe);
+
+        var initialData = {message: 'Welcome to Anslem!', assets: {sprites: Sprites}, viewScale: client.player.view.scale};
+        return initialData;
+    };
+
     /**
      * Client disconnected callback
      *
      * @method clientDisconnected
-     * @param {Number} clientId
+     * @param {Object} client
      */
-    clientDisconnected: function (clientId) {
+    this.clientDisconnectCallback = function (client) {
         console.log("Client disconnected");
-        AnslemServer.players[clientId].destroy();
-        delete AnslemServer.players[clientId];
-    },
+        client.player.destroy();
+    };
+
     /**
      * Client info recieved callback
      *
      * @method clientInfoRecieved
-     * @param {Number} clientId
+     * @param {Object} client
      * @param {Object} info
      */
-    clientInfoRecieved: function (clientId, info) {
-        AnslemServer.players[clientId].initializeView(info.screenWidth, info.screenHeight);
-    },
-    /**
-     * Last calculated fps
-     *
-     * @property currentFps
-     * @type {Number}
-     */
-    currentFps: AnslemServerConfig.serverFps,
+    this.clientInfoCallback = function (client, info) {
+        client.player.initializeView(info.screenWidth, info.screenHeight);
+    };
+
     /**
      * Log general server info on an interval
      *
      * @method logServerInfo
      */
-    logServerInfo: function () {
-        console.log("Server FPS: " + AnslemServer.currentFps);
-        console.log(Object.keys(AnslemServer.players).length + " player(s) currently connected");
-        if (AnslemServer.running)
-            setTimeout(AnslemServer.logServerInfo, AnslemServerConfig.serverInfoInterval);
-    },
-    /**
-     * Node server object
-     *
-     * @property nodeServer
-     * @type {NodeServer}
-     */
-    nodeServer: new NodeServer(),
-    /**
-     * Is the server running
-     *
-     * @property running
-     * @type {Boolean}
-     */
-    running: false,
-    /**
-     * Player list
-     *
-     * @property players
-     * @type {Array}
-     */
-    players: [],
+    AnslemServer.prototype.logServerInfo = function () {
+        console.log("Server FPS: " + this.currentFps);
+        console.log(Object.keys(this.clients).length + " player(s) currently connected");
+        var self = this;
+        if (this.running)
+            setTimeout(function () {
+                self.logServerInfo.call(self);
+            }, AnslemServerConfig.serverInfoInterval);
+    };
+
     /**
      * Start the server
      *
      * @method start
      */
-    start: function () {
-        AnslemServer.running = true;
-        AnslemServer.universe.populate();
-        AnslemServer.nodeServer.start(AnslemServer.clientConnected, AnslemServer.clientDisconnected);
-        AnslemServer.nodeServer.clientInfoCallback = AnslemServer.clientInfoRecieved;
-        AnslemServer.gameloopId = gameloop.setGameLoop(AnslemServer.update, 1000 / AnslemServerConfig.serverFps);
-        AnslemServer.logServerInfo();
-    },
+    AnslemServer.prototype.start = function () {
+        NodeServer.prototype.start.call(this);
+
+        this.running = true;
+        this.universe.populate();
+
+        var self = this;
+        this.gameloopId = gameloop.setGameLoop(function (delta) {
+            self.update.call(self, delta);
+        }, 1000 / AnslemServerConfig.serverFps);
+        this.logServerInfo();
+    };
+
     /**
      * Stop the server
      *
      * @method stop
      */
-    stop: function () {
-        AnslemServer.running = false;
-        gameloop.clearGameLoop(AnslemServer.gameloopId);
-    },
-    /**
-     * Universe instance
-     *
-     * @property universe
-     * @type {Universe}
-     */
-    universe: new Universe(),
+    AnslemServer.prototype.stop = function () {
+        this.running = false;
+        delete this.universe;
+        this.universe = new Universe();
+        gameloop.clearGameLoop(this.gameloopId);
+    };
+
     /**
      * Run single frame
      *
      * @method update
      * @param {Number} delta time since last update
      */
-    update: function (delta) {
-        AnslemServer.currentFps = 1 / delta;
-        AnslemServer.universe.run();
-        for (var id in AnslemServer.players) {
-            var packet = AnslemServer.players[id].container.getPacket();
-            packet.viewX = AnslemServer.players[id].view.x;
-            packet.viewY = AnslemServer.players[id].view.y;
-            packet.contents.sort(function (a, b) {
-                return a.z > b.z;
-            });
-            AnslemServer.nodeServer.update(id, packet);
+    AnslemServer.prototype.update = function (delta) {
+        this.currentFps = 1 / delta;
+        this.universe.run();
+        for (var id in this.clients) {
+            var player = this.clients[id].player;
+            if (player) {
+                var packet = player.container.getPacket();
+                packet.viewX = player.view.x;
+                packet.viewY = player.view.y;
+                packet.contents.sort(function (a, b) {
+                    return a.z > b.z;
+                });
+                this.updateClient(id, packet);
+            }
         }
-    }
-};
+    };
+}
+AnslemServer.prototype = new NodeServer();
+AnslemServer.prototype.constructor = AnslemServer;
 
 module.exports = AnslemServer;
