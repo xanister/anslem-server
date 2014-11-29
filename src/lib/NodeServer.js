@@ -140,9 +140,11 @@ function NodeServer() {
      * Start server
      *
      * @method start
+     * @param {Number} [port=3000]
      */
-    NodeServer.prototype.start = function () {
+    NodeServer.prototype.start = function (port) {
         // Open connection
+	this.port = port || this.port;
         socket = IO.listen(this.port);
 
         // Bind events

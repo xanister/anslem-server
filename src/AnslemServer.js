@@ -21,6 +21,7 @@ var Universe = require("./universe/Universe");
  */
 function AnslemServer() {
     NodeServer.call(this);
+    var self = this;
     /**
      * Last calculated fps
      *
@@ -90,7 +91,6 @@ function AnslemServer() {
     AnslemServer.prototype.logServerInfo = function () {
         console.log("Server FPS: " + this.currentFps);
         console.log(Object.keys(this.clients).length + " player(s) currently connected");
-        var self = this;
         if (this.running)
             setTimeout(function () {
                 self.logServerInfo.call(self);
@@ -103,12 +103,11 @@ function AnslemServer() {
      * @method start
      */
     AnslemServer.prototype.start = function () {
-        NodeServer.prototype.start.call(this);
+        NodeServer.prototype.start.call(this, AnslemServerConfig.port);
 
         this.running = true;
         this.universe.populate();
 
-        var self = this;
         this.gameloopId = gameloop.setGameLoop(function (delta) {
             self.update.call(self, delta);
         }, 1000 / AnslemServerConfig.serverFps);
