@@ -47,23 +47,23 @@ function Universe() {
     Universe.prototype.populate = function () {
         var i = new Idea();
         i.setSprite("bgClouds", true, false, 0.2);
-        i.warp(0, this.height - Sprites[i.sprite.image].height, this);
+        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
 
         var i = new Idea();
         i.setSprite("bgMountains", true, false, 0.4);
-        i.warp(0, this.height - Sprites[i.sprite.image].height, this);
+        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
 
         var i = new Idea();
         i.setSprite("bgMountainsMidground", true, false, 0.6);
-        i.warp(0, this.height - Sprites[i.sprite.image].height, this);
+        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
 
         var i = new Idea();
         i.setSprite("bgTrees", true, false, 0.8);
-        i.warp(0, this.height - Sprites[i.sprite.image].height, this);
+        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
 
         var i = new Idea();
         i.setSprite("bgGround", true, false, 1);
-        i.warp(0, this.height + (Sprites[i.sprite.image].height / 2) - 20, this);
+        i.warp(0, this.height + (Sprites[i.sprite.name]["default"].height / 2) - 20, this);
     };
 }
 Universe.prototype = new Idea();

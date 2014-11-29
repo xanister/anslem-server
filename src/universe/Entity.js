@@ -73,8 +73,8 @@ function Entity() {
      * @type {Object}
      */
     this.stats = {
-        accel: 0.7,
-        jump: 30,
+        accel: 0.9,
+        jump: 40,
         speed: 20
     };
 

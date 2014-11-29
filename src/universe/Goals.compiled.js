@@ -40,7 +40,7 @@ Goals.PlayerInput = {
     label: "Player Goal",
     getAction: function () {
         // Desktop Controls
-        if (this.ySpeed === 0 && this.inputs.events.keydown.W) {
+        if (this.inputs.events.keydown.W) {
             return new Actions.Jump();
         } else if (this.inputs.keyboard.A) {
             return new Actions.Walk({dir: -1});
@@ -49,7 +49,7 @@ Goals.PlayerInput = {
         }
 
         // Mobile controls
-        if (this.ySpeed === 0 && this.inputs.events.swipe.up) {
+        if (this.inputs.events.swipe.up) {
             return new Actions.Jump();
         } else if (this.inputs.touches[0]) {
             if ((this.inputs.touches[0].x * this.view.scale) + this.view.x > this.x) {

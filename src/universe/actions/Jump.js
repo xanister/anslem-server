@@ -10,7 +10,7 @@ Actions.Jump = function Jump() {
     Jump.label = "Jump";
     this.params = false;
     Jump.prototype.run = function () {
-        this.setSprite("sprGoblinJump");
+        this.setAnimation("jump");
         if (this.ySpeed === 0)
             this.ySpeed -= this.stats.jump;
     };

@@ -224,9 +224,10 @@ function Idea() {
         var packet = {
             contents: [],
             sprite: {
+                animation: this.sprite.animation,
                 frame: this.sprite.frame,
-                image: this.sprite.image,
                 mirror: this.sprite.mirror,
+                name: this.sprite.name,
                 scrollSpeed: this.sprite.scrollSpeed,
                 tileX: this.sprite.tileX,
                 tileY: this.sprite.tileY
@@ -273,6 +274,21 @@ function Idea() {
     };
 
     /**
+     * Sets Animation
+     *
+     * @method setAnimation
+     * @param {String} animation
+     */
+    Idea.prototype.setAnimation = function (animation) {
+        if (this.sprite.animation === animation)
+            return false;
+        this.sprite.animation = animation;
+        this.sprite.frame = 0;
+        this.sprite.frameCount = this.sprite.src[animation].frameCount;
+        this.sprite.frameSpeed = this.sprite.src[animation].frameSpeed;
+    };
+
+    /**
      * Sets image
      *
      * @method setSprite
@@ -282,23 +298,22 @@ function Idea() {
      * @param {Number} scrollSpeed
      */
     Idea.prototype.setSprite = function (sprite, tileX, tileY, scrollSpeed) {
-        if (this.sprite && this.sprite.src === Sprites[sprite])
-            return false;
         this.sprite = {
+            animation: "default",
             frame: 0,
-            frameCount: Sprites[sprite].frameCount,
-            frameSpeed: Sprites[sprite].frameSpeed,
-            image: sprite,
+            frameCount: Sprites[sprite]["default"].frameCount,
+            frameSpeed: Sprites[sprite]["default"].frameSpeed,
             mirror: false,
+            name: sprite,
             scrollSpeed: scrollSpeed || 1,
             src: Sprites[sprite],
             tileX: tileX || false,
             tileY: tileY || false
         };
         if (this.width === 0)
-            this.width = Sprites[sprite].width;
+            this.width = Sprites[sprite]["default"].width;
         if (this.height === 0)
-            this.height = Sprites[sprite].height;
+            this.height = Sprites[sprite]["default"].height;
     };
 
     /**

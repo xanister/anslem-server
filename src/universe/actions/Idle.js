@@ -10,6 +10,6 @@ Actions.Idle = function Idle() {
     Idle.label = "Idle";
     this.params = false;
     Idle.prototype.run = function () {
-        this.setSprite("sprGoblinIdle");
+        this.setAnimation("default");
     };
 };
