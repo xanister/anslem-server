@@ -2,8 +2,9 @@
  * Compile all actions and goals and return Goals module
  *
  * @module Anslem.Universe.Goals
- * @requires compileActions
+ * @requires AnslemServerConfig, compileActions
  */
+var AnslemServerConfig = require("./../AnslemServerConfig");
 var Actions = require('./compileActions');
 
 /**
@@ -18,30 +19,31 @@ var Goals = {};
  *
  * @module Anslem.Universe.Goals
  * @class EatBrains
- * @static
- * @for Goals
- * @type {Object}
+ * @constructor
+ * @param {Object} params {}
  */
-Goals.EatBrains = {
-    description: "Eat brains",
-    label: "Eat brains",
-    getAction: function () {
+function EatBrains(params) {
+    this.description = "Eat brains";
+    this.label = "Eat brains";
+    this.params = params || {};
+    EatBrains.prototype.getAction = function () {
         return new Actions.Idle();
-    }
-};
+    };
+}
+Goals.EatBrains = EatBrains;
 /**
  * PlayerInput
  *
  * @module Anslem.Universe.Goals
  * @class PlayerInput
- * @static
- * @for Goals
- * @type {Object}
+ * @constructor
+ * @param {Object} params {}
  */
-Goals.PlayerInput = {
-    description: "PlayerInput",
-    label: "Player Goal",
-    getAction: function () {
+function PlayerInput(params) {
+    this.description = "PlayerInput";
+    this.label = "Player Goal";
+    this.params = params || {};
+    PlayerInput.prototype.getAction = function (params) {
         // Desktop Controls
         if (this.inputs.events.keydown.F) {
             return new Actions.Attack({dir: this.facing});
@@ -54,11 +56,11 @@ Goals.PlayerInput = {
         }
 
         // Mobile controls
-        if (this.inputs.events.swipe.right) {
+        if (this.inputs.events.swiperight) {
             return new Actions.Attack({dir: 1});
-        } else if (this.inputs.events.swipe.left) {
+        } else if (this.inputs.events.swipeleft) {
             return new Actions.Attack({dir: -1});
-        } else if (this.inputs.events.swipe.up) {
+        } else if (this.inputs.events.swipeup) {
             return new Actions.Jump();
         } else if (this.inputs.touches[0]) {
             if ((this.inputs.touches[0].x * this.view.scale) + this.view.x > this.x) {
@@ -66,10 +68,13 @@ Goals.PlayerInput = {
             } else if ((this.inputs.touches[0].x * this.view.scale) + this.view.x < this.x) {
                 return new Actions.Walk({dir: -1});
             }
+        } else if (this.inputs.events.tap2) {
+            console.log("Double tap");
         }
 
         // Idle
         return new Actions.Idle();
-    }
-};
+    };
+}
+Goals.PlayerInput = PlayerInput;
 module.exports = Goals;

@@ -95,10 +95,9 @@ function NodeServer() {
      */
     NodeServer.prototype.getEmptyInputEvents = function () {
         return {
+            doubletap: false,
             keydown: {},
             keyup: {},
-            message: false,
-            swipe: {},
             touchstart: false,
             touchend: false
         };
@@ -144,7 +143,7 @@ function NodeServer() {
      */
     NodeServer.prototype.start = function (port) {
         // Open connection
-	this.port = port || this.port;
+        this.port = port || this.port;
         socket = IO.listen(this.port);
 
         // Bind events
@@ -156,7 +155,7 @@ function NodeServer() {
             var screenSize = client.handshake.query.screenSize.split(',');
             nodeServer.clients[client.id] = client;
             nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
-            nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: nodeServer.getEmptyInputEvents()};
+            nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: nodeServer.getEmptyInputEvents(), message: false};
 
             // Server Callback
             var initialData = nodeServer.clientConnectCallback ? nodeServer.clientConnectCallback.call(nodeServer, client) : {};
@@ -169,6 +168,7 @@ function NodeServer() {
                 nodeServer.clients[client.id].inputs.keyboard = inputs.keyboard;
                 nodeServer.clients[client.id].inputs.touches = inputs.touches;
                 nodeServer.clients[client.id].inputs.events = inputs.events;
+                nodeServer.clients[client.id].inputs.message = inputs.message || nodeServer.clients[client.id].inputs.message;
                 if (nodeServer.clientInputCallback)
                     nodeServer.clientInputCallback.call(nodeServer, client, inputs);
             });

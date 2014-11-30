@@ -2,8 +2,9 @@
  * Compile all actions and goals and return Goals module
  *
  * @module Anslem.Universe.Goals
- * @requires compileActions
+ * @requires AnslemServerConfig, compileActions
  */
+var AnslemServerConfig = require("./../AnslemServerConfig");
 var Actions = require('./compileActions');
 
 /**

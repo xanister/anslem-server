@@ -23,7 +23,7 @@ function Player() {
      * @property baseGoal
      * @type {Goal}
      */
-    this.baseGoal = Goals.PlayerInput;
+    this.baseGoal = new Goals.PlayerInput();
 
     /**
      * Categories
@@ -93,6 +93,17 @@ function Player() {
      */
     Player.prototype.run = function () {
         Entity.prototype.run.call(this);
+
+        // Bubble
+        if (this.bubble && this.bubble.time-- <= 0)
+            this.bubble = false;
+        if (this.inputs.message) {
+            this.bubble = {
+                message: this.inputs.message,
+                time: AnslemServerConfig.bubbleTime
+            };
+            this.inputs.message = false;
+        }
 
         // Maintain view
         if (this.view.y > (this.container.height - this.view.height))

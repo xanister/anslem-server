@@ -15,49 +15,63 @@ var AnslemServerConfig = {
      * Path to asset server
      *
      * @property assetPath
-     * @type String
+     * @type {String}
      */
     assetPath: "/var/www/assets.anslemgalaxy.com",
+    /**
+     * Frames to keep bubbles active
+     *
+     * @property bubbleTime
+     * @type {Number}
+     */
+    bubbleTime: 60,
     /**
      * Default gravity
      *
      * @property gravity
-     * @type Number
+     * @type {Number}
      */
     gravity: 1.8,
     /**
      * Server info log interval
      *
      * @property serverInfoInterval
-     * @type Number
+     * @type {Number}
      */
     serverInfoInterval: 10000,
     /**
      * Default linear dampening
      *
      * @property linearDampening
-     * @type Number
+     * @type {Number}
      */
     linearDampening: 0.5,
     /**
      * Default listen port
      *
      * @property port
-     * @type Number
+     * @type {Number}
      */
     port: 3010,
     /**
      * Target server fps
      *
      * @property serverFps
-     * @type Number
+     * @type {Number}
      */
-    serverFps: 60,
+    serverFps: 30,
+    /**
+     * Standard fps to measure agains
+     *
+     * @property standardFps
+     * @type {Number}
+     */
+    standardFps: 60,
     /**
      * Default view scale
      *
      * @property viewScale
-     * @type Number
+     * @type {Number}
      */
     viewScale: 2,
     /**
@@ -65,7 +79,7 @@ var AnslemServerConfig = {
      * percent of view width
      *
      * @property viewXBuffer
-     * @type Number
+     * @type {Number}
      */
     viewXBuffer: 0.2,
     /**
@@ -73,9 +87,11 @@ var AnslemServerConfig = {
      * percent of view height
      *
      * @property viewXBuffer
-     * @type Number
+     * @type {Number}
      */
     viewYBuffer: 0.4
 };
 
+// Scale attributes for framerate
+AnslemServerConfig.fpsFactor = AnslemServerConfig.standardFps / AnslemServerConfig.serverFps;
 module.exports = AnslemServerConfig;

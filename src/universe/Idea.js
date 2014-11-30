@@ -4,6 +4,7 @@
  * @module Anslem.Universe
  * @requires Sprites
  */
+var AnslemServerConfig = require("./../AnslemServerConfig");
 var Sprites = require("./Sprites");
 
 /**
@@ -22,12 +23,13 @@ global.idCounter = global.idCounter || 1;
  */
 function Idea() {
     /**
-     * Unique id
+     * Bubble for speech/emotes
      *
-     * @property id
-     * @type {String}
+     * @property bubble
+     * @type {Object}
      */
-    this.id = global.idCounter++;
+    this.bubble = false;
+
 
     /**
      * Categories
@@ -78,6 +80,14 @@ function Idea() {
     this.gravity = 0;
 
     /**
+     * Unique id
+     *
+     * @property id
+     * @type {String}
+     */
+    this.id = global.idCounter++;
+
+    /**
      * Temp immunity, frames left
      *
      * @property immunityTimeout
@@ -99,7 +109,7 @@ function Idea() {
      * @property linearDampening
      * @type {Number}
      */
-    this.linerDampening = 0.25;
+    this.linerDampening = AnslemServerConfig.linearDampening;
 
     /**
      * Visual representation
@@ -238,6 +248,7 @@ function Idea() {
      */
     Idea.prototype.getPacket = function () {
         var packet = {
+            bubble: this.bubble,
             contents: [],
             sprite: {
                 animation: this.sprite.animation,

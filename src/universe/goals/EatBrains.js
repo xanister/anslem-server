@@ -3,14 +3,15 @@
  *
  * @module Anslem.Universe.Goals
  * @class EatBrains
- * @static
- * @for Goals
- * @type {Object}
+ * @constructor
+ * @param {Object} params {}
  */
-Goals.EatBrains = {
-    description: "Eat brains",
-    label: "Eat brains",
-    getAction: function () {
+function EatBrains(params) {
+    this.description = "Eat brains";
+    this.label = "Eat brains";
+    this.params = params || {};
+    EatBrains.prototype.getAction = function () {
         return new Actions.Idle();
-    }
-};
+    };
+}
+Goals.EatBrains = EatBrains;

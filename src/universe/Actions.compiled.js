@@ -105,7 +105,7 @@ function Attack(params) {
         }
     };
     Attack.prototype.updateAnimation = function () {
-        this.setAnimation("attack");
+        this.setAnimation("attack", this.sprite.src["attack"].frameCount / this.action.speed);
     };
 }
 Actions.Attack = Attack;
@@ -127,6 +127,7 @@ function Flinch(params) {
         if (this.action.progress === 0) {
             this.xSpeed += (params.strength * params.dir);
             this.ySpeed -= (params.strength * 0.5);
+            this.stats.health -= params.strength;
         }
     };
     Flinch.prototype.updateAnimation = function () {
@@ -155,6 +156,8 @@ function Idle() {
             this.setAnimation("jump");
         else if (this.xSpeed !== 0)
             this.setAnimation("walk");
+        else if (this.stats.health < 50)
+            this.setAnimation("tired");
         else
             this.setAnimation("default");
     };

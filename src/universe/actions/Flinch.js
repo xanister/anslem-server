@@ -16,6 +16,7 @@ function Flinch(params) {
         if (this.action.progress === 0) {
             this.xSpeed += (params.strength * params.dir);
             this.ySpeed -= (params.strength * 0.5);
+            this.stats.health -= params.strength;
         }
     };
     Flinch.prototype.updateAnimation = function () {

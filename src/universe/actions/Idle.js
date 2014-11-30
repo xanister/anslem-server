@@ -19,6 +19,8 @@ function Idle() {
             this.setAnimation("jump");
         else if (this.xSpeed !== 0)
             this.setAnimation("walk");
+        else if (this.stats.health < 50)
+            this.setAnimation("tired");
         else
             this.setAnimation("default");
     };
