@@ -14,6 +14,11 @@ Goals.Dead = {
             this.baseGoal = Goals.PlayerInput;
             return new Actions.Idle();
         }
+        if (Math.random() * 2000 < 5) {
+            this.stats.health = 100;
+            this.baseGoal = Goals.EatBrains;
+            return new Actions.Idle();
+        }
 
         return new Actions.Die();
     }
