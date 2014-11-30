@@ -6,10 +6,20 @@
  * @for Actions
  */
 Actions.Idle = function Idle() {
-    Idle.description = "Idle";
-    Idle.label = "Idle";
+    this.description = "Idle";
+    this.label = "Idle";
     this.params = false;
+    this.progress = 0;
+    this.speed = 1;
     Idle.prototype.run = function () {
-        this.setAnimation("default");
+
+    };
+    Idle.prototype.updateAnimation = function () {
+        if (this.ySpeed !== 0)
+            this.setAnimation("jump");
+        else if (this.xSpeed !== 0)
+            this.setAnimation("walk");
+        else
+            this.setAnimation("default");
     };
 };

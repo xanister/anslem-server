@@ -5,7 +5,7 @@
  */
 
 /**
- * Actions
+ * Actions list object
  *
  * @class Actions
  * @static

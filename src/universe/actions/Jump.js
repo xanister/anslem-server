@@ -6,12 +6,16 @@
  * @for Actions
  */
 Actions.Jump = function Jump() {
-    Jump.description = "Jump";
-    Jump.label = "Jump";
+    this.description = "Jump";
+    this.label = "Jump";
     this.params = false;
+    this.progress = 0;
+    this.speed = 5;
     Jump.prototype.run = function () {
-        this.setAnimation("jump");
-        if (this.ySpeed === 0)
+        if (this.action.progress === 0)
             this.ySpeed -= this.stats.jump;
+    };
+    Jump.prototype.updateAnimation = function () {
+        this.setAnimation("jump");
     };
 };

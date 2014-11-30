@@ -144,6 +144,7 @@ function AnslemServer() {
                 packet.contents.sort(function (a, b) {
                     return a.z > b.z;
                 });
+                packet.action = player.action;
                 this.updateClient(id, packet);
             }
         }

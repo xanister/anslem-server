@@ -94,10 +94,15 @@ function Entity() {
     Entity.prototype.run = function () {
         Idea.prototype.run.call(this);
 
-        this.goal = this.goal ? this.goal : this.baseGoal;
-        this.action = this.goal ? this.goal.getAction.call(this) : false;
-        if (this.action)
+        if (!this.action || this.action.progress >= this.action.speed) {
+            this.goal = this.goal ? this.goal : this.baseGoal;
+            this.action = this.goal ? this.goal.getAction.call(this) : false;
+        }
+        if (this.action) {
+            this.action.updateAnimation.call(this);
             this.action.run.call(this, this.action.params);
+            this.action.progress++;
+        }
     };
 }
 Entity.prototype = new Idea();

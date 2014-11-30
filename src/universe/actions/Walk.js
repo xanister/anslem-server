@@ -4,22 +4,24 @@
  * @class Walk
  * @constructor
  * @for Actions
- * @param {Object} params direction to move
+ * @param {Object} params direction to move, {dir: 1 || -1}
  */
 Actions.Walk = function Walk(params) {
-    Walk.description = "Walk";
-    Walk.label = "Walk";
+    this.description = "Walk";
+    this.label = "Walk";
     this.params = params;
+    this.progress = 0;
+    this.speed = 1;
     Walk.prototype.run = function (params) {
-        if (this.ySpeed !== 0) {
-            this.setAnimation("jump");
-        } else {
-            this.setAnimation("walk");
-            this.sprite.mirror = params.dir < 0 ? true : (params.dir > 0 ? false : this.sprite.mirror);
-            this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
-        }
+        this.facing = params.dir;
 
         if ((this.xSpeed < this.stats.speed && params.dir === 1) || (this.xSpeed > -this.stats.speed && params.dir === -1))
             this.xSpeed += (params.dir * this.stats.accel);
+    };
+    Walk.prototype.updateAnimation = function () {
+        if (this.ySpeed !== 0)
+            this.setAnimation("jump");
+        else
+            this.setAnimation("walk", this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed));
     };
 };

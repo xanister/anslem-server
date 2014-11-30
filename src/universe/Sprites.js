@@ -75,7 +75,23 @@ var Sprites = {
             imagePath: "/sprites/goblin/idle/goblin-idle",
             frameCount: 24,
             frameSpeed: 0.5,
+            singleImage: true
+        },
+        attack: {
+            imagePath: "/sprites/goblin/attack/goblin-attack",
+            frameCount: 20,
+            frameSpeed: 1,
             singleImage: true,
+            xOffset: 35,
+            yOffset: -30
+        },
+        flinch: {
+            imagePath: "/sprites/goblin/flinch/goblin-flinch",
+            frameCount: 12,
+            frameSpeed: 0.25,
+            singleImage: true,
+            xOffset: 35,
+            yOffset: -30
         },
         jump: {
             imagePath: "/sprites/goblin/jump/goblin-jump",
@@ -98,6 +114,8 @@ for (var index in Sprites) {
         var dim = sizeOf(AnslemServerConfig.assetPath + Sprites[index][animation].imagePath + (Sprites[index][animation].singleImage ? "" : "__000") + ".png");
         Sprites[index][animation].width = Sprites[index][animation].singleImage ? dim.width / Sprites[index][animation].frameCount : dim.width;
         Sprites[index][animation].height = dim.height;
+        Sprites[index][animation].xOffset = Sprites[index][animation].xOffset || 0;
+        Sprites[index][animation].yOffset = Sprites[index][animation].yOffset || 0;
     }
 }
 

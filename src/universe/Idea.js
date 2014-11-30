@@ -62,12 +62,28 @@ function Idea() {
     this.description = false;
 
     /**
+     * Current facing direction, 1 right, -1 left
+     *
+     * @property facing
+     * @type {Number}
+     */
+    this.facing = 1;
+
+    /**
      * Falling speed
      *
      * @property gravity
      * @type {Number}
      */
     this.gravity = 0;
+
+    /**
+     * Temp immunity, frames left
+     *
+     * @property immunityTimeout
+     * @type {Number}
+     */
+    this.immunityTimeout = 0;
 
     /**
      * Short description
@@ -226,18 +242,18 @@ function Idea() {
             sprite: {
                 animation: this.sprite.animation,
                 frame: this.sprite.frame,
-                mirror: this.sprite.mirror,
+                mirror: this.facing === -1 ? true : false,
                 name: this.sprite.name,
                 scrollSpeed: this.sprite.scrollSpeed,
                 tileX: this.sprite.tileX,
                 tileY: this.sprite.tileY
             },
             text: false,
+            width: this.width,
+            height: this.height,
             x: this.x,
             y: this.y,
-            z: this.z,
-            width: this.width,
-            height: this.height
+            z: this.z
         };
         for (var index in this.contents[0]) {
             packet.contents.push(this.contents[0][index].getPacket());
@@ -278,14 +294,15 @@ function Idea() {
      *
      * @method setAnimation
      * @param {String} animation
+     * @param {Number} [frameSpeed=Sprite.frameSpeed]
      */
-    Idea.prototype.setAnimation = function (animation) {
+    Idea.prototype.setAnimation = function (animation, frameSpeed) {
         if (this.sprite.animation === animation)
             return false;
         this.sprite.animation = animation;
         this.sprite.frame = 0;
         this.sprite.frameCount = this.sprite.src[animation].frameCount;
-        this.sprite.frameSpeed = this.sprite.src[animation].frameSpeed;
+        this.sprite.frameSpeed = frameSpeed || this.sprite.src[animation].frameSpeed;
     };
 
     /**
@@ -303,7 +320,6 @@ function Idea() {
             frame: 0,
             frameCount: Sprites[sprite]["default"].frameCount,
             frameSpeed: Sprites[sprite]["default"].frameSpeed,
-            mirror: false,
             name: sprite,
             scrollSpeed: scrollSpeed || 1,
             src: Sprites[sprite],
@@ -323,6 +339,8 @@ function Idea() {
      */
     Idea.prototype.run = function () {
         // Physics
+        if (this.immunityTimeout > 0)
+            this.immunityTimeout--;
         if (this.gravity > 0) {
             this.ySpeed += this.gravity;
             this.y += this.ySpeed;
