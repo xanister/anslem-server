@@ -35,8 +35,6 @@ function PlayerInput(params) {
             } else if ((this.inputs.touches[0].x * this.view.scale) + this.view.x < this.x) {
                 return new Actions.Walk({dir: -1});
             }
-        } else if (this.inputs.events.tap2) {
-            console.log("Double tap");
         }
 
         // Idle

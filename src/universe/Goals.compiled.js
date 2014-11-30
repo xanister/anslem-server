@@ -27,10 +27,41 @@ function EatBrains(params) {
     this.label = "Eat brains";
     this.params = params || {};
     EatBrains.prototype.getAction = function () {
+        var nearest = this.instanceNearest("player");
+        if (nearest) {
+            var dist = this.distanceTo(nearest.x, nearest.y);
+            if (dist < this.width)
+                return new Actions.Attack({dir: nearest.x > this.x ? 1 : -1});
+            else if (dist < this.stats.perception)
+                this.goal = new Goals.Goto(nearest);
+            else
+                this.goal = new Goals.Goto({x: this.x + (Math.random() * 1000) - 500, y: this.y});
+        }
         return new Actions.Idle();
     };
 }
 Goals.EatBrains = EatBrains;
+/**
+ * Go to
+ *
+ * @module Anslem.Universe.Goals
+ * @class Goto
+ * @constructor
+ * @param {Object} params {}
+ */
+function Goto(params) {
+    this.description = "Go to target";
+    this.label = "Go to";
+    this.params = params || {};
+    Goto.prototype.getAction = function (params) {
+        if (Math.abs(params.x - this.x) < this.width) {
+            this.goal = false;
+            return new Actions.Idle();
+        }
+        return new Actions.Walk({dir: params.x > this.x ? 1 : -1});
+    };
+}
+Goals.Goto = Goto;
 /**
  * PlayerInput
  *
@@ -68,8 +99,6 @@ function PlayerInput(params) {
             } else if ((this.inputs.touches[0].x * this.view.scale) + this.view.x < this.x) {
                 return new Actions.Walk({dir: -1});
             }
-        } else if (this.inputs.events.tap2) {
-            console.log("Double tap");
         }
 
         // Idle

@@ -98,7 +98,7 @@ function Attack(params) {
     Attack.prototype.run = function (params) {
         this.facing = params.dir;
 
-        var hit = this.instancePlace("physical", this.x + (50 * params.dir), this.y);
+        var hit = this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
         if (hit && hit.immunityTimeout === 0) {
             hit.action = new Actions.Flinch({dir: params.dir, strength: 10});
             hit.immunityTimeout = this.action.speed;
@@ -128,6 +128,10 @@ function Flinch(params) {
             this.xSpeed += (params.strength * params.dir);
             this.ySpeed -= (params.strength * 0.5);
             this.stats.health -= params.strength;
+            if (this.stats.health < 0) {
+                this.stats.health = 100;
+                this.warp(Math.random() * this.container.width, 0);
+            }
         }
     };
     Flinch.prototype.updateAnimation = function () {

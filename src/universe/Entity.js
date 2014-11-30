@@ -32,7 +32,7 @@ function Entity() {
      * @property baseGoal
      * @type {Goal}
      */
-    this.baseGoal = false;
+    this.baseGoal = new Goals.EatBrains();
 
     /**
      * Categories
@@ -75,8 +75,9 @@ function Entity() {
     this.stats = {
         accel: 1.8,
         health: 100,
+        perception: 500,
         jump: 40,
-        speed: 20
+        speed: 10
     };
 
     /**
@@ -97,7 +98,7 @@ function Entity() {
 
         if (!this.action || this.action.progress >= this.action.speed) {
             this.goal = this.goal ? this.goal : this.baseGoal;
-            this.action = this.goal ? this.goal.getAction.call(this) : false;
+            this.action = this.goal ? this.goal.getAction.call(this, this.goal.params) : false;
         }
         if (this.action) {
             this.action.updateAnimation.call(this);

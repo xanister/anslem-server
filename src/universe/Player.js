@@ -83,6 +83,7 @@ function Player() {
         this.client = client;
         this.warp(400, 400, universe);
         this.inputs = client.inputs;
+        this.stats.speed = 20;
         this.initializeView(client.info.screenWidth, client.info.screenHeight);
     };
 

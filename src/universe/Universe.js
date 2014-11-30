@@ -2,8 +2,9 @@
  * Universe
  *
  * @module Anslem.Universe
- * @requires Idea, Sprites
+ * @requires Entity, Idea, Sprites
  */
+var Entity = require("./Entity");
 var Idea = require("./Idea");
 var Sprites = require("./Sprites");
 
@@ -47,23 +48,27 @@ function Universe() {
     Universe.prototype.populate = function () {
         var i = new Idea();
         i.setSprite("bgClouds", true, false, 0.2);
-        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
+        i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
         var i = new Idea();
         i.setSprite("bgMountains", true, false, 0.4);
-        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
+        i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
-        var i = new Idea();
-        i.setSprite("bgMountainsMidground", true, false, 0.6);
-        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
+//        var i = new Idea();
+//        i.setSprite("bgMountainsMidground", true, false, 0.6);
+//        i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
         var i = new Idea();
         i.setSprite("bgTrees", true, false, 0.8);
-        i.warp(0, this.height - Sprites[i.sprite.name]["default"].height, this);
+        i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
         var i = new Idea();
         i.setSprite("bgGround", true, false, 1);
         i.warp(0, this.height + (Sprites[i.sprite.name]["default"].height / 2) - 20, this);
+
+        var i = new Entity();
+        i.setSprite("goblin");
+        i.warp(2400, 400, this);
     };
 }
 Universe.prototype = new Idea();

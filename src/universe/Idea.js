@@ -241,6 +241,17 @@ function Idea() {
     };
 
     /**
+     * Return distanct to point
+     *
+     * @param {Number} tarX
+     * @param {Number} tarY
+     * @returns {Number}
+     */
+    Idea.prototype.distanceTo = function (tarX, tarY) {
+        return Math.sqrt(Math.pow(tarX - this.x, 2) + Math.pow(tarY - this.y, 2));
+    };
+
+    /**
      * Generates small object representation
      *
      * @method getPacket
@@ -270,6 +281,34 @@ function Idea() {
             packet.contents.push(this.contents[0][index].getPacket());
         }
         return packet;
+    };
+
+    /**
+     * Return idea closest to given point
+     *
+     * @method instanceNearest
+     * @param {String} category
+     * @param {Number} x
+     * @param {Number} y
+     * @return {Idea}
+     */
+    Idea.prototype.instanceNearest = function (category, x, y) {
+        category = category || 0;
+        this.x = x || this.x;
+        this.y = y || this.y;
+        var nearest = false;
+        var dist = 1000000;
+        for (var id in this.container.contents[category]) {
+            var e = this.container.contents[category][id];
+            if (e.id !== this.id) {
+                var thisDist = this.distanceTo(e.x, e.y);
+                if (thisDist < dist) {
+                    nearest = e;
+                    dist = thisDist;
+                }
+            }
+        }
+        return nearest;
     };
 
     /**
