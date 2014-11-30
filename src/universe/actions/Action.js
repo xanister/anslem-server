@@ -1,6 +1,7 @@
 /**
  * Action template
  *
+ * @module Anslem.universe.scripts.Actions
  * @class ActionTemplate
  * @constructor
  * @param {Object} params optional params for action
