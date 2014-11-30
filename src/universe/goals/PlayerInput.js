@@ -3,14 +3,12 @@
  *
  * @module Anslem.Universe.Goals
  * @class PlayerInput
- * @constructor
- * @param {Object} params {}
+ * @static
  */
-function PlayerInput(params) {
-    this.description = "PlayerInput";
-    this.label = "Player Goal";
-    this.params = params || {};
-    PlayerInput.prototype.getAction = function (params) {
+Goals.PlayerInput = {
+    description: "PlayerInput",
+    label: "Player Goal",
+    getAction: function () {
         // Desktop Controls
         if (this.inputs.events.keydown.F) {
             return new Actions.Attack({dir: this.facing});
@@ -39,6 +37,5 @@ function PlayerInput(params) {
 
         // Idle
         return new Actions.Idle();
-    };
-}
-Goals.PlayerInput = PlayerInput;
+    }
+};

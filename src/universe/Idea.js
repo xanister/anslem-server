@@ -265,6 +265,7 @@ function Idea() {
             sprite: {
                 animation: this.sprite.animation,
                 frame: this.sprite.frame,
+                loop: this.sprite.loop,
                 mirror: this.facing === -1 ? true : false,
                 name: this.sprite.name,
                 scrollSpeed: this.sprite.scrollSpeed,
@@ -348,12 +349,15 @@ function Idea() {
      * @param {Number} [frameSpeed=Sprite.frameSpeed]
      */
     Idea.prototype.setAnimation = function (animation, frameSpeed) {
+        if (!this.sprite.src[animation])
+            animation = "default";
         if (this.sprite.animation === animation)
             return false;
         this.sprite.animation = animation;
         this.sprite.frame = 0;
         this.sprite.frameCount = this.sprite.src[animation].frameCount;
         this.sprite.frameSpeed = frameSpeed || this.sprite.src[animation].frameSpeed;
+        this.sprite.loop = this.sprite.src[animation].loop;
     };
 
     /**
@@ -371,6 +375,7 @@ function Idea() {
             frame: 0,
             frameCount: Sprites[sprite]["default"].frameCount,
             frameSpeed: Sprites[sprite]["default"].frameSpeed,
+            loop: Sprites[sprite]["default"].loop,
             name: sprite,
             scrollSpeed: scrollSpeed || 1,
             src: Sprites[sprite],
@@ -416,8 +421,12 @@ function Idea() {
         // Sprite
         if (this.sprite && this.sprite.frameSpeed > 0) {
             this.sprite.frame += this.sprite.frameSpeed;
-            if (this.sprite.frame >= this.sprite.frameCount)
-                this.sprite.frame = 0;
+            if (this.sprite.frame >= this.sprite.frameCount) {
+                if (this.sprite.loop)
+                    this.sprite.frame = 0;
+                else
+                    this.sprite.frame = this.sprite.frameCount - 1;
+            }
         }
 
         // Run contents

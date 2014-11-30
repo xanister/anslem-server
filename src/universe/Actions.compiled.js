@@ -87,7 +87,7 @@ Actions.ActionTemplate = ActionTemplate;
  * @module Anslem.Universe.Actions
  * @class Attack
  * @constructor
- * @param {Object} params {dir: 1 || -1, strength: 10}
+ * @param {Object} params {dir: 1 || -1}
  */
 function Attack(params) {
     this.description = "Attack";
@@ -100,7 +100,7 @@ function Attack(params) {
 
         var hit = this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
         if (hit && hit.immunityTimeout === 0) {
-            hit.action = new Actions.Flinch({dir: params.dir, strength: 10});
+            hit.action = new Actions.Flinch({dir: params.dir, strength: this.stats.strength});
             hit.immunityTimeout = this.action.speed;
         }
     };
@@ -109,6 +109,27 @@ function Attack(params) {
     };
 }
 Actions.Attack = Attack;
+/**
+ * Die
+ *
+ * @module Anslem.Universe.Actions
+ * @class Die
+ * @constructor
+ */
+function Die() {
+    this.description = "Die";
+    this.label = "Die";
+    this.params = false;
+    this.progress = 0;
+    this.speed = 20;
+    Die.prototype.run = function (params) {
+
+    };
+    Die.prototype.updateAnimation = function () {
+        this.setAnimation("die");
+    };
+}
+Actions.Die = Die;
 /**
  * Take a hit
  *
@@ -128,10 +149,10 @@ function Flinch(params) {
             this.xSpeed += (params.strength * params.dir);
             this.ySpeed -= (params.strength * 0.5);
             this.stats.health -= params.strength;
-            if (this.stats.health < 0) {
-                this.stats.health = 100;
-                this.warp(Math.random() * this.container.width, 0);
-            }
+//            if (this.stats.health < 0) {
+//                this.stats.health = 100;
+//                this.warp(Math.random() * this.container.width, 0);
+//            }
         }
     };
     Flinch.prototype.updateAnimation = function () {

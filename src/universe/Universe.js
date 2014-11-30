@@ -38,7 +38,7 @@ function Universe() {
      * @property width
      * @type {Number}
      */
-    this.width = 40000;
+    this.width = 60000;
 
     /**
      * Populate the universe
@@ -48,27 +48,35 @@ function Universe() {
     Universe.prototype.populate = function () {
         var i = new Idea();
         i.setSprite("bgClouds", true, false, 0.2);
+        i.z = 0;
         i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
         var i = new Idea();
         i.setSprite("bgMountains", true, false, 0.4);
+        i.z = 1;
         i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
-//        var i = new Idea();
-//        i.setSprite("bgMountainsMidground", true, false, 0.6);
-//        i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
+        var i = new Idea();
+        i.setSprite("bgMountainsMidground", true, false, 0.6);
+        i.z = 2;
+        i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
         var i = new Idea();
         i.setSprite("bgTrees", true, false, 0.8);
+        i.z = 3;
         i.warp(0, this.height - (Sprites[i.sprite.name]["default"].height / 2), this);
 
         var i = new Idea();
         i.setSprite("bgGround", true, false, 1);
+        i.z = 4;
         i.warp(0, this.height + (Sprites[i.sprite.name]["default"].height / 2) - 20, this);
 
-        var i = new Entity();
-        i.setSprite("goblin");
-        i.warp(2400, 400, this);
+        for (var n = 0; n < 50; n++) {
+            var i = new Entity();
+            i.setSprite("skeleton");
+            i.stats.speed = 5;
+            i.warp(1000 + (Math.random() * (this.width - 1000)), 400, this);
+        }
     };
 }
 Universe.prototype = new Idea();

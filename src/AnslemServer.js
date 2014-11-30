@@ -2,11 +2,11 @@
  * Listen for client connections and run the universe
  *
  * @module Anslem
- * @requires AnslemServerConfig, gameloop, idea, NodeServer, Player, Sprites, Universe
+ * @requires AnslemServerConfig, gameloop, compileGoals, NodeServer, Player, Sprites, Universe
  */
 var AnslemServerConfig = require('./AnslemServerConfig');
 var gameloop = require('node-gameloop');
-var Idea = require("./universe/Idea");
+var Goals = require('./universe/compileGoals');
 var NodeServer = require("./lib/NodeServer");
 var Player = require("./universe/Player");
 var Sprites = require("./universe/Sprites");
@@ -141,10 +141,9 @@ function AnslemServer() {
                 var packet = player.container.getPacket();
                 packet.viewX = player.view.x;
                 packet.viewY = player.view.y;
-                packet.contents.sort(function (a, b) {
-                    return a.z > b.z;
-                });
-                packet.action = player.action;
+//                packet.contents.sort(function (a, b) {
+//                    return a.z > b.z;
+//                });
                 this.updateClient(id, packet);
             }
         }

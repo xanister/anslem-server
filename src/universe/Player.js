@@ -23,7 +23,7 @@ function Player() {
      * @property baseGoal
      * @type {Goal}
      */
-    this.baseGoal = new Goals.PlayerInput();
+    this.baseGoal = Goals.PlayerInput;
 
     /**
      * Categories

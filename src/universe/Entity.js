@@ -5,7 +5,7 @@
  * @requires AnslemServerConfig, Idea, Synapse
  */
 var AnslemServerConfig = require("./../AnslemServerConfig");
-var Goals = require("./compileGoals");
+var Goals = require("./Goals.compiled");
 var Idea = require("./Idea");
 var Synapse = require("./Synapse");
 
@@ -32,7 +32,7 @@ function Entity() {
      * @property baseGoal
      * @type {Goal}
      */
-    this.baseGoal = new Goals.EatBrains();
+    this.baseGoal = Goals.EatBrains;
 
     /**
      * Categories
@@ -75,9 +75,10 @@ function Entity() {
     this.stats = {
         accel: 1.8,
         health: 100,
-        perception: 500,
-        jump: 40,
-        speed: 10
+        perception: 800,
+        jump: 50,
+        speed: 10,
+        strength: 25
     };
 
     /**
@@ -96,10 +97,12 @@ function Entity() {
     Entity.prototype.run = function () {
         Idea.prototype.run.call(this);
 
-        if (!this.action || this.action.progress >= this.action.speed) {
-            this.goal = this.goal ? this.goal : this.baseGoal;
-            this.action = this.goal ? this.goal.getAction.call(this, this.goal.params) : false;
+        if (this.stats.health <= 0) {
+            this.baseGoal = Goals.Dead;
+            this.action = false;
         }
+        if (!this.action || this.action.progress >= this.action.speed)
+            this.action = this.baseGoal.getAction.call(this);
         if (this.action) {
             this.action.updateAnimation.call(this);
             this.action.run.call(this, this.action.params);

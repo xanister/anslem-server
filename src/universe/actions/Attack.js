@@ -4,7 +4,7 @@
  * @module Anslem.Universe.Actions
  * @class Attack
  * @constructor
- * @param {Object} params {dir: 1 || -1, strength: 10}
+ * @param {Object} params {dir: 1 || -1}
  */
 function Attack(params) {
     this.description = "Attack";
@@ -17,7 +17,7 @@ function Attack(params) {
 
         var hit = this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
         if (hit && hit.immunityTimeout === 0) {
-            hit.action = new Actions.Flinch({dir: params.dir, strength: 10});
+            hit.action = new Actions.Flinch({dir: params.dir, strength: this.stats.strength});
             hit.immunityTimeout = this.action.speed;
         }
     };

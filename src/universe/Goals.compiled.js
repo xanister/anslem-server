@@ -15,66 +15,87 @@ var Actions = require('./compileActions');
  */
 var Goals = {};
 /**
+ * Dead
+ *
+ * @module Anslem.Universe.Goals
+ * @class Dead
+ * @static
+ */
+Goals.Dead = {
+    description: "Dead",
+    label: "Dead",
+    getAction: function () {
+        if (this.inputs && this.inputs.events.keydown.R) {
+            this.stats.health = 100;
+            this.baseGoal = Goals.PlayerInput;
+            return new Actions.Idle();
+        }
+
+        return new Actions.Die();
+    }
+};
+/**
  * Eat Brains
  *
  * @module Anslem.Universe.Goals
  * @class EatBrains
- * @constructor
- * @param {Object} params {}
+ * @static
  */
-function EatBrains(params) {
-    this.description = "Eat brains";
-    this.label = "Eat brains";
-    this.params = params || {};
-    EatBrains.prototype.getAction = function () {
+Goals.EatBrains = {
+    description: "Eat brains",
+    label: "Eat brains",
+    getAction: function () {
         var nearest = this.instanceNearest("player");
         if (nearest) {
             var dist = this.distanceTo(nearest.x, nearest.y);
-            if (dist < this.width)
-                return new Actions.Attack({dir: nearest.x > this.x ? 1 : -1});
-            else if (dist < this.stats.perception)
-                this.goal = new Goals.Goto(nearest);
-            else
-                this.goal = new Goals.Goto({x: this.x + (Math.random() * 1000) - 500, y: this.y});
+            if (nearest.baseGoal !== Goals.Dead && dist < this.stats.perception)
+                return Goals.Kill.getAction.call(this, nearest);
         }
         return new Actions.Idle();
-    };
-}
-Goals.EatBrains = EatBrains;
+    }
+};
 /**
  * Go to
  *
  * @module Anslem.Universe.Goals
  * @class Goto
- * @constructor
- * @param {Object} params {}
+ * @static
  */
-function Goto(params) {
-    this.description = "Go to target";
-    this.label = "Go to";
-    this.params = params || {};
-    Goto.prototype.getAction = function (params) {
-        if (Math.abs(params.x - this.x) < this.width) {
-            this.goal = false;
-            return new Actions.Idle();
-        }
+Goals.Goto = {
+    description: "Go to target",
+    label: "Go to",
+    getAction: function (params) {
         return new Actions.Walk({dir: params.x > this.x ? 1 : -1});
-    };
-}
-Goals.Goto = Goto;
+    }
+};
+/**
+ * Kill target
+ *
+ * @module Anslem.Universe.Goals
+ * @class Kill
+ * @static
+ */
+Goals.Kill = {
+    description: "Kill target",
+    label: "Kill",
+    getAction: function (params) {
+        var dist = this.distanceTo(params.x, params.y);
+        if (dist < this.width)
+            return new Actions.Attack({dir: params.x > this.x ? 1 : -1});
+        return Goals.Goto.getAction.call(this, params);
+    }
+};
 /**
  * PlayerInput
  *
  * @module Anslem.Universe.Goals
  * @class PlayerInput
- * @constructor
- * @param {Object} params {}
+ * @static
  */
-function PlayerInput(params) {
-    this.description = "PlayerInput";
-    this.label = "Player Goal";
-    this.params = params || {};
-    PlayerInput.prototype.getAction = function (params) {
+Goals.PlayerInput = {
+    description: "PlayerInput",
+    label: "Player Goal",
+    getAction: function () {
         // Desktop Controls
         if (this.inputs.events.keydown.F) {
             return new Actions.Attack({dir: this.facing});
@@ -103,7 +124,6 @@ function PlayerInput(params) {
 
         // Idle
         return new Actions.Idle();
-    };
-}
-Goals.PlayerInput = PlayerInput;
+    }
+};
 module.exports = Goals;
