@@ -243,6 +243,7 @@ function Idea() {
     /**
      * Return distanct to point
      *
+     * @method distanceTo
      * @param {Number} tarX
      * @param {Number} tarY
      * @return {Number}
