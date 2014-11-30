@@ -47,6 +47,22 @@ function AnslemServer() {
     this.universe = new Universe();
 
     /**
+     * Skip frames to send to clients
+     *
+     * @property updateFrameSkip
+     * @type {Number}
+     */
+    this.updateFrameSkip = 0;
+
+    /**
+     * Skipped frames
+     *
+     * @property updateFrameSkipCount
+     * @type {Number}
+     */
+    this.updateFrameSkipCount = 0;
+
+    /**
      * Client connected callback
      *
      * @method clientConnected
@@ -135,16 +151,17 @@ function AnslemServer() {
     AnslemServer.prototype.update = function (delta) {
         this.currentFps = 1 / delta;
         this.universe.run();
-        for (var id in this.clients) {
-            var player = this.clients[id].player;
-            if (player) {
-                var packet = player.container.getPacket();
-                packet.viewX = player.view.x;
-                packet.viewY = player.view.y;
-//                packet.contents.sort(function (a, b) {
-//                    return a.z > b.z;
-//                });
-                this.updateClient(id, packet);
+        this.updateFrameSkipCount++;
+        if (this.updateFrameSkipCount >= this.updateFrameSkip) {
+            this.updateFrameSkipCount = 0;
+            for (var id in this.clients) {
+                var player = this.clients[id].player;
+                if (player) {
+                    var packet = player.container.getPacket();
+                    packet.viewX = player.view.x;
+                    packet.viewY = player.view.y;
+                    this.updateClient(id, packet);
+                }
             }
         }
     };
