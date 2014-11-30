@@ -1,6 +1,7 @@
 /**
  * Jump
  *
+ * @module Anslem.Universe.Actions
  * @class Jump
  * @constructor
  * @for Actions

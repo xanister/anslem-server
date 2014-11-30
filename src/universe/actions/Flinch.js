@@ -1,6 +1,7 @@
 /**
  * Take a hit
  *
+ * @module Anslem.Universe.Actions
  * @class Flinch
  * @constructor
  * @for Actions

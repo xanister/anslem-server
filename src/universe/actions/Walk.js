@@ -1,6 +1,7 @@
 /**
  * Walk
  *
+ * @module Anslem.Universe.Actions
  * @class Walk
  * @constructor
  * @for Actions

@@ -2,6 +2,7 @@
  * EatBrains.js
  * Eat Brains
  *
+ * @module Anslem.Universe.Goals
  * @property EatBrains
  * @for Goals
  * @type {Object}

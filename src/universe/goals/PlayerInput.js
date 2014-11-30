@@ -1,6 +1,7 @@
 /**
  * PlayerInput
  *
+ * @module Anslem.Universe.Goals
  * @property PlayerInput
  * @for Goals
  * @type {Object}

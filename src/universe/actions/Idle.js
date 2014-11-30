@@ -1,6 +1,7 @@
 /**
  * Idle
  *
+ * @module Anslem.Universe.Actions
  * @class Idle
  * @constructor
  * @for Actions

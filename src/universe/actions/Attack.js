@@ -1,7 +1,7 @@
 /**
  * Attack with whatever I am holding
  *
- * @module Anslem.universe.scripts.Actions
+ * @module Anslem.Universe.Actions
  * @class Attack
  * @constructor
  * @for Actions
