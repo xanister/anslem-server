@@ -2,7 +2,8 @@
  * PlayerInput
  *
  * @module Anslem.Universe.Goals
- * @property PlayerInput
+ * @class PlayerInput
+ * @static
  * @for Goals
  * @type {Object}
  */

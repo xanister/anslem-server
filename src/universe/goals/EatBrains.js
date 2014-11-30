@@ -1,9 +1,9 @@
 /**
- * EatBrains.js
  * Eat Brains
  *
  * @module Anslem.Universe.Goals
- * @property EatBrains
+ * @class EatBrains
+ * @static
  * @for Goals
  * @type {Object}
  */

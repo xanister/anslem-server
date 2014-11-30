@@ -4,6 +4,7 @@
  * @module Anslem.Universe.Actions
  * @class ActionTemplate
  * @constructor
+ * @for Actions
  * @param {Object} params optional params for action
  */
 Actions.ActionTemplate = function ActionTemplate(params) {
