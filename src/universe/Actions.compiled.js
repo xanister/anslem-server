@@ -14,19 +14,18 @@ var Actions = {};
 /**
  * Action template
  *
- * @class Action
+ * @class ActionTemplate
  * @constructor
- * @for Actions
  * @param {Object} params optional params for action
  */
-Actions.Action = function Action(params) {
+Actions.ActionTemplate = function ActionTemplate(params) {
     /**
      * Basic description
      *
      * @property description
      * @type {String}
      */
-    this.description = "Action template";
+    this.description = "Action template description";
 
     /**
      * Basic label or name
@@ -34,7 +33,7 @@ Actions.Action = function Action(params) {
      * @property label
      * @type {String}
      */
-    this.label = "Action";
+    this.label = "Action Template";
 
     /**
      * Parameters for the action, defined per action basis
@@ -65,7 +64,7 @@ Actions.Action = function Action(params) {
      *
      * @method updateAnimation
      */
-    Action.prototype.updateAnimation = function () {
+    ActionTemplate.prototype.updateAnimation = function () {
         // Determine animation here...
         this.setAnimation("default");
     };
@@ -76,7 +75,7 @@ Actions.Action = function Action(params) {
      * @method run
      * @param {Object} params action parameters defined at creation
      */
-    Action.prototype.run = function (params) {
+    ActionTemplate.prototype.run = function (params) {
         // Do whatever needs to be done
     };
 };
