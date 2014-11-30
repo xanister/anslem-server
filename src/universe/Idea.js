@@ -245,7 +245,7 @@ function Idea() {
      *
      * @param {Number} tarX
      * @param {Number} tarY
-     * @returns {Number}
+     * @return {Number}
      */
     Idea.prototype.distanceTo = function (tarX, tarY) {
         return Math.sqrt(Math.pow(tarX - this.x, 2) + Math.pow(tarY - this.y, 2));
