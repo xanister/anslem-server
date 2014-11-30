@@ -4,10 +4,9 @@
  * @module Anslem.Universe.Actions
  * @class Walk
  * @constructor
- * @for Actions
  * @param {Object} params direction to move, {dir: 1 || -1}
  */
-Actions.Walk = function Walk(params) {
+function Walk(params) {
     this.description = "Walk";
     this.label = "Walk";
     this.params = params;
@@ -25,4 +24,5 @@ Actions.Walk = function Walk(params) {
         else
             this.setAnimation("walk", this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed));
     };
-};
+}
+Actions.Walk = Walk;

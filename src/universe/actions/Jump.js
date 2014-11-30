@@ -4,9 +4,8 @@
  * @module Anslem.Universe.Actions
  * @class Jump
  * @constructor
- * @for Actions
  */
-Actions.Jump = function Jump() {
+function Jump() {
     this.description = "Jump";
     this.label = "Jump";
     this.params = false;
@@ -19,4 +18,5 @@ Actions.Jump = function Jump() {
     Jump.prototype.updateAnimation = function () {
         this.setAnimation("jump");
     };
-};
+}
+Actions.Jump = Jump;

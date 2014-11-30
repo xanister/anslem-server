@@ -4,9 +4,8 @@
  * @module Anslem.Universe.Actions
  * @class Idle
  * @constructor
- * @for Actions
  */
-Actions.Idle = function Idle() {
+function Idle() {
     this.description = "Idle";
     this.label = "Idle";
     this.params = false;
@@ -23,4 +22,5 @@ Actions.Idle = function Idle() {
         else
             this.setAnimation("default");
     };
-};
+}
+Actions.Idle = Idle;

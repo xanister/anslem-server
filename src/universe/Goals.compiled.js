@@ -1,7 +1,7 @@
 /**
  * Compile all actions and goals and return Goals module
  *
- * @module Anslem.Universe.scripts
+ * @module Anslem.Universe.Goals
  * @requires compileActions
  */
 var Actions = require('./compileActions');
@@ -14,10 +14,11 @@ var Actions = require('./compileActions');
  */
 var Goals = {};
 /**
- * EatBrains.js
  * Eat Brains
  *
- * @property EatBrains
+ * @module Anslem.Universe.Goals
+ * @class EatBrains
+ * @static
  * @for Goals
  * @type {Object}
  */
@@ -31,7 +32,9 @@ Goals.EatBrains = {
 /**
  * PlayerInput
  *
- * @property PlayerInput
+ * @module Anslem.Universe.Goals
+ * @class PlayerInput
+ * @static
  * @for Goals
  * @type {Object}
  */

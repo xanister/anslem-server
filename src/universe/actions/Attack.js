@@ -4,10 +4,9 @@
  * @module Anslem.Universe.Actions
  * @class Attack
  * @constructor
- * @for Actions
  * @param {Object} params {dir: 1 || -1, strength: 10}
  */
-Actions.Attack = function Attack(params) {
+function Attack(params) {
     this.description = "Attack";
     this.label = "Attack";
     this.params = params;
@@ -25,4 +24,5 @@ Actions.Attack = function Attack(params) {
     Attack.prototype.updateAnimation = function () {
         this.setAnimation("attack");
     };
-};
+}
+Actions.Attack = Attack;

@@ -14,11 +14,12 @@ var Actions = {};
 /**
  * Action template
  *
+ * @module Anslem.Universe.Actions
  * @class ActionTemplate
  * @constructor
  * @param {Object} params optional params for action
  */
-Actions.ActionTemplate = function ActionTemplate(params) {
+function ActionTemplate(params) {
     /**
      * Basic description
      *
@@ -54,7 +55,7 @@ Actions.ActionTemplate = function ActionTemplate(params) {
     /**
      * How many frames it takes to do one complete action
      *
-     * @property description
+     * @property speed
      * @type {String}
      */
     this.speed = 0;
@@ -78,16 +79,17 @@ Actions.ActionTemplate = function ActionTemplate(params) {
     ActionTemplate.prototype.run = function (params) {
         // Do whatever needs to be done
     };
-};
+}
+Actions.ActionTemplate = ActionTemplate;
 /**
  * Attack with whatever I am holding
  *
+ * @module Anslem.Universe.Actions
  * @class Attack
  * @constructor
- * @for Actions
  * @param {Object} params {dir: 1 || -1, strength: 10}
  */
-Actions.Attack = function Attack(params) {
+function Attack(params) {
     this.description = "Attack";
     this.label = "Attack";
     this.params = params;
@@ -105,16 +107,17 @@ Actions.Attack = function Attack(params) {
     Attack.prototype.updateAnimation = function () {
         this.setAnimation("attack");
     };
-};
+}
+Actions.Attack = Attack;
 /**
  * Take a hit
  *
+ * @module Anslem.Universe.Actions
  * @class Flinch
  * @constructor
- * @for Actions
  * @param {Object} params {dir: 1 || -1, strength: 5}
  */
-Actions.Flinch = function Flinch(params) {
+function Flinch(params) {
     this.description = "Take a hit";
     this.label = "Flinch";
     this.params = params;
@@ -129,15 +132,16 @@ Actions.Flinch = function Flinch(params) {
     Flinch.prototype.updateAnimation = function () {
         this.setAnimation("flinch");
     };
-};
+}
+Actions.Flinch = Flinch;
 /**
  * Idle
  *
+ * @module Anslem.Universe.Actions
  * @class Idle
  * @constructor
- * @for Actions
  */
-Actions.Idle = function Idle() {
+function Idle() {
     this.description = "Idle";
     this.label = "Idle";
     this.params = false;
@@ -154,15 +158,16 @@ Actions.Idle = function Idle() {
         else
             this.setAnimation("default");
     };
-};
+}
+Actions.Idle = Idle;
 /**
  * Jump
  *
+ * @module Anslem.Universe.Actions
  * @class Jump
  * @constructor
- * @for Actions
  */
-Actions.Jump = function Jump() {
+function Jump() {
     this.description = "Jump";
     this.label = "Jump";
     this.params = false;
@@ -175,16 +180,17 @@ Actions.Jump = function Jump() {
     Jump.prototype.updateAnimation = function () {
         this.setAnimation("jump");
     };
-};
+}
+Actions.Jump = Jump;
 /**
  * Walk
  *
+ * @module Anslem.Universe.Actions
  * @class Walk
  * @constructor
- * @for Actions
  * @param {Object} params direction to move, {dir: 1 || -1}
  */
-Actions.Walk = function Walk(params) {
+function Walk(params) {
     this.description = "Walk";
     this.label = "Walk";
     this.params = params;
@@ -202,5 +208,6 @@ Actions.Walk = function Walk(params) {
         else
             this.setAnimation("walk", this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed));
     };
-};
+}
+Actions.Walk = Walk;
 module.exports = Actions;

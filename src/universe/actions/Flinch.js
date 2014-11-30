@@ -4,10 +4,9 @@
  * @module Anslem.Universe.Actions
  * @class Flinch
  * @constructor
- * @for Actions
  * @param {Object} params {dir: 1 || -1, strength: 5}
  */
-Actions.Flinch = function Flinch(params) {
+function Flinch(params) {
     this.description = "Take a hit";
     this.label = "Flinch";
     this.params = params;
@@ -22,4 +21,5 @@ Actions.Flinch = function Flinch(params) {
     Flinch.prototype.updateAnimation = function () {
         this.setAnimation("flinch");
     };
-};
+}
+Actions.Flinch = Flinch;

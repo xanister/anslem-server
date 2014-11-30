@@ -4,10 +4,9 @@
  * @module Anslem.Universe.Actions
  * @class ActionTemplate
  * @constructor
- * @for Actions
  * @param {Object} params optional params for action
  */
-Actions.ActionTemplate = function ActionTemplate(params) {
+function ActionTemplate(params) {
     /**
      * Basic description
      *
@@ -43,7 +42,7 @@ Actions.ActionTemplate = function ActionTemplate(params) {
     /**
      * How many frames it takes to do one complete action
      *
-     * @property description
+     * @property speed
      * @type {String}
      */
     this.speed = 0;
@@ -67,4 +66,5 @@ Actions.ActionTemplate = function ActionTemplate(params) {
     ActionTemplate.prototype.run = function (params) {
         // Do whatever needs to be done
     };
-};
+}
+Actions.ActionTemplate = ActionTemplate;
