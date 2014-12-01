@@ -15,7 +15,9 @@ function Idle() {
 
     };
     Idle.prototype.updateAnimation = function () {
-        if (this.ySpeed !== 0)
+        if (this.stats.health <= 0)
+            this.setAnimation("die");
+        else if (this.ySpeed !== 0)
             this.setAnimation("jump");
         else if (this.xSpeed !== 0)
             this.setAnimation("walk");

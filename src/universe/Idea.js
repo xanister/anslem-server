@@ -20,8 +20,9 @@ global.idCounter = global.idCounter || 1;
  *
  * @class Idea
  * @constructor
+ * @param {Array} categories
  */
-function Idea() {
+function Idea(categories) {
     /**
      * Bubble for speech/emotes
      *
@@ -37,7 +38,7 @@ function Idea() {
      * @property categories
      * @type {Array}
      */
-    this.categories = [];
+    this.categories = categories || [];
 
     /**
      * Parent object
@@ -176,6 +177,20 @@ function Idea() {
     this.ySpeed = 0;
 
     /**
+     * Add category
+     *
+     * @param {String} category
+     * @returns {Boolean}
+     */
+    Idea.prototype.addCategory = function (category) {
+        for (var index in this.categories)
+            if (this.categories[index] === category)
+                return true;
+        this.categories.push(category);
+        this.container.contents[category][this.id] = this;
+    };
+
+    /**
      * Return bounding box
      *
      * @method bbox
@@ -253,15 +268,14 @@ function Idea() {
     };
 
     /**
-     * Generates small object representation
+     * Generate small packet
      *
      * @method getPacket
      * @return {Object}
      */
     Idea.prototype.getPacket = function () {
-        var packet = {
+        return {
             bubble: this.bubble,
-            contents: [],
             sprite: {
                 animation: this.sprite.animation,
                 frame: this.sprite.frame,
@@ -272,17 +286,25 @@ function Idea() {
                 tileX: this.sprite.tileX,
                 tileY: this.sprite.tileY
             },
-            text: false,
             width: this.width,
             height: this.height,
             x: this.x,
             y: this.y,
             z: this.z
         };
-        for (var index in this.contents[0]) {
-            packet.contents.push(this.contents[0][index].getPacket());
-        }
-        return packet;
+    };
+
+    /**
+     * Returns true if Idea has the given category
+     *
+     * @param {String} category
+     * @returns {Boolean}
+     */
+    Idea.prototype.hasCategory = function (category) {
+        for (var index in this.categories)
+            if (this.categories[index] === category)
+                return true;
+        return false;
     };
 
     /**
@@ -342,6 +364,20 @@ function Idea() {
     };
 
     /**
+     * Remove category
+     *
+     * @param {String} category
+     * @returns {Boolean}
+     */
+    Idea.prototype.removeCategory = function (category) {
+        for (var index in this.categories)
+            if (this.categories[index] === category)
+                this.categories.splice(index, 1);
+        if (this.container)
+            delete this.container.contents[category][this.id];
+    };
+
+    /**
      * Sets Animation
      *
      * @method setAnimation
@@ -358,6 +394,30 @@ function Idea() {
         this.sprite.frameCount = this.sprite.src[animation].frameCount;
         this.sprite.frameSpeed = frameSpeed || this.sprite.src[animation].frameSpeed;
         this.sprite.loop = this.sprite.src[animation].loop;
+    };
+
+    /**
+     * Sets categories and maintains associations
+     *
+     * @method setCategories
+     * @param {Array} categories
+     */
+    Idea.prototype.setCategories = function (categories) {
+        if (this.container) {
+            for (var index in this.categories) {
+                var c = this.categories[index];
+                delete this.container.contents[c][this.id];
+            }
+            this.categories = categories;
+            for (var index in this.categories) {
+                var c = this.categories[index];
+                if (!this.container.contents[c])
+                    this.container.contents[c] = {};
+                this.container.contents[c][this.id] = this;
+            }
+        } else {
+            this.categories = categories;
+        }
     };
 
     /**

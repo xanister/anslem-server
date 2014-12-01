@@ -25,18 +25,20 @@ Goals.Dead = {
     description: "Dead",
     label: "Dead",
     getAction: function () {
-        if (this.inputs && this.inputs.events.keydown.R) {
+        if (this.inputs && (this.inputs.events.keydown.R || this.inputs.events.swipeup)) {
             this.stats.health = 100;
+            this.stats.jump = 0;
+            this.stats.speed = 10;
             this.baseGoal = Goals.PlayerInput;
-            return new Actions.Idle();
+            this.addCategory('physical');
+            this.setSprite("skeleton");
         }
-        if (Math.random() * 2000 < 5) {
+        if (!this.inputs && Math.random() * 3000 < 5) {
             this.stats.health = 100;
             this.baseGoal = Goals.EatBrains;
-            return new Actions.Idle();
+            this.addCategory('physical');
         }
-
-        return new Actions.Die();
+        return new Actions.Idle();
     }
 };
 /**
@@ -50,7 +52,12 @@ Goals.EatBrains = {
     description: "Eat brains",
     label: "Eat brains",
     getAction: function () {
-        var nearest = this.instanceNearest("player");
+        if (this.stats.health <= 0) {
+            this.baseGoal = Goals.Dead;
+            return new Actions.Die();
+        }
+
+        var nearest = this.instanceNearest("aware");
         if (nearest) {
             var dist = this.distanceTo(nearest.x, nearest.y);
             if (nearest.baseGoal !== Goals.Dead && dist < this.stats.perception)
@@ -86,7 +93,7 @@ Goals.Kill = {
     getAction: function (params) {
         var dist = this.distanceTo(params.x, params.y);
         if (dist < this.width)
-            return new Actions.Attack({dir: params.x > this.x ? 1 : -1});
+            return new Actions.Attack({dir: params.x > this.x ? 1 : -1, target: params});
         return Goals.Goto.getAction.call(this, params);
     }
 };
@@ -101,6 +108,11 @@ Goals.PlayerInput = {
     description: "PlayerInput",
     label: "Player Goal",
     getAction: function () {
+        if (this.stats.health <= 0) {
+            this.baseGoal = Goals.Dead;
+            return new Actions.Die();
+        }
+
         // Desktop Controls
         if (this.inputs.events.keydown.F) {
             return new Actions.Attack({dir: this.facing});

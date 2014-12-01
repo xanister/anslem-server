@@ -40,7 +40,7 @@ function Entity() {
      * @property categories
      * @type {Array}
      */
-    this.categories = ['physical', 'entity'];
+    this.categories = ['physical', 'entity', 'aware'];
 
     /**
      * Current goal
@@ -97,10 +97,16 @@ function Entity() {
     Entity.prototype.run = function () {
         Idea.prototype.run.call(this);
 
-        if (this.stats.health <= 0) {
-            this.baseGoal = Goals.Dead;
-            this.action = false;
+        this.inView = [];
+        if (this.container) {
+            for (var id in this.container.contents[0]) {
+                var idea = this.container.contents[0][id];
+                if (idea.hasCategory('landscape') || this.distanceTo(idea.x, idea.y) < this.stats.perception) {
+                    this.inView.push(idea);
+                }
+            }
         }
+
         if (!this.action || this.action.progress >= this.action.speed)
             this.action = this.baseGoal.getAction.call(this);
         if (this.action) {

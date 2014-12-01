@@ -11,8 +11,11 @@ function Die() {
     this.params = false;
     this.progress = 0;
     this.speed = 20;
-    Die.prototype.run = function (params) {
-
+    Die.prototype.run = function () {
+        if (this.action.progress === 0) {
+            this.removeCategory('aware');
+            this.removeCategory('physical');
+        }
     };
     Die.prototype.updateAnimation = function () {
         this.setAnimation("die");

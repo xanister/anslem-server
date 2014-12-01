@@ -156,12 +156,8 @@ function AnslemServer() {
             this.updateFrameSkipCount = 0;
             for (var id in this.clients) {
                 var player = this.clients[id].player;
-                if (player) {
-                    var packet = player.container.getPacket();
-                    packet.viewX = player.view.x;
-                    packet.viewY = player.view.y;
-                    this.updateClient(id, packet);
-                }
+                if (player)
+                    this.updateClient(id, player.getPacket(true));
             }
         }
     };

@@ -6,6 +6,7 @@
  */
 var AnslemServerConfig = require("./../AnslemServerConfig");
 var Entity = require("./Entity");
+var Idea = require("./Idea");
 var Goals = require("./Goals.compiled");
 
 /**
@@ -31,7 +32,7 @@ function Player() {
      * @property categories
      * @type {Array}
      */
-    this.categories = ['physical', 'entity', 'player'];
+    this.categories.push('player');
 
     /**
      * Client connection
@@ -48,6 +49,27 @@ function Player() {
      * @type {Object}
      */
     this.view = false;
+
+    /**
+     * Generate packet of information required
+     * to render the scene to send to client
+     *
+     * @method getPacket
+     * @param {Boolean} includeInView
+     * @return {Object}
+     */
+    Player.prototype.getPacket = function (includeInView) {
+        var packet = Idea.prototype.getPacket.call(this);
+        if (includeInView) {
+            packet.viewX = this.view.x;
+            packet.viewY = this.view.y;
+            packet.inView = [];
+            for (var index in this.inView) {
+                packet.inView.push(this.inView[index].getPacket());
+            }
+        }
+        return packet;
+    };
 
     /**
      * Initialize player view
@@ -84,6 +106,7 @@ function Player() {
         this.warp(400, 400, universe);
         this.inputs = client.inputs;
         this.stats.speed = 20;
+        this.stats.perception = 3000;
         this.initializeView(client.info.screenWidth, client.info.screenHeight);
     };
 

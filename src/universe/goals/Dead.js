@@ -9,17 +9,19 @@ Goals.Dead = {
     description: "Dead",
     label: "Dead",
     getAction: function () {
-        if (this.inputs && this.inputs.events.keydown.R) {
+        if (this.inputs && (this.inputs.events.keydown.R || this.inputs.events.swipeup)) {
             this.stats.health = 100;
+            this.stats.jump = 0;
+            this.stats.speed = 10;
             this.baseGoal = Goals.PlayerInput;
-            return new Actions.Idle();
+            this.addCategory('physical');
+            this.setSprite("skeleton");
         }
-        if (Math.random() * 2000 < 5) {
+        if (!this.inputs && Math.random() * 3000 < 5) {
             this.stats.health = 100;
             this.baseGoal = Goals.EatBrains;
-            return new Actions.Idle();
+            this.addCategory('physical');
         }
-
-        return new Actions.Die();
+        return new Actions.Idle();
     }
 };
