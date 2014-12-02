@@ -124,6 +124,7 @@ function Die() {
     this.speed = 20;
     Die.prototype.run = function () {
         if (this.action.progress === 0) {
+            this.alive = false;
             this.removeCategory('aware');
             this.removeCategory('physical');
         }
@@ -152,10 +153,6 @@ function Flinch(params) {
             this.xSpeed += (params.strength * params.dir);
             this.ySpeed -= (params.strength * 0.5);
             this.stats.health -= params.strength;
-//            if (this.stats.health < 0) {
-//                this.stats.health = 100;
-//                this.warp(Math.random() * this.container.width, 0);
-//            }
         }
     };
     Flinch.prototype.updateAnimation = function () {

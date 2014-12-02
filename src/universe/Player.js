@@ -64,6 +64,11 @@ function Player() {
             packet.viewX = this.view.x;
             packet.viewY = this.view.y;
             packet.inView = [];
+            packet.goal = this.baseGoal.label;
+            packet.action = this.action.label;
+            packet.actionProgress = this.action.progress;
+            packet.health = this.stats.health;
+            packet.categories = this.categories;
             for (var index in this.inView) {
                 packet.inView.push(this.inView[index].getPacket());
             }

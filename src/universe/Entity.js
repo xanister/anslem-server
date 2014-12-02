@@ -27,6 +27,14 @@ function Entity() {
     this.action = false;
 
     /**
+     * Conscious
+     *
+     * @property alive
+     * @type {Boolean}
+     */
+    this.alive = true;
+
+    /**
      * Basic driving goal
      *
      * @property baseGoal
@@ -107,6 +115,10 @@ function Entity() {
             }
         }
 
+        if (this.stats.health <= 0) {
+            this.baseGoal = Goals.Dead;
+            this.action = false;
+        }
         if (!this.action || this.action.progress >= this.action.speed)
             this.action = this.baseGoal.getAction.call(this);
         if (this.action) {

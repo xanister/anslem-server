@@ -9,11 +9,6 @@ Goals.PlayerInput = {
     description: "PlayerInput",
     label: "Player Goal",
     getAction: function () {
-        if (this.stats.health <= 0) {
-            this.baseGoal = Goals.Dead;
-            return new Actions.Die();
-        }
-
         // Desktop Controls
         if (this.inputs.events.keydown.F) {
             return new Actions.Attack({dir: this.facing});

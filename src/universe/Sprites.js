@@ -89,7 +89,7 @@ var Sprites = {
             imagePath: "/sprites/goblin/attack/goblin-attack",
             frameCount: 20,
             frameSpeed: 1,
-            loop: false,
+            loop: true,
             singleImage: true,
             xOffset: 35,
             yOffset: -30
@@ -145,7 +145,7 @@ var Sprites = {
             imagePath: "/sprites/skeleton/attack/skeleton-attack",
             frameCount: 16,
             frameSpeed: 1,
-            loop: false,
+            loop: true,
             singleImage: true,
             xOffset: 0,
             yOffset: 20

@@ -25,6 +25,10 @@ Goals.Dead = {
     description: "Dead",
     label: "Dead",
     getAction: function () {
+        if (this.alive) {
+            this.stats.timeOfDeath = (new Date()).getTime();
+            return new Actions.Die();
+        }
         if (this.inputs && (this.inputs.events.keydown.R || this.inputs.events.swipeup)) {
             this.stats.health = 100;
             this.stats.jump = 0;
@@ -32,11 +36,13 @@ Goals.Dead = {
             this.baseGoal = Goals.PlayerInput;
             this.addCategory('physical');
             this.setSprite("skeleton");
+            this.alive = true;
         }
-        if (!this.inputs && Math.random() * 3000 < 5) {
+        if (!this.inputs && ((new Date()).getTime() > (this.stats.timeOfDeath + 60000))) {
             this.stats.health = 100;
             this.baseGoal = Goals.EatBrains;
             this.addCategory('physical');
+            this.alive = true;
         }
         return new Actions.Idle();
     }
@@ -52,11 +58,6 @@ Goals.EatBrains = {
     description: "Eat brains",
     label: "Eat brains",
     getAction: function () {
-        if (this.stats.health <= 0) {
-            this.baseGoal = Goals.Dead;
-            return new Actions.Die();
-        }
-
         var nearest = this.instanceNearest("aware");
         if (nearest) {
             var dist = this.distanceTo(nearest.x, nearest.y);
@@ -108,11 +109,6 @@ Goals.PlayerInput = {
     description: "PlayerInput",
     label: "Player Goal",
     getAction: function () {
-        if (this.stats.health <= 0) {
-            this.baseGoal = Goals.Dead;
-            return new Actions.Die();
-        }
-
         // Desktop Controls
         if (this.inputs.events.keydown.F) {
             return new Actions.Attack({dir: this.facing});

@@ -387,12 +387,12 @@ function Idea(categories) {
     Idea.prototype.setAnimation = function (animation, frameSpeed) {
         if (!this.sprite.src[animation])
             animation = "default";
+        this.sprite.frameSpeed = frameSpeed || this.sprite.src[animation].frameSpeed;
         if (this.sprite.animation === animation)
             return false;
         this.sprite.animation = animation;
         this.sprite.frame = 0;
         this.sprite.frameCount = this.sprite.src[animation].frameCount;
-        this.sprite.frameSpeed = frameSpeed || this.sprite.src[animation].frameSpeed;
         this.sprite.loop = this.sprite.src[animation].loop;
     };
 
