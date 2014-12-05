@@ -276,20 +276,22 @@ function Idea(categories) {
     Idea.prototype.getPacket = function () {
         return {
             bubble: this.bubble,
+            id: this.id,
             sprite: {
                 animation: this.sprite.animation,
-                frame: this.sprite.frame,
-                loop: this.sprite.loop,
+                frame: Math.floor(this.sprite.frame),
                 mirror: this.facing === -1 ? true : false,
                 name: this.sprite.name,
                 scrollSpeed: this.sprite.scrollSpeed,
                 tileX: this.sprite.tileX,
-                tileY: this.sprite.tileY
+                tileY: this.sprite.tileY,
+                width: this.sprite.src[this.sprite.animation].width,
+                height: this.sprite.src[this.sprite.animation].height
             },
             width: this.width,
             height: this.height,
-            x: this.x,
-            y: this.y,
+            x: this.x + (this.sprite.src[this.sprite.animation].xOffset * this.facing),
+            y: this.y + this.sprite.src[this.sprite.animation].yOffset,
             z: this.z
         };
     };
@@ -385,8 +387,9 @@ function Idea(categories) {
      * @param {Number} [frameSpeed=Sprite.frameSpeed]
      */
     Idea.prototype.setAnimation = function (animation, frameSpeed) {
-        if (!this.sprite.src[animation])
+        if (!this.sprite.src[animation]) {
             animation = "default";
+        }
         this.sprite.frameSpeed = frameSpeed || this.sprite.src[animation].frameSpeed;
         if (this.sprite.animation === animation)
             return false;

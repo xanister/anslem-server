@@ -22,7 +22,9 @@ function Attack(params) {
         }
     };
     Attack.prototype.updateAnimation = function () {
-        this.setAnimation("attack", this.sprite.src["attack"].frameCount / this.action.speed);
+        this.setAnimation("attack");
+        if (this.animation === "attack")
+            this.sprite.frameSpeed = this.sprite.src["attack"].frameCount / this.action.speed;
     };
 }
 Actions.Attack = Attack;

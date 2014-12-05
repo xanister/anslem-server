@@ -1,0 +1,43 @@
+{
+    "name": "skeleton",
+    "animations": {
+        "default": {
+            "imagePath": "/sprites/skeleton/skeleton-idle",
+            "frameCount": 8,
+            "frameSpeed": 0.2,
+            "loop": true,
+            "singleImage": true
+        },
+        "attack": {
+            "imagePath": "/sprites/skeleton/skeleton-attack",
+            "frameCount": 8,
+            "frameSpeed": 0.5,
+            "loop": true,
+            "singleImage": true,
+            "xOffset": 0,
+            "yOffset": 20
+        },
+        "die": {
+            "imagePath": "/sprites/skeleton/skeleton-die",
+            "frameCount": 8,
+            "frameSpeed": 0.3,
+            "loop": false,
+            "singleImage": true,
+            "yOffset": 10
+        },
+        "flinch": {
+            "imagePath": "/sprites/skeleton/skeleton-flinch",
+            "frameCount": 8,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/skeleton/skeleton-walk",
+            "frameCount": 8,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

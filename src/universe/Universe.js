@@ -46,6 +46,23 @@ function Universe() {
      * @method populate
      */
     Universe.prototype.populate = function () {
+//        var i = new Idea(['landscape']);
+//        i.setSprite("bgForest", true, false, 0.2);
+//        i.width = Math.floor(i.width * (this.height / i.height));
+//        i.height = this.height;
+//        i.z = 0;
+//        i.warp(0, this.height - (i.height / 2), this);
+//
+//        var i = new Idea(['landscape']);
+//        i.setSprite("bgForestMidground", true, false, 0.4);
+//        i.z = 1;
+//        i.warp(0, this.height - (i.height / 2), this);
+//
+//        var i = new Idea(['landscape']);
+//        i.setSprite("bgGroundGrass", true, false, 0.6);
+//        i.z = 2;
+//        i.warp(0, this.height - (i.height / 2), this);
+
         var i = new Idea(['landscape']);
         i.setSprite("bgClouds", true, false, 0.2);
         i.z = 0;
@@ -79,6 +96,7 @@ function Universe() {
             i.warp(1000 + (Math.random() * (this.width - 1000)), 400, this);
         }
     };
+    this.populate();
 }
 Universe.prototype = new Idea();
 Universe.prototype.constructor = Universe;

@@ -105,7 +105,9 @@ function Attack(params) {
         }
     };
     Attack.prototype.updateAnimation = function () {
-        this.setAnimation("attack", this.sprite.src["attack"].frameCount / this.action.speed);
+        this.setAnimation("attack");
+        if (this.animation === "attack")
+            this.sprite.frameSpeed = this.sprite.src["attack"].frameCount / this.action.speed;
     };
 }
 Actions.Attack = Attack;
@@ -235,8 +237,11 @@ function Walk(params) {
     Walk.prototype.updateAnimation = function () {
         if (this.ySpeed !== 0)
             this.setAnimation("jump");
-        else
-            this.setAnimation("walk", this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed));
+        else {
+            this.setAnimation("walk");
+            if (this.animation === "walk")
+                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
+        }
     };
 }
 Actions.Walk = Walk;

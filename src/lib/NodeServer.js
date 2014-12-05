@@ -11,8 +11,9 @@ var IO = require('socket.io');
  *
  * @class NodeServer
  * @constructor
+ * @param {Number} [port=3010]
  */
-function NodeServer() {
+function NodeServer(port) {
     /**
      * IO socket
      *
@@ -37,54 +38,102 @@ function NodeServer() {
      * @property port
      * @protected
      * @type {Number}
-     * @default 3000
+     * @default 3010
      */
-    this.port = 3000;
+    this.port = port || 3010;
 
     /**
      * On new client connect, return initial data to send to client
      *
-     * @event clientConnectCallback
+     * @event onclientconnect
      * @param {Object} client
      * @return {Object} Return initial data to send to client
      */
-    this.clientConnectCallback = function (client) {
-        this.log("Client has connected", client);
-        return {};
-    };
+    this.onclientconnect = false;
 
     /**
      * On client disconnect callback
      *
-     * @event clientDisconnectCallback
+     * @event onclientdisconnect
      * @param {Object} client
      */
-    this.clientDisconnectCallback = function (client) {
-        this.log("Client has disconnected", client.id);
-    };
+    this.onclientdisconnect = false;
 
     /**
      * Client updated info callback
      *
-     * @event clientInfoCallback
+     * @event onclientinfo
+     * @param {Object} info
      */
-    this.clientInfoCallback = false;
+    this.onclientinfo = false;
 
     /**
      * On client input callback
      *
-     * @event clientInputCallback
+     * @event onclientinput
+     * @param {Object} input
      */
-    this.clientInputCallback = false;
+    this.onclientinput = false;
 
     /**
-     * Send message to all connected clients
+     * Bind events
+     *
+     * @method bindEvents
+     */
+    this.bindEvents = function () {
+        // Bind events
+        var nodeServer = this;
+
+        // Listen for connections and bind events per client
+        socket.on('connection', function (client) {
+            // Save client
+            var screenSize = client.handshake.query.screenSize.split(',');
+            nodeServer.clients[client.id] = client;
+            nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
+            nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: nodeServer.getEmptyInputEvents()};
+
+            // Server Callback
+            var initialData = nodeServer.onclientconnect ? nodeServer.onclientconnect.call(nodeServer, client) : {};
+
+            // Send initial data to client
+            client.emit('connection', {message: 'welcome', clientId: client.id, initialData: initialData});
+
+            // Accept input
+            client.on("clientInput", function (inputs) {
+                nodeServer.clients[client.id].inputs.keyboard = inputs.keyboard;
+                nodeServer.clients[client.id].inputs.touches = inputs.touches;
+                nodeServer.clients[client.id].inputs.events = inputs.events;
+                nodeServer.clients[client.id].inputs.message = inputs.message || nodeServer.clients[client.id].inputs.message;
+                if (nodeServer.onclientinput)
+                    nodeServer.onclientinput.call(nodeServer, client, inputs);
+            });
+
+            // Accept client info
+            client.on("clientInfo", function (info) {
+                for (var index in info)
+                    nodeServer.clients[client.id].info[index] = info[index];
+                if (nodeServer.onclientinfo)
+                    nodeServer.onclientinfo.call(nodeServer, client, info);
+            });
+
+            // Update on disconnect
+            client.on("disconnect", function () {
+                if (nodeServer.onclientdisconnect)
+                    nodeServer.onclientdisconnect.call(nodeServer, client);
+                delete nodeServer.clients[client.id];
+            });
+        });
+    };
+
+    /**
+     * Send event to all connected clients
      *
      * @method broadcast
-     * @param {String} message
+     * @param {String} eventName
+     * @param {Object} packet
      */
-    NodeServer.prototype.broadcast = function (message) {
-        socket.sockets.emit("message", message);
+    NodeServer.prototype.broadcast = function (eventName, packet) {
+        socket.sockets.emit(eventName, packet);
     };
 
     /**
@@ -104,16 +153,6 @@ function NodeServer() {
     };
 
     /**
-     * Get current server time
-     *
-     * @method getTime
-     * @return {Date}
-     */
-    NodeServer.prototype.getTime = function () {
-        return new Date();
-    };
-
-    /**
      * Log out to server
      *
      * @method log
@@ -124,71 +163,38 @@ function NodeServer() {
     };
 
     /**
-     * Send message to specific connected client
+     * Listen for event
      *
-     * @method message
-     * @param {String} clientId
-     * @param {String} message
+     * @method on
+     * @param {String} eventName
+     * @param {Function} callback
      */
-    NodeServer.prototype.message = function (clientId, message) {
-        if (this.clients[clientId])
-            this.clients[clientId].emit("message", message);
+    NodeServer.prototype.on = function (eventName, callback) {
+        socket.on(eventName, callback);
     };
 
     /**
      * Start server
      *
      * @method start
-     * @param {Number} [port=3000]
      */
-    NodeServer.prototype.start = function (port) {
+    NodeServer.prototype.start = function () {
         // Open connection
-        this.port = port || this.port;
         socket = IO.listen(this.port);
+        this.bindEvents();
+    };
 
-        // Bind events
-        var nodeServer = this;
-
-        // Listen for connections and bind events per client
-        socket.on('connection', function (client) {
-            // Save client
-            var screenSize = client.handshake.query.screenSize.split(',');
-            nodeServer.clients[client.id] = client;
-            nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
-            nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: nodeServer.getEmptyInputEvents(), message: false};
-
-            // Server Callback
-            var initialData = nodeServer.clientConnectCallback ? nodeServer.clientConnectCallback.call(nodeServer, client) : {};
-
-            // Send initial data to client
-            client.emit('connection', {message: 'welcome', clientId: client.id, initialData: initialData});
-
-            // Accept input
-            client.on("clientInput", function (inputs) {
-                nodeServer.clients[client.id].inputs.keyboard = inputs.keyboard;
-                nodeServer.clients[client.id].inputs.touches = inputs.touches;
-                nodeServer.clients[client.id].inputs.events = inputs.events;
-                nodeServer.clients[client.id].inputs.message = inputs.message || nodeServer.clients[client.id].inputs.message;
-                if (nodeServer.clientInputCallback)
-                    nodeServer.clientInputCallback.call(nodeServer, client, inputs);
-            });
-
-            // Accept client info
-            client.on("clientInfo", function (info) {
-                for (var index in info) {
-                    nodeServer.clients[client.id].info[index] = info[index];
-                }
-                if (nodeServer.clientInfoCallback)
-                    nodeServer.clientInfoCallback.call(nodeServer, client, info);
-            });
-
-            // Update on disconnect
-            client.on("disconnect", function () {
-                if (nodeServer.clientDisconnectCallback)
-                    nodeServer.clientDisconnectCallback.call(nodeServer, client);
-                delete nodeServer.clients[client.id];
-            });
-        });
+    /**
+     * Send event to client
+     *
+     * @method emit
+     * @param {Object} clientId
+     * @param {String} eventName
+     * @param {Object} packet
+     */
+    NodeServer.prototype.trigger = function (clientId, eventName, packet) {
+        if (this.clients[clientId])
+            this.clients[clientId].emit(eventName, packet);
     };
 
     /**

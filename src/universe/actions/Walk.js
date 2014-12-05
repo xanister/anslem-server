@@ -21,8 +21,11 @@ function Walk(params) {
     Walk.prototype.updateAnimation = function () {
         if (this.ySpeed !== 0)
             this.setAnimation("jump");
-        else
-            this.setAnimation("walk", this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed));
+        else {
+            this.setAnimation("walk");
+            if (this.animation === "walk")
+                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
+        }
     };
 }
 Actions.Walk = Walk;

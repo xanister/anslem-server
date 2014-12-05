@@ -2,9 +2,10 @@
  * List of available sprites and their info
  *
  * @module Anslem.assets
- * @requires AnslemServerConfig, image-size
+ * @requires AnslemServerConfig, fs, image-size
  */
 var AnslemServerConfig = require('../AnslemServerConfig');
+var fs = require('fs');
 var sizeOf = require('image-size');
 
 /**
@@ -14,18 +15,45 @@ var sizeOf = require('image-size');
  * @static
  */
 var Sprites = {
-    bgNight: {
+    bgClouds: {
         default: {
-            imagePath: '/sprites/bg-night/bg-night',
+            imagePath: '/sprites/bg-clouds/bg-clouds',
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
             singleImage: true
         }
     },
-    bgClouds: {
+    bgForest: {
         default: {
-            imagePath: '/sprites/bg-clouds/bg-clouds',
+            imagePath: '/sprites/bg-forest/bg-forest',
+            frameCount: 1,
+            frameSpeed: 0,
+            loop: true,
+            singleImage: true
+        }
+    },
+    bgForestMidground: {
+        default: {
+            imagePath: '/sprites/bg-forest-midground/bg-forest-midground',
+            frameCount: 1,
+            frameSpeed: 0,
+            loop: true,
+            singleImage: true
+        }
+    },
+    bgGround: {
+        default: {
+            imagePath: '/sprites/bg-ground/bg-ground',
+            frameCount: 1,
+            frameSpeed: 0,
+            loop: true,
+            singleImage: true
+        }
+    },
+    bgGroundGrass: {
+        default: {
+            imagePath: '/sprites/bg-ground-grass/bg-ground-grass',
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
@@ -50,18 +78,18 @@ var Sprites = {
             singleImage: true
         }
     },
-    bgTrees: {
+    bgNight: {
         default: {
-            imagePath: '/sprites/bg-trees/bg-trees',
+            imagePath: '/sprites/bg-night/bg-night',
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
             singleImage: true
         }
     },
-    bgGround: {
+    bgTrees: {
         default: {
-            imagePath: '/sprites/bg-ground/bg-ground',
+            imagePath: '/sprites/bg-trees/bg-trees',
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
@@ -76,106 +104,21 @@ var Sprites = {
             loop: true,
             singleImage: true
         }
-    },
-    goblin: {
-        default: {
-            imagePath: "/sprites/goblin/idle/goblin-idle",
-            frameCount: 24,
-            frameSpeed: 0.5,
-            loop: true,
-            singleImage: true
-        },
-        attack: {
-            imagePath: "/sprites/goblin/attack/goblin-attack",
-            frameCount: 20,
-            frameSpeed: 1,
-            loop: true,
-            singleImage: true,
-            xOffset: 35,
-            yOffset: -30
-        },
-        die: {
-            imagePath: "/sprites/skeleton/die/skeleton-die",
-            frameCount: 20,
-            frameSpeed: 1,
-            loop: false,
-            singleImage: true,
-            yOffset: 10
-        },
-        flinch: {
-            imagePath: "/sprites/goblin/flinch/goblin-flinch",
-            frameCount: 12,
-            frameSpeed: 0.25,
-            loop: true,
-            singleImage: true,
-            xOffset: 35,
-            yOffset: -30
-        },
-        jump: {
-            imagePath: "/sprites/goblin/jump/goblin-jump",
-            frameCount: 9,
-            frameSpeed: 0.5,
-            loop: true,
-            singleImage: true
-        },
-        tired: {
-            imagePath: "/sprites/goblin/tired/goblin-tired",
-            frameCount: 32,
-            frameSpeed: 1,
-            loop: true,
-            singleImage: true
-        },
-        walk: {
-            imagePath: "/sprites/goblin/walk/goblin-walk",
-            frameCount: 32,
-            frameSpeed: 1,
-            loop: true,
-            singleImage: true
-        }
-    },
-    skeleton: {
-        default: {
-            imagePath: "/sprites/skeleton/idle/skeleton-idle",
-            frameCount: 32,
-            frameSpeed: 1,
-            loop: true,
-            singleImage: true
-        },
-        attack: {
-            imagePath: "/sprites/skeleton/attack/skeleton-attack",
-            frameCount: 16,
-            frameSpeed: 1,
-            loop: true,
-            singleImage: true,
-            xOffset: 0,
-            yOffset: 20
-        },
-        die: {
-            imagePath: "/sprites/skeleton/die/skeleton-die",
-            frameCount: 20,
-            frameSpeed: 1,
-            loop: false,
-            singleImage: true,
-            yOffset: 10
-        },
-        flinch: {
-            imagePath: "/sprites/skeleton/flinch/skeleton-flinch",
-            frameCount: 11,
-            frameSpeed: 0.25,
-            loop: true,
-            singleImage: true,
-            xOffset: 0,
-            yOffset: 0
-        },
-        walk: {
-            imagePath: "/sprites/skeleton/walk/skeleton-walk",
-            frameCount: 32,
-            frameSpeed: 1,
-            loop: true,
-            singleImage: true
-        }
     }
 };
+
+// Load additional sprites from json definition files
+fs.readdirSync(__dirname + '/sprites').forEach(function (file) {
+    var spriteJson = fs.readFileSync(__dirname + '/sprites/' + file);
+    try {
+        var sprite = JSON.parse(spriteJson);
+        Sprites[sprite.name] = sprite.animations;
+    }
+    catch (err) {
+        console.log("JSON parse error on " + file);
+        console.log(err);
+    }
+});
 
 // Setup initial sprite info
 for (var index in Sprites) {
