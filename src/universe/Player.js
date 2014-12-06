@@ -102,9 +102,10 @@ function Player() {
     Player.prototype.load = function (client, universe) {
         this.setSprite("goblin");
         this.client = client;
-        this.warp(400, 400, universe);
+        this.warp(200, universe.height - (this.height / 2), universe);
         this.inputs = client.inputs;
         this.stats.speed = 20;
+        this.stats.strength = 35;
         this.stats.perception = 3000;
     };
 
@@ -116,9 +117,10 @@ function Player() {
     Player.prototype.run = function () {
         Entity.prototype.run.call(this);
 
+        // Clear events
+        this.inputs.events = {};
+
         // Bubble
-        if (this.bubble && this.bubble.time-- <= 0)
-            this.bubble = false;
         if (this.inputs.message) {
             this.bubble = {
                 message: this.inputs.message,

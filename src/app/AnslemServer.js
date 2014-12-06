@@ -21,21 +21,22 @@ var Universe = require("../universe/Universe");
  */
 function AnslemServer() {
     NodeServer.call(this, AnslemServerConfig.port);
-    /**
-     * Last calculated fps
-     *
-     * @property currentFps
-     * @type {Number}
-     */
-    this.currentFps = AnslemServerConfig.serverFps;
 
     /**
-     * Is the server running
+     * Clear client input events on update
      *
-     * @property running
+     * @property clearEventsOnUpdate
      * @type {Boolean}
      */
-    this.running = false;
+    this.clearEventsOnUpdate = false;
+
+    /**
+     * Last calculated network fps
+     *
+     * @property networkFps
+     * @type {Number}
+     */
+    this.networkFps = AnslemServerConfig.networkFps;
 
     /**
      * Universe instance
@@ -46,6 +47,14 @@ function AnslemServer() {
     this.universe = new Universe();
 
     /**
+     * Last calculated universe fps
+     *
+     * @property universeFps
+     * @type {Number}
+     */
+    this.universeFps = AnslemServerConfig.universeFps;
+
+    /**
      * Client connected callback
      *
      * @method onclientconnect
@@ -53,7 +62,7 @@ function AnslemServer() {
      * @return {Object} initial data to send to client
      */
     this.onclientconnect = function (client) {
-        console.log("Client connected");
+        this.log("Client connected");
         client.player = new Player();
         return {message: 'Welcome to Anslem!'};
     };
@@ -65,7 +74,7 @@ function AnslemServer() {
      * @param {Object} client
      */
     this.onclientdisconnect = function (client) {
-        console.log("Client disconnected");
+        this.log("Client disconnected");
         client.player.destroy();
     };
 
@@ -77,7 +86,7 @@ function AnslemServer() {
      * @param {Object} info
      */
     this.onclientinfo = function (client, info) {
-        console.log("Client info recieved");
+        this.log("Client info recieved");
         client.player.initializeView(client.info.screenWidth, client.info.screenHeight);
         this.trigger("viewUpdate", client.id, {width: client.player.view.width, height: client.player.view.height});
     };
@@ -90,9 +99,15 @@ function AnslemServer() {
      * @param {String} state
      */
     this.onclientstatechange = function (client, state) {
-        console.log("Client state change recieved. " + client.id + " is " + state);
+        this.log("Client state change recieved. " + client.id + " is " + state);
         switch (state) {
-            case  "ready":
+            case "paused":
+                client.player.bubble = {
+                    message: "...",
+                    time: 10
+                };
+                break;
+            case "ready":
                 if (!client.player.container)
                     client.player.load(client, this.universe);
                 break;
@@ -103,20 +118,29 @@ function AnslemServer() {
     };
 
     /**
-     * Run single frame
+     * Update clients
      *
-     * @method update
+     * @method updateNetwork
      * @private
      * @param {Number} delta time since last update
      */
-    this.update = function (delta) {
-        this.currentFps = 1 / delta;
-        this.universe.run();
-        for (var id in this.clients) {
-            if (this.clients[id].player.container) {
+    this.updateNetwork = function (delta) {
+        this.networkFps = 1 / delta;
+        for (var id in this.clients)
+            if (this.clients[id].player.container)
                 this.updateClient(id, this.clients[id].player.getPacket(true));
-            }
-        }
+    };
+
+    /**
+     * Run single frame
+     *
+     * @method updateUniverse
+     * @private
+     * @param {Number} delta time since last update
+     */
+    this.updateUniverse = function (delta) {
+        this.universeFps = 1 / delta;
+        this.universe.run();
     };
 
     /**
@@ -125,14 +149,10 @@ function AnslemServer() {
      * @method logServerInfo
      */
     AnslemServer.prototype.logServerInfo = function () {
-        console.log("Server FPS: " + this.currentFps);
-        console.log(Object.keys(this.clients).length + " player(s) currently connected");
-        if (this.running) {
-            var self = this;
-            setTimeout(function () {
-                self.logServerInfo.call(self);
-            }, AnslemServerConfig.serverInfoInterval);
-        }
+        this.log("Environment: " + AnslemServerConfig.environment);
+        this.log("Network FPS: " + this.networkFps);
+        this.log("Universe FPS: " + this.universeFps);
+        this.log(Object.keys(this.clients).length + " player(s) currently connected");
     };
 
     /**
@@ -142,13 +162,17 @@ function AnslemServer() {
      */
     AnslemServer.prototype.start = function () {
         NodeServer.prototype.start.call(this);
-        this.running = true;
-        var self = this;
-        this.gameloopId = gameloop.setGameLoop(function (delta) {
-            self.update.call(self, delta);
-        }, 1000 / AnslemServerConfig.serverFps);
 
-        this.logServerInfo();
+        var self = this;
+        this.networkloopId = gameloop.setGameLoop(function (delta) {
+            self.updateNetwork.call(self, delta);
+        }, 1000 / AnslemServerConfig.networkFps);
+        this.universeloopId = gameloop.setGameLoop(function (delta) {
+            self.updateUniverse.call(self, delta);
+        }, 1000 / AnslemServerConfig.universeFps);
+        this.serverInfoloopId = gameloop.setGameLoop(function (delta) {
+            self.logServerInfo.call(self, delta);
+        }, AnslemServerConfig.serverInfoInterval);
     };
 
     /**
@@ -157,8 +181,9 @@ function AnslemServer() {
      * @method stop
      */
     AnslemServer.prototype.stop = function () {
-        this.running = false;
-        gameloop.clearGameLoop(this.gameloopId);
+        gameloop.clearGameLoop(this.networkloopId);
+        gameloop.clearGameLoop(this.universeloopId);
+        gameloop.clearGameLoop(this.serverInfoloopId);
     };
 }
 AnslemServer.prototype = new NodeServer();

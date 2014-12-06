@@ -19,6 +19,20 @@ var AnslemServerConfig = {
      */
     assetPath: "/var/www/assets.anslemgalaxy.com",
     /**
+     * Environment
+     *
+     * @propert environment
+     * @type {String}
+     */
+    environment: 'production',
+    /**
+     * Network fps
+     *
+     * @property networkFps
+     * @type {Number}
+     */
+    networkFps: 30,
+    /**
      * Server info log interval
      *
      * @property serverInfoInterval
@@ -33,19 +47,19 @@ var AnslemServerConfig = {
      */
     port: 3010,
     /**
-     * Target server fps
+     * Universe fps
      *
-     * @property serverFps
+     * @property universeFps
      * @type {Number}
      */
-    serverFps: 60,
+    universeFps: 60,
     /**
      * Standard fps to measure agains
      *
      * @property standardFps
      * @type {Number}
      */
-    standardFps: 60,
+    standardFps: 60
 };
 
 // Scale attributes for framerate

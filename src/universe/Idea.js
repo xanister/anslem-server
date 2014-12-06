@@ -498,6 +498,10 @@ function Idea(categories) {
             }
         }
 
+        // Bubble
+        if (this.bubble && this.bubble.time-- <= 0)
+            this.bubble = false;
+
         // Run contents
         for (var id in this.contents[0]) {
             this.contents[0][id].run();

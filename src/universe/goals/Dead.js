@@ -15,7 +15,7 @@ Goals.Dead = {
         }
 
         // Respawn for testing
-        if (this.inputs && (this.inputs.events.keydown.R || this.inputs.events.swipeup)) {
+        if (this.inputs && ((this.inputs.events.keydown && this.inputs.events.keydown.R) || this.inputs.events.swipeup)) {
             this.stats.health = 100;
             this.baseGoal = Goals.PlayerInput;
             this.addCategory('physical');

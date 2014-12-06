@@ -24,6 +24,14 @@ function NodeServer(port) {
     var socket;
 
     /**
+     * Clear client input events on update
+     *
+     * @property clearEventsOnUpdate
+     * @type {Boolean}
+     */
+    this.clearEventsOnUpdate = true;
+
+    /**
      * Connected clients
      *
      * @property clients
@@ -99,7 +107,7 @@ function NodeServer(port) {
             var screenSize = client.handshake.query.screenSize.split(',');
             nodeServer.clients[client.id] = client;
             nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
-            nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: nodeServer.getEmptyInputEvents()};
+            nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: {}};
             nodeServer.clients[client.id].state = "connected";
 
             // Server Callback
@@ -156,22 +164,6 @@ function NodeServer(port) {
     };
 
     /**
-     * Generate empty client input event object
-     *
-     * @method getEmptyInputEvents
-     * @return {Object}
-     */
-    NodeServer.prototype.getEmptyInputEvents = function () {
-        return {
-            doubletap: false,
-            keydown: {},
-            keyup: {},
-            touchstart: false,
-            touchend: false
-        };
-    };
-
-    /**
      * Log out to server
      *
      * @method log
@@ -198,7 +190,6 @@ function NodeServer(port) {
      * @method start
      */
     NodeServer.prototype.start = function () {
-        // Open connection
         socket = IO.listen(this.port);
         this.bindEvents();
     };
@@ -225,11 +216,11 @@ function NodeServer(port) {
      */
     NodeServer.prototype.updateClient = function (clientId, packet) {
         if (this.clients[clientId]) {
+            if (this.clearEventsOnUpdate)
+                this.clients[clientId].inputs.events = {};
             this.clients[clientId].emit("update", {packet: packet});
         }
-        if (this.clients[clientId]) {
-            this.clients[clientId].inputs.events = this.getEmptyInputEvents();
-        }
+
     };
 
     /**

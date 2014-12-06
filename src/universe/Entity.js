@@ -84,9 +84,9 @@ function Entity() {
         accel: 1.8,
         health: 100,
         perception: 800,
-        jump: 50,
+        jump: 25,
         speed: 10,
-        strength: 25
+        strength: 20
     };
 
     /**

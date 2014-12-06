@@ -10,10 +10,12 @@ Goals.PlayerInput = {
     label: "Player Goal",
     getAction: function () {
         // Desktop Controls
-        if (this.inputs.events.keydown.F) {
-            return new Actions.Attack({dir: this.facing});
-        } else if (this.inputs.events.keydown.W) {
-            return new Actions.Jump();
+        if (this.inputs.events.keydown) {
+            if (this.inputs.events.keydown.F) {
+                return new Actions.Attack({dir: this.facing});
+            } else if (this.inputs.events.keydown.W) {
+                return new Actions.Jump();
+            }
         } else if (this.inputs.keyboard.A) {
             return new Actions.Walk({dir: -1});
         } else if (this.inputs.keyboard.D) {
