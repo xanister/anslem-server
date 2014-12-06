@@ -38,7 +38,7 @@ function Universe() {
      * @property width
      * @type {Number}
      */
-    this.width = 20000;
+    this.width = 30000;
 
     /**
      * Populate the universe
@@ -88,7 +88,7 @@ function Universe() {
         i.z = 4;
         i.warp(0, this.height + (Sprites[i.sprite.name]["default"].height / 2) - 20, this);
 
-        for (var n = 0; n < 5; n++) {
+        for (var n = 0; n < 15; n++) {
             var i = new Entity();
             i.setSprite("skeleton");
             i.removeCategory('aware');
