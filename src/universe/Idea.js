@@ -251,6 +251,8 @@ function Idea(categories) {
      * @method destroy
      */
     Idea.prototype.destroy = function () {
+        if (!this.container)
+            return false;
         delete this.container.contents[0][this.id];
         for (var index in this.categories) {
             delete this.container.contents[this.categories[index]][this.id];
