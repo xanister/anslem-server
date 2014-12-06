@@ -1,2 +1,4 @@
 node_modules
-src/AnslemServerConfig.js
+src/app/AnslemServerConfig.js
+src/universe/celia.compiled.js
+src/universe/UniverseConfig.js

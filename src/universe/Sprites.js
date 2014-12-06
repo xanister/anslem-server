@@ -4,7 +4,7 @@
  * @module Anslem.assets
  * @requires AnslemServerConfig, fs, image-size
  */
-var AnslemServerConfig = require('../AnslemServerConfig');
+var AnslemServerConfig = require('../app/AnslemServerConfig');
 var fs = require('fs');
 var sizeOf = require('image-size');
 

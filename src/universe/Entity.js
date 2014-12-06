@@ -2,12 +2,12 @@
  * Entity
  *
  * @module Anslem.Universe
- * @requires AnslemServerConfig, Idea, Synapse
+ * @requires UniverseConfig, Idea, Synapse
  */
-var AnslemServerConfig = require("./../AnslemServerConfig");
-var Goals = require("./Goals.compiled");
+var Goals = require("./celia.compiled");
 var Idea = require("./Idea");
 var Synapse = require("./Synapse");
+var UniverseConfig = require("./UniverseConfig");
 
 /**
  * Entity
@@ -64,7 +64,7 @@ function Entity() {
      * @property gravity
      * @type {Number}
      */
-    this.gravity = AnslemServerConfig.gravity;
+    this.gravity = UniverseConfig.gravity;
 
     /**
      * Memories

@@ -4,8 +4,8 @@
  * @module Anslem.Universe
  * @requires Sprites
  */
-var AnslemServerConfig = require("./../AnslemServerConfig");
 var Sprites = require("./Sprites");
+var UniverseConfig = require("./UniverseConfig");
 
 /**
  * Global id counter
@@ -110,7 +110,7 @@ function Idea(categories) {
      * @property linearDampening
      * @type {Number}
      */
-    this.linerDampening = AnslemServerConfig.linearDampening;
+    this.linerDampening = UniverseConfig.linearDampening;
 
     /**
      * Visual representation

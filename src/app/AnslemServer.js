@@ -6,11 +6,10 @@
  */
 var AnslemServerConfig = require('./AnslemServerConfig');
 var gameloop = require('node-gameloop');
-var Goals = require('./universe/compileGoals');
-var NodeServer = require("./lib/NodeServer");
-var Player = require("./universe/Player");
-var Sprites = require("./universe/Sprites");
-var Universe = require("./universe/Universe");
+var NodeServer = require("../lib/NodeServer");
+var Player = require("../universe/Player");
+var Sprites = require("../universe/Sprites");
+var Universe = require("../universe/Universe");
 
 /**
  * Anslem game server wrapper
@@ -137,6 +136,7 @@ function AnslemServer() {
      */
     AnslemServer.prototype.start = function () {
         NodeServer.prototype.start.call(this);
+	require('../universe/compileCelia');
         this.running = true;
         var self = this;
         this.gameloopId = gameloop.setGameLoop(function (delta) {

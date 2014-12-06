@@ -1,23 +1,16 @@
 /**
- * Basic global configuration
+ * Basic universe configuration
  *
  * @module Anslem
  */
 
 /**
- * Server and world config
+ * World config
  *
- * @class AnslemServerConfig
+ * @class UniverseConfig
  * @static
  */
-var AnslemServerConfig = {
-    /**
-     * Path to asset server
-     *
-     * @property assetPath
-     * @type {String}
-     */
-    assetPath: "/var/www/assets.anslemgalaxy.com",
+var UniverseConfig = {
     /**
      * Frames to keep bubbles active
      *
@@ -33,40 +26,12 @@ var AnslemServerConfig = {
      */
     gravity: 1.8,
     /**
-     * Server info log interval
-     *
-     * @property serverInfoInterval
-     * @type {Number}
-     */
-    serverInfoInterval: 10000,
-    /**
      * Default linear dampening
      *
      * @property linearDampening
      * @type {Number}
      */
     linearDampening: 0.5,
-    /**
-     * Default listen port
-     *
-     * @property port
-     * @type {Number}
-     */
-    port: 3010,
-    /**
-     * Target server fps
-     *
-     * @property serverFps
-     * @type {Number}
-     */
-    serverFps: 30,
-    /**
-     * Standard fps to measure agains
-     *
-     * @property standardFps
-     * @type {Number}
-     */
-    standardFps: 60,
     /**
      * Default view scale
      *
@@ -100,5 +65,4 @@ var AnslemServerConfig = {
 };
 
 // Scale attributes for framerate
-AnslemServerConfig.fpsFactor = AnslemServerConfig.standardFps / AnslemServerConfig.serverFps;
-module.exports = AnslemServerConfig;
+module.exports = UniverseConfig;

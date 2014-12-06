@@ -8,7 +8,7 @@
  * @module Anslem
  * @requires AnslemServer
  */
-var AnslemServer = require('./src/AnslemServer');
+var AnslemServer = require('./src/app/AnslemServer');
 
 var anslemServer = new AnslemServer();
 anslemServer.start();

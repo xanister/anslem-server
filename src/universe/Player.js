@@ -4,10 +4,10 @@
  * @module Anslem.Universe
  * @requires AnslemServerConfig, Entity, Goals
  */
-var AnslemServerConfig = require("./../AnslemServerConfig");
 var Entity = require("./Entity");
 var Idea = require("./Idea");
-var Goals = require("./Goals.compiled");
+var Goals = require("./celia.compiled");
+var UniverseConfig = require("./UniverseConfig");
 
 /**
  * Player
@@ -84,9 +84,9 @@ function Player() {
         this.view = {
             x: this.x - (viewWidth / 2),
             y: this.y - (viewHeight / 2),
-            xBuffer: parseInt(viewWidth * AnslemServerConfig.viewXBuffer),
-            yBuffer: parseInt(viewHeight * AnslemServerConfig.viewYBuffer),
-            speed: AnslemServerConfig.viewSpeed,
+            xBuffer: parseInt(viewWidth * UniverseConfig.viewXBuffer),
+            yBuffer: parseInt(viewHeight * UniverseConfig.viewYBuffer),
+            speed: UniverseConfig.viewSpeed,
             width: viewWidth,
             height: viewHeight
         };
@@ -122,7 +122,7 @@ function Player() {
         if (this.inputs.message) {
             this.bubble = {
                 message: this.inputs.message,
-                time: AnslemServerConfig.bubbleTime
+                time: 60
             };
             this.inputs.message = false;
         }
