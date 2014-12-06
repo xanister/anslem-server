@@ -2,9 +2,10 @@
  * Listen for client connections and run the universe
  *
  * @module Anslem
- * @requires AnslemServerConfig, gameloop, compileGoals, NodeServer, Player, Sprites, Universe
+ * @requires AnslemServerConfig, compileCelia, gameloop, NodeServer, Player, Sprites, Universe
  */
 var AnslemServerConfig = require('./AnslemServerConfig');
+var Goals = require('../universe/compileCelia');
 var gameloop = require('node-gameloop');
 var NodeServer = require("../lib/NodeServer");
 var Player = require("../universe/Player");
@@ -136,7 +137,6 @@ function AnslemServer() {
      */
     AnslemServer.prototype.start = function () {
         NodeServer.prototype.start.call(this);
-	require('../universe/compileCelia');
         this.running = true;
         var self = this;
         this.gameloopId = gameloop.setGameLoop(function (delta) {
