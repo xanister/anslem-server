@@ -55,8 +55,6 @@ function AnslemServer() {
     this.onclientconnect = function (client) {
         console.log("Client connected");
         client.player = new Player();
-        client.player.load(client, this.universe);
-        this.trigger("assetUpdate", client.id, {sprites: Sprites, sounds: {}});
         return {message: 'Welcome to Anslem!'};
     };
 
@@ -92,9 +90,15 @@ function AnslemServer() {
      * @param {String} state
      */
     this.onclientstatechange = function (client, state) {
-        console.log("Client state change recieved. " + client.player.id + " is " + state);
-        if (state === "ready") {
-            //client.player.load(client, this.universe);
+        console.log("Client state change recieved. " + client.id + " is " + state);
+        switch (state) {
+            case  "ready":
+                if (!client.player.container)
+                    client.player.load(client, this.universe);
+                break;
+            case "requesting assets":
+                this.trigger("assetUpdate", client.id, {sprites: Sprites, sounds: {}});
+                break;
         }
     };
 
@@ -109,9 +113,9 @@ function AnslemServer() {
         this.currentFps = 1 / delta;
         this.universe.run();
         for (var id in this.clients) {
-            var player = this.clients[id].player;
-            if (player)
-                this.updateClient(id, player.getPacket(true));
+            if (this.clients[id].player.container) {
+                this.updateClient(id, this.clients[id].player.getPacket(true));
+            }
         }
     };
 

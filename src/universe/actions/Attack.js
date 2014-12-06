@@ -11,7 +11,7 @@ function Attack(params) {
     this.label = "Attack";
     this.params = params;
     this.progress = 0;
-    this.speed = 20;
+    this.speed = 12;
     Attack.prototype.run = function (params) {
         this.facing = params.dir;
 
@@ -23,7 +23,7 @@ function Attack(params) {
     };
     Attack.prototype.updateAnimation = function () {
         this.setAnimation("attack");
-        if (this.animation === "attack")
+        if (this.sprite.animation === "attack")
             this.sprite.frameSpeed = this.sprite.src["attack"].frameCount / this.action.speed;
     };
 }

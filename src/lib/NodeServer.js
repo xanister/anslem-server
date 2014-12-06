@@ -110,6 +110,8 @@ function NodeServer(port) {
 
             // Accept input
             client.on("clientInput", function (inputs) {
+                if (client.state !== "ready")
+                    return false;
                 nodeServer.clients[client.id].inputs.keyboard = inputs.keyboard;
                 nodeServer.clients[client.id].inputs.touches = inputs.touches;
                 nodeServer.clients[client.id].inputs.events = inputs.events;

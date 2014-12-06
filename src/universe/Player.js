@@ -100,7 +100,7 @@ function Player() {
      * @param {Idea} universe
      */
     Player.prototype.load = function (client, universe) {
-        this.setSprite("warrior");
+        this.setSprite("goblin");
         this.client = client;
         this.warp(400, 400, universe);
         this.inputs = client.inputs;

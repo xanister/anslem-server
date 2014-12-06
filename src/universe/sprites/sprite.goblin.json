@@ -2,81 +2,57 @@
     "name": "goblin",
     "animations": {
         "default": {
-            "imagePath": "/sprites/goblin/idle/goblin-idle",
-            "frameCount": 24,
+            "imagePath": "/sprites/goblin/goblin-idle",
+            "frameCount": 10,
+            "frameSpeed": 0.2,
+            "loop": true,
+            "singleImage": true
+        },
+        "attack": {
+            "imagePath": "/sprites/goblin/goblin-attack",
+            "frameCount": 6,
             "frameSpeed": 0.5,
             "loop": true,
             "singleImage": true,
-            "width": 191,
-            "height": 260,
-            "xOffset": 0,
-            "yOffset": 0
-        },
-        "attack": {
-            "imagePath": "/sprites/goblin/attack/goblin-attack",
-            "frameCount": 20,
-            "frameSpeed": 1,
-            "loop": true,
-            "singleImage": true,
-            "xOffset": 35,
-            "yOffset": -30,
-            "width": 516,
-            "height": 412
+            "xOffset": 50,
+            "yOffset": -25
         },
         "die": {
-            "imagePath": "/sprites/skeleton/die/skeleton-die",
-            "frameCount": 20,
-            "frameSpeed": 1,
+            "imagePath": "/sprites/skeleton/skeleton-die",
+            "frameCount": 8,
+            "frameSpeed": 0.3,
             "loop": false,
             "singleImage": true,
             "yOffset": 10,
-            "width": 297,
-            "height": 292,
             "xOffset": 0
         },
         "flinch": {
-            "imagePath": "/sprites/goblin/flinch/goblin-flinch",
-            "frameCount": 12,
+            "imagePath": "/sprites/goblin/goblin-flinch",
+            "frameCount": 6,
             "frameSpeed": 0.25,
             "loop": true,
-            "singleImage": true,
-            "xOffset": 35,
-            "yOffset": -30,
-            "width": 244,
-            "height": 259
+            "singleImage": true
         },
         "jump": {
-            "imagePath": "/sprites/goblin/jump/goblin-jump",
-            "frameCount": 9,
-            "frameSpeed": 0.5,
+            "imagePath": "/sprites/goblin/goblin-jump",
+            "frameCount": 8,
+            "frameSpeed": 0.25,
             "loop": true,
-            "singleImage": true,
-            "width": 238,
-            "height": 330,
-            "xOffset": 0,
-            "yOffset": 0
+            "singleImage": true
         },
         "tired": {
-            "imagePath": "/sprites/goblin/tired/goblin-tired",
-            "frameCount": 32,
-            "frameSpeed": 1,
+            "imagePath": "/sprites/goblin/goblin-tired",
+            "frameCount": 10,
+            "frameSpeed": 0.25,
             "loop": true,
-            "singleImage": true,
-            "width": 183,
-            "height": 273,
-            "xOffset": 0,
-            "yOffset": 0
+            "singleImage": true
         },
         "walk": {
-            "imagePath": "/sprites/goblin/walk/goblin-walk",
-            "frameCount": 32,
-            "frameSpeed": 1,
+            "imagePath": "/sprites/goblin/goblin-walk",
+            "frameCount": 8,
+            "frameSpeed": 0.25,
             "loop": true,
-            "singleImage": true,
-            "width": 243,
-            "height": 274,
-            "xOffset": 0,
-            "yOffset": 0
+            "singleImage": true
         }
     }
 }
