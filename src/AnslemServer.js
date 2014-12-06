@@ -46,23 +46,6 @@ function AnslemServer() {
     this.universe = new Universe();
 
     /**
-     * Run single frame
-     *
-     * @method update
-     * @private
-     * @param {Number} delta time since last update
-     */
-    function update(delta) {
-        this.currentFps = 1 / delta;
-        this.universe.run();
-        for (var id in this.clients) {
-            var player = this.clients[id].player;
-            if (player)
-                this.updateClient(id, player.getPacket(true));
-        }
-    }
-
-    /**
      * Client connected callback
      *
      * @method onclientconnect
@@ -73,8 +56,8 @@ function AnslemServer() {
         console.log("Client connected");
         client.player = new Player();
         client.player.load(client, this.universe);
-        this.sendAssetUpdate(client.id);
-        return {message: 'Welcome to Anslem!', viewScale: client.player.view.scale};
+        this.trigger("assetUpdate", client.id, {sprites: Sprites, sounds: {}});
+        return {message: 'Welcome to Anslem!'};
     };
 
     /**
@@ -96,7 +79,39 @@ function AnslemServer() {
      * @param {Object} info
      */
     this.onclientinfo = function (client, info) {
-        client.player.initializeView(info.screenWidth, info.screenHeight);
+        console.log("Client info recieved");
+        client.player.initializeView(client.info.screenWidth, client.info.screenHeight);
+        this.trigger("viewUpdate", client.id, {width: client.player.view.width, height: client.player.view.height});
+    };
+
+    /**
+     * Client state changed update
+     *
+     * @param {Object} client
+     * @param {String} state
+     */
+    this.onclientstatechange = function (client, state) {
+        console.log("Client state change recieved. " + client.player.id + " is " + state);
+        if (state === "ready") {
+            //client.player.load(client, this.universe);
+        }
+    };
+
+    /**
+     * Run single frame
+     *
+     * @method update
+     * @private
+     * @param {Number} delta time since last update
+     */
+    this.update = function (delta) {
+        this.currentFps = 1 / delta;
+        this.universe.run();
+        for (var id in this.clients) {
+            var player = this.clients[id].player;
+            if (player)
+                this.updateClient(id, player.getPacket(true));
+        }
     };
 
     /**
@@ -116,16 +131,6 @@ function AnslemServer() {
     };
 
     /**
-     * Sends asset update event to client
-     *
-     * @method sendAssetUpdate
-     * @param {String} clientId
-     */
-    AnslemServer.prototype.sendAssetUpdate = function (clientId) {
-        this.trigger(clientId, "assetUpdate", {sprites: Sprites, sounds: {}});
-    };
-
-    /**
      * Start the server
      *
      * @method start
@@ -135,8 +140,9 @@ function AnslemServer() {
         this.running = true;
         var self = this;
         this.gameloopId = gameloop.setGameLoop(function (delta) {
-            update.call(self, delta);
-        }, Math.floor(1000 / AnslemServerConfig.serverFps));
+            self.update.call(self, delta);
+        }, 1000 / AnslemServerConfig.serverFps);
+
         this.logServerInfo();
     };
 

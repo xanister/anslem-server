@@ -21,7 +21,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgForest: {
@@ -30,7 +31,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgForestMidground: {
@@ -39,7 +41,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgGround: {
@@ -48,7 +51,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgGroundGrass: {
@@ -57,7 +61,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgMountains: {
@@ -66,7 +71,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgMountainsMidground: {
@@ -75,7 +81,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgNight: {
@@ -84,7 +91,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     bgTrees: {
@@ -93,7 +101,8 @@ var Sprites = {
             frameCount: 1,
             frameSpeed: 0,
             loop: true,
-            singleImage: true
+            singleImage: true,
+            tileX: true
         }
     },
     coin: {

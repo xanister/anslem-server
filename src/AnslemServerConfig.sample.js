@@ -75,6 +75,13 @@ var AnslemServerConfig = {
      */
     viewScale: 2,
     /**
+     * Default view speed
+     *
+     * @property viewSpeed
+     * @type {Number}
+     */
+    viewSpeed: 2,
+    /**
      * Distance to keep between player and view border,
      * percent of view width
      *

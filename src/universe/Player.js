@@ -63,9 +63,9 @@ function Player() {
         if (includeInView) {
             packet.viewX = this.view.x;
             packet.viewY = this.view.y;
-            packet.inView = [];
+            packet.inView = {};
             for (var index in this.inView) {
-                packet.inView.push(this.inView[index].getPacket());
+                packet.inView[this.inView[index].id] = this.inView[index].getPacket();
             }
         }
         return packet;
@@ -79,14 +79,13 @@ function Player() {
      * @param {Number} screenHeight
      */
     Player.prototype.initializeView = function (screenWidth, screenHeight) {
-        var viewWidth = screenWidth * AnslemServerConfig.viewScale;
-        var viewHeight = screenHeight * AnslemServerConfig.viewScale;
+        var viewWidth = screenWidth * 2;
+        var viewHeight = screenHeight * 2;
         this.view = {
             x: this.x - (viewWidth / 2),
             y: this.y - (viewHeight / 2),
             xBuffer: parseInt(viewWidth * AnslemServerConfig.viewXBuffer),
             yBuffer: parseInt(viewHeight * AnslemServerConfig.viewYBuffer),
-            scale: AnslemServerConfig.viewScale,
             speed: AnslemServerConfig.viewSpeed,
             width: viewWidth,
             height: viewHeight
@@ -107,7 +106,6 @@ function Player() {
         this.inputs = client.inputs;
         this.stats.speed = 20;
         this.stats.perception = 3000;
-        this.initializeView(client.info.screenWidth, client.info.screenHeight);
     };
 
     /**

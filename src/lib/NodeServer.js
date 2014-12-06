@@ -63,6 +63,7 @@ function NodeServer(port) {
      * Client updated info callback
      *
      * @event onclientinfo
+     * @param {Object} client
      * @param {Object} info
      */
     this.onclientinfo = false;
@@ -71,9 +72,19 @@ function NodeServer(port) {
      * On client input callback
      *
      * @event onclientinput
+     * @param {Object} client
      * @param {Object} input
      */
     this.onclientinput = false;
+
+    /**
+     * On client input callback
+     *
+     * @event onclientstatechange
+     * @param {Object} client
+     * @param {String} state
+     */
+    this.onclientstatechange = false;
 
     /**
      * Bind events
@@ -81,16 +92,15 @@ function NodeServer(port) {
      * @method bindEvents
      */
     this.bindEvents = function () {
-        // Bind events
-        var nodeServer = this;
-
         // Listen for connections and bind events per client
+        var nodeServer = this;
         socket.on('connection', function (client) {
             // Save client
             var screenSize = client.handshake.query.screenSize.split(',');
             nodeServer.clients[client.id] = client;
             nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
             nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: nodeServer.getEmptyInputEvents()};
+            nodeServer.clients[client.id].state = "connected";
 
             // Server Callback
             var initialData = nodeServer.onclientconnect ? nodeServer.onclientconnect.call(nodeServer, client) : {};
@@ -114,6 +124,13 @@ function NodeServer(port) {
                     nodeServer.clients[client.id].info[index] = info[index];
                 if (nodeServer.onclientinfo)
                     nodeServer.onclientinfo.call(nodeServer, client, info);
+            });
+
+            // Update on state change
+            client.on("clientStateChange", function (state) {
+                client.state = state;
+                if (nodeServer.onclientstatechange)
+                    nodeServer.onclientstatechange.call(nodeServer, client, state);
             });
 
             // Update on disconnect
@@ -188,11 +205,11 @@ function NodeServer(port) {
      * Send event to client
      *
      * @method emit
-     * @param {Object} clientId
      * @param {String} eventName
+     * @param {Object} clientId
      * @param {Object} packet
      */
-    NodeServer.prototype.trigger = function (clientId, eventName, packet) {
+    NodeServer.prototype.trigger = function (eventName, clientId, packet) {
         if (this.clients[clientId])
             this.clients[clientId].emit(eventName, packet);
     };
