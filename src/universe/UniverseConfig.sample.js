@@ -19,6 +19,20 @@ var UniverseConfig = {
      */
     bubbleTime: 60,
     /**
+     * Default stats for all entities
+     *
+     * @property defaultEntityStats
+     * @type {Object}
+     */
+    defaultEntityStats: {
+        accel: 1.8,
+        health: 100,
+        perception: 800,
+        jump: 35,
+        speed: 10,
+        strength: 20
+    },
+    /**
      * Default gravity
      *
      * @property gravity

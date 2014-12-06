@@ -80,14 +80,7 @@ function Entity() {
      * @property
      * @type {Object}
      */
-    this.stats = {
-        accel: 1.8,
-        health: 100,
-        perception: 800,
-        jump: 25,
-        speed: 10,
-        strength: 20
-    };
+    this.stats = Object.create(UniverseConfig.defaultEntityStats);
 
     /**
      * Entities default to higher depth
