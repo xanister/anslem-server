@@ -179,8 +179,9 @@ function Idea(categories) {
     /**
      * Add category
      *
+     * @method addCategory
      * @param {String} category
-     * @returns {Boolean}
+     * @return {Boolean}
      */
     Idea.prototype.addCategory = function (category) {
         for (var index in this.categories)
@@ -188,6 +189,7 @@ function Idea(categories) {
                 return true;
         this.categories.push(category);
         this.container.contents[category][this.id] = this;
+        return true;
     };
 
     /**
@@ -299,8 +301,9 @@ function Idea(categories) {
     /**
      * Returns true if Idea has the given category
      *
+     * @method hasCategory
      * @param {String} category
-     * @returns {Boolean}
+     * @return {Boolean}
      */
     Idea.prototype.hasCategory = function (category) {
         for (var index in this.categories)
@@ -368,8 +371,9 @@ function Idea(categories) {
     /**
      * Remove category
      *
+     * @method removeCategory
      * @param {String} category
-     * @returns {Boolean}
+     * @return {Boolean}
      */
     Idea.prototype.removeCategory = function (category) {
         for (var index in this.categories)

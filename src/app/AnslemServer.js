@@ -87,6 +87,7 @@ function AnslemServer() {
     /**
      * Client state changed update
      *
+     * @event onclientstatechange
      * @param {Object} client
      * @param {String} state
      */
