@@ -19,40 +19,19 @@ var UniverseConfig = {
      */
     bubbleTime: 60,
     /**
-     * Default stats for all entities
+     * Default view scale
      *
-     * @property defaultEntityStats
-     * @type {Object}
-     */
-    defaultEntityStats: {
-        accel: 1.8,
-        health: 100,
-        perception: 800,
-        jump: 35,
-        speed: 10,
-        strength: 20
-    },
-    /**
-     * Default gravity
-     *
-     * @property gravity
+     * @property viewScale
      * @type {Number}
      */
-    gravity: 1.8,
-    /**
-     * Default linear dampening
-     *
-     * @property linearDampening
-     * @type {Number}
-     */
-    linearDampening: 0.5,
+    viewScale: 0.5,
     /**
      * Default view scale
      *
      * @property viewScale
      * @type {Number}
      */
-    viewScale: 2,
+    viewScaleStandard: 2,
     /**
      * Default view speed
      *
@@ -67,7 +46,7 @@ var UniverseConfig = {
      * @property viewXBuffer
      * @type {Number}
      */
-    viewXBuffer: 0.2,
+    viewXBuffer: 0.3,
     /**
      * Distance to keep between player and view border,
      * percent of view height
@@ -78,5 +57,44 @@ var UniverseConfig = {
     viewYBuffer: 0.4
 };
 
-// Scale attributes for framerate
+/**
+ * Scaling factor
+ *
+ * @property scaleFactor
+ * @type {Number}
+ */
+UniverseConfig.scaleFactor = UniverseConfig.viewScale / UniverseConfig.viewScaleStandard;
+
+/**
+ * Default gravity
+ *
+ * @property gravity
+ * @type {Number}
+ */
+UniverseConfig.gravity = 1.8 * UniverseConfig.scaleFactor;
+
+/**
+ * Default linear dampening
+ *
+ * @property linearDampening
+ * @type {Number}
+ */
+UniverseConfig.linearDampening = 0.5 * UniverseConfig.scaleFactor;
+
+/**
+ * Default stats for all entities
+ *
+ * @property defaultEntityStats
+ * @type {Object}
+ */
+UniverseConfig.defaultEntityStats = {
+    accel: 1.1 * UniverseConfig.scaleFactor,
+    health: 100,
+    perception: 800,
+    jump: 25 * UniverseConfig.scaleFactor,
+    speed: 15 * UniverseConfig.scaleFactor,
+    strength: 25 * UniverseConfig.scaleFactor
+};
+
+console.log(UniverseConfig);
 module.exports = UniverseConfig;

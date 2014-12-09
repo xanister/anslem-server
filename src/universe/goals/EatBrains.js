@@ -9,7 +9,7 @@ Goals.EatBrains = {
     description: "Eat brains",
     label: "Eat brains",
     getAction: function () {
-        var nearest = this.instanceNearest("aware");
+        var nearest = this.instanceNearest("hasbrains");
         if (nearest) {
             var dist = this.distanceTo(nearest.x, nearest.y);
             if (nearest.baseGoal !== Goals.Dead && dist < this.stats.perception)

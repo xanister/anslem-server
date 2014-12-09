@@ -5,13 +5,14 @@
  * @class Attack
  * @constructor
  * @param {Object} params {dir: 1 || -1, target: {Idea}}
+ * @param {Number} speed
  */
-function Attack(params) {
+function Attack(params, speed) {
     this.description = "Attack";
     this.label = "Attack";
     this.params = params;
     this.progress = 0;
-    this.speed = 12;
+    this.speed = speed || 36;
     Attack.prototype.run = function (params) {
         this.facing = params.dir;
 

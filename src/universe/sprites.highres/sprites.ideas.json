@@ -1,0 +1,47 @@
+{
+    "door01": {
+        "default": {
+            "imagePath": "/sprites/ideas/door01-closed",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "blockGrass": {
+        "default": {
+            "imagePath": "/sprites/ideas/block-grass",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "blockStoneTall": {
+        "default": {
+            "imagePath": "/sprites/ideas/block-stone-tall",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "star": {
+        "default": {
+            "imagePath": "/sprites/ideas/star",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "shadow": {
+        "default": {
+            "imagePath": "/sprites/ideas/shadow-radial",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

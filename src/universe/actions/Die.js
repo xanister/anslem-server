@@ -13,8 +13,9 @@ function Die() {
     this.speed = 20;
     Die.prototype.run = function () {
         if (this.action.progress === 0) {
-            this.alive = false;
-            this.removeCategory('aware');
+            this.stats.timeOfDeath = (new Date()).getTime();
+            this.removeCategory("alive");
+            this.removeCategory('hasbrains');
             this.removeCategory('physical');
         }
     };

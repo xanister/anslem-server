@@ -14,8 +14,11 @@ function Flinch(params) {
     this.speed = 20;
     Flinch.prototype.run = function (params) {
         if (this.action.progress === 0) {
-            this.xSpeed += (params.strength * params.dir);
-            this.ySpeed -= (params.strength * 0.5);
+            // Knockback
+            this.xSpeed += ((this.height / 10) * params.dir);
+            this.ySpeed -= ((this.height / 10) * 0.5);
+
+            // Damage
             this.stats.health -= params.strength;
         }
     };

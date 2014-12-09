@@ -1,0 +1,50 @@
+{
+    "civilian01": {
+        "default": {
+            "imagePath": "/sprites/pixel/civilian01",
+            "frameCount": 4,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/civilian01",
+            "frameCount": 4,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "oldman01": {
+        "default": {
+            "imagePath": "/sprites/pixel/oldman01",
+            "frameCount": 4,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/oldman01",
+            "frameCount": 4,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "warrior": {
+        "default": {
+            "imagePath": "/sprites/pixel/warrior-walk",
+            "frameCount": 4,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/warrior-walk",
+            "frameCount": 4,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

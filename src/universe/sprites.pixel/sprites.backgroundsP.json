@@ -1,0 +1,20 @@
+{
+    "bgGround": {
+        "default": {
+            "imagePath": "/sprites/pixel/bg-ground-grass",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "bgMountains": {
+        "default": {
+            "imagePath": "/sprites/pixel/bg-mountains",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

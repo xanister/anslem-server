@@ -1,0 +1,50 @@
+{
+    "warrior": {
+        "default": {
+            "imagePath": "/sprites/warrior/warrior-idle",
+            "frameCount": 8,
+            "frameSpeed": 0.2,
+            "loop": true,
+            "singleImage": true
+        },
+        "attack": {
+            "imagePath": "/sprites/warrior/warrior-attack",
+            "frameCount": 8,
+            "frameSpeed": 0.5,
+            "loop": true,
+            "singleImage": true,
+            "xOffset": 50,
+            "yOffset": -25
+        },
+        "die": {
+            "imagePath": "/sprites/skeleton/skeleton-die",
+            "frameCount": 8,
+            "frameSpeed": 0.3,
+            "loop": false,
+            "singleImage": true,
+            "yOffset": 10,
+            "xOffset": 0
+        },
+        "flinch": {
+            "imagePath": "/sprites/warrior/warrior-flinch",
+            "frameCount": 8,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        },
+        "jump": {
+            "imagePath": "/sprites/warrior/warrior-jump",
+            "frameCount": 8,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/warrior/warrior-walk",
+            "frameCount": 8,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

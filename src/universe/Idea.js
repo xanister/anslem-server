@@ -31,7 +31,6 @@ function Idea(categories) {
      */
     this.bubble = false;
 
-
     /**
      * Categories
      *
@@ -188,6 +187,8 @@ function Idea(categories) {
             if (this.categories[index] === category)
                 return true;
         this.categories.push(category);
+        if (!this.container.contents[category])
+            this.container.contents[category] = {};
         this.container.contents[category][this.id] = this;
         return true;
     };
@@ -284,7 +285,7 @@ function Idea(categories) {
             sprite: {
                 animation: this.sprite.animation,
                 frame: Math.floor(this.sprite.frame),
-                mirror: this.facing === -1 ? true : false,
+                mirror: this.facing,
                 name: this.sprite.name,
                 scrollSpeed: this.sprite.scrollSpeed,
                 tileX: this.sprite.tileX,
@@ -446,15 +447,13 @@ function Idea(categories) {
             frameSpeed: Sprites[sprite]["default"].frameSpeed,
             loop: Sprites[sprite]["default"].loop,
             name: sprite,
-            scrollSpeed: scrollSpeed || 1,
             src: Sprites[sprite],
+            scrollSpeed: scrollSpeed || 1,
             tileX: tileX || false,
             tileY: tileY || false
         };
-        if (this.width === 0)
-            this.width = Sprites[sprite]["default"].width;
-        if (this.height === 0)
-            this.height = Sprites[sprite]["default"].height;
+        this.width = Sprites[sprite]["default"].width;
+        this.height = Sprites[sprite]["default"].height;
     };
 
     /**
@@ -469,9 +468,9 @@ function Idea(categories) {
         if (this.gravity > 0) {
             this.ySpeed += this.gravity;
             this.y += this.ySpeed;
-            if (this.y > (this.container.height - (this.height / 2))) {
+            if (this.y > (this.container.height - this.container.buffer.bottom - (this.height / 2))) {
                 this.ySpeed = 0;
-                this.y = this.container.height - (this.height / 2);
+                this.y = this.container.height - this.container.buffer.bottom - (this.height / 2);
             }
 
             this.xSpeed -= (this.xSpeed > 0 ? this.linerDampening : -this.linerDampening);

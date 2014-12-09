@@ -1,4 +1,4 @@
 node_modules
 src/app/AnslemServerConfig.js
-src/universe/celia.compiled.js
+src/universe/anslem.compiled.js
 src/universe/UniverseConfig.js

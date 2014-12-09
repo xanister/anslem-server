@@ -13,10 +13,12 @@ function Walk(params) {
     this.progress = 0;
     this.speed = 1;
     Walk.prototype.run = function (params) {
-        this.facing = params.dir;
-
-        if ((this.xSpeed < this.stats.speed && params.dir === 1) || (this.xSpeed > -this.stats.speed && params.dir === -1))
+        if (params.dir !== 0)
+            this.facing = params.dir < 0 ? -1 : 1;
+        if ((this.xSpeed < this.stats.speed && params.dir > 0) || (this.xSpeed > -this.stats.speed && params.dir < 0)) {
+            var accel = params.dir * this.stats.accel;
             this.xSpeed += (params.dir * this.stats.accel);
+        }
     };
     Walk.prototype.updateAnimation = function () {
         if (this.ySpeed !== 0)
@@ -24,7 +26,7 @@ function Walk(params) {
         else {
             this.setAnimation("walk");
             if (this.animation === "walk")
-                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed) / this.stats.speed);
+                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * Math.abs((this.xSpeed) / this.stats.speed);
         }
     };
 }

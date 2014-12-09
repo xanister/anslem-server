@@ -4,13 +4,12 @@
  * @module Anslem
  * @requires AnslemServerConfig, compileCelia, gameloop, NodeServer, Player, Sprites, Universe
  */
+var Anslem = require("../universe/compileAnslem");
 var AnslemServerConfig = require('./AnslemServerConfig');
-var Goals = require('../universe/compileCelia');
 var gameloop = require('node-gameloop');
 var NodeServer = require("../lib/NodeServer");
-var Player = require("../universe/Player");
 var Sprites = require("../universe/Sprites");
-var Universe = require("../universe/Universe");
+var UniverseConfig = require("../universe/UniverseConfig");
 
 /**
  * Anslem game server wrapper
@@ -39,12 +38,13 @@ function AnslemServer() {
     this.networkFps = AnslemServerConfig.networkFps;
 
     /**
-     * Universe instance
+     * Universe instance, start populated
      *
      * @property universe
      * @type {Universe}
      */
-    this.universe = new Universe();
+    this.universe = new Anslem.Universe();
+    this.universe.populate();
 
     /**
      * Last calculated universe fps
@@ -63,7 +63,14 @@ function AnslemServer() {
      */
     this.onclientconnect = function (client) {
         this.log("Client connected");
-        client.player = new Player();
+
+        // TODO: Clean this up
+        client.player = new Anslem.Player(client);
+        var self = this;
+        client.sendViewUpdate = function () {
+            self.trigger("viewUpdate", client.id, {width: client.player.view.width, height: client.player.view.height});
+        };
+
         return {message: 'Welcome to Anslem!'};
     };
 
@@ -87,7 +94,7 @@ function AnslemServer() {
      */
     this.onclientinfo = function (client, info) {
         this.log("Client info recieved");
-        client.player.initializeView(client.info.screenWidth, client.info.screenHeight);
+        client.player.initializeView(UniverseConfig.viewScale);
         this.trigger("viewUpdate", client.id, {width: client.player.view.width, height: client.player.view.height});
     };
 

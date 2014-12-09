@@ -1,0 +1,50 @@
+{
+    "goblin": {
+        "default": {
+            "imagePath": "/sprites/pixel/goblin-walk",
+            "frameCount": 4,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/goblin-walk",
+            "frameCount": 4,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "skeleton": {
+        "default": {
+            "imagePath": "/sprites/pixel/skeleton-walk",
+            "frameCount": 4,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/skeleton-walk",
+            "frameCount": 4,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "zombie": {
+        "default": {
+            "imagePath": "/sprites/pixel/zombie-walk",
+            "frameCount": 4,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/zombie-walk",
+            "frameCount": 4,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}
