@@ -225,8 +225,8 @@ function NodeServer(port) {
         if (this.clients[clientId]) {
             if (this.clearEventsOnUpdate)
                 this.clients[clientId].inputs.events = {};
-            this.clients[clientId].emit("update", {packet: packet});
             this.clients[clientId].lastUpdateTime = Date.now();
+            this.clients[clientId].emit("update", {packet: packet});
         }
     };
 
