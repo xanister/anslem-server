@@ -22,6 +22,10 @@ var UniverseConfig = require("../universe/UniverseConfig");
 function AnslemServer() {
     NodeServer.call(this, AnslemServerConfig.port);
 
+    var packetIndex = 0;
+
+    var packetSplit = 2;
+
     /**
      * Clear client input events on update
      *
@@ -139,7 +143,10 @@ function AnslemServer() {
         this.networkFps = 1 / delta;
         for (var id in this.clients)
             if (this.clients[id].player.container)
-                this.updateClient(id, this.clients[id].player.getPacket(true));
+                this.updateClient(id, this.clients[id].player.getPacket(true, packetIndex, packetSplit));
+        packetIndex++;
+        if (packetIndex > packetSplit)
+            packetIndex = 0;
     };
 
     /**
@@ -177,6 +184,9 @@ function AnslemServer() {
         this.log("Universe FPS: " + this.universeFps);
         this.log("Population: " + this.universe.size());
         this.log(Object.keys(this.clients).length + " player(s) currently connected");
+        for (var index in this.clients) {
+            this.log("Client[" + this.clients[index].id + "]  Latency: " + this.clients[index].latency);
+        }
         this.saveSnapshot();
     };
 

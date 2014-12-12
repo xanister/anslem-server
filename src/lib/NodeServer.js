@@ -108,6 +108,7 @@ function NodeServer(port) {
             nodeServer.clients[client.id] = client;
             nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
             nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: {}};
+            nodeServer.clients[client.id].latency = 0;
             nodeServer.clients[client.id].state = "connected";
 
             // Server Callback
@@ -148,6 +149,11 @@ function NodeServer(port) {
                 if (nodeServer.onclientdisconnect)
                     nodeServer.onclientdisconnect.call(nodeServer, client);
                 delete nodeServer.clients[client.id];
+            });
+
+            // Response to updates for latency checks
+            client.on("updateResponse", function () {
+                client.latency = Date.now() - client.lastUpdateTime;
             });
         });
     };
@@ -219,8 +225,8 @@ function NodeServer(port) {
             if (this.clearEventsOnUpdate)
                 this.clients[clientId].inputs.events = {};
             this.clients[clientId].emit("update", {packet: packet});
+            this.clients[clientId].lastUpdateTime = Date.now();
         }
-
     };
 
     /**

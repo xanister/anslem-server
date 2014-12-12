@@ -711,7 +711,7 @@ function Idea(categories) {
         } else if (this.below && this.y + (this.height / 2) > this.below.y - (this.below.height / 2)) {
             this.ySpeed = 0;
             this.y = this.below.y - (this.below.height / 2) - (this.height / 2);
-        } else if (this.y > this.container.height - this.container.buffer.bottom - (this.height / 2)) {
+        } else if (this.y + (this.height / 2) > this.container.height - this.container.buffer.bottom) {
             this.ySpeed = 0;
             this.y = this.container.height - this.container.buffer.bottom - (this.height / 2);
         }

@@ -69,20 +69,23 @@ function Player(client) {
      * to render the scene to send to client
      *
      * @method getPacket
-     * @param {Boolean} includeInView
+     * @param {Boolean} isSource
      * @return {Object}
      */
-    Player.prototype.getPacket = function (includeInView) {
-        var packet = Entity.prototype.getPacket.call(this);
-        if (includeInView) {
-            packet.viewX = this.view.x;
-            packet.viewY = this.view.y;
-            packet.inView = {};
+    Player.prototype.getPacket = function (isSource, packetIndex, packetSplit) {
+        if (isSource) {
+            var packet = {
+                viewX: this.view.x,
+                viewY: this.view.y,
+                inView: {}
+            };
             for (var index in this.inView) {
-                packet.inView[this.inView[index].id] = this.inView[index].getPacket();
+                if (index % packetSplit === packetIndex)
+                    packet.inView[this.inView[index].id] = this.inView[index].getPacket();
             }
+            return packet;
         }
-        return packet;
+        return Entity.prototype.getPacket.call(this);
     };
 
     /**
