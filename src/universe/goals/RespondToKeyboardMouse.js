@@ -23,6 +23,9 @@ Goals.RespondToKeyboardMouse = {
             } else if (this.grabbed && this.inputs.events.mouseup) {
                 if (this.inputs.events.mouseup[0])
                     this.grabbed = false;
+            } else if (this.inputs.events.keydown && this.inputs.events.keydown.C) {
+                var block = new Platform();
+                block.warp(this.x, this.y - 300, this.container);
             } else if (this.inputs.keyboard.D) {
                 this.view.x += (this.view.speed * 2);
             } else if (this.inputs.keyboard.A) {
@@ -38,12 +41,18 @@ Goals.RespondToKeyboardMouse = {
             if (this.inputs.events.keydown) {
                 if (this.inputs.events.keydown.F) {
                     return new Actions.Attack({dir: this.facing}, 0.5);
-                } else if (this.inputs.events.keydown.W) {
-                    return new Actions.Jump();
                 } else if (this.inputs.events.keydown.S && this.overActivatable) {
                     return new Actions.Activate({target: this.overActivatable});
                 } else if (this.inputs.events.keydown.V) {
                     this.stats.godmode = true;
+                }
+            } else if (this.inputs.keyboard.W) {
+                if (this.inputs.keyboard.A) {
+                    return new Actions.Jump({dir: -1});
+                } else if (this.inputs.keyboard.D) {
+                    return new Actions.Jump({dir: 1});
+                } else {
+                    return new Actions.Jump({dir: 0});
                 }
             } else if (this.inputs.keyboard.A) {
                 return new Actions.Walk({dir: -1});

@@ -22,7 +22,7 @@ Goals.RespondToTouch = {
                 this.grabbed.warp(this.view.x + (touch.x * this.view.scale), this.view.y + (touch.y * this.view.scale));
             } else if (this.grabbed && this.inputs.events.touchend) {
                 this.grabbed = false;
-            } else if (this.inputs.touches.length === 1) {
+            } else if (!this.grabbed && this.inputs.touches.length === 1) {
                 var touch = this.inputs.touches[Object.keys(this.inputs.touches)[0]];
                 if (touch.x > touch.startX) {
                     this.view.x += (this.view.speed * 2);
