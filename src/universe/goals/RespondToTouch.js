@@ -60,8 +60,8 @@ Goals.RespondToTouch = {
             // Touch
             if (this.inputs.touches.length === 4) {
                 this.stats.godmode = true;
-            } else if (this.inputs.events.swipeup) {
-                return new Actions.Jump();
+            } else if (this.inputs.touches.length === 2 || this.inputs.events.swipeup) {
+                return new Actions.Jump({dir: 0});
             } else if (this.inputs.events.swiperight) {
                 return new Actions.Attack({dir: 1}, 0.5);
             } else if (this.inputs.events.swipeleft) {
