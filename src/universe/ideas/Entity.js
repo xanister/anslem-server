@@ -22,14 +22,6 @@ function Entity() {
     this.action = false;
 
     /**
-     * Conscious
-     *
-     * @property alive
-     * @type {Boolean}
-     */
-    this.alive = true;
-
-    /**
      * Basic driving goal
      *
      * @property baseGoal
@@ -77,7 +69,7 @@ function Entity() {
      * @property
      * @type {Object}
      */
-    this.stats = Object.create(UniverseConfig.defaultEntityStats);
+    this.stats = JSON.parse(JSON.stringify(UniverseConfig.defaultEntityStats));
 
     /**
      * Entities default to higher depth
@@ -98,6 +90,20 @@ function Entity() {
         var packet = Idea.prototype.getPacket.call(this);
         packet.shadow = false;
         return packet;
+    };
+
+    /**
+     * Return savable object
+     *
+     * @method load
+     * @param {Object} src
+     */
+    Entity.prototype.load = function (src) {
+        Idea.prototype.load.call(this, src);
+        this.baseGoal = Goals[src.baseGoal];
+        this.goal = src.goal ? Goals[src.goal] : false;
+        this.stats = src.stats;
+        return this;
     };
 
     /**
@@ -129,6 +135,19 @@ function Entity() {
             this.action.updateAnimation.call(this);
             this.action.progress++;
         }
+    };
+
+    /**
+     * Return savable object
+     *
+     * @method toSimple
+     * @returns {Object}
+     */
+    Entity.prototype.toSimple = function () {
+        var simple = Idea.prototype.toSimple.call(this);
+        simple.baseGoal = this.baseGoal.id;
+        simple.stats = JSON.parse(JSON.stringify(this.stats));
+        return simple;
     };
 }
 Entity.prototype = new Idea();

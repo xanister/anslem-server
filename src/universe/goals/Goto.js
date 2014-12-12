@@ -6,6 +6,7 @@
  * @static
  */
 Goals.Goto = {
+    id: goalIdCounter++,
     description: "Go to target",
     label: "Go to",
     getAction: function (params) {

@@ -5,7 +5,9 @@
  * @requires fs
  */
 var fs = require('fs');
+var AnslemServerConfig = require("../app/AnslemServerConfig");
 
+// Recursivly search for files, sorted
 function getFiles(path) {
     var files = [];
     var dirlist = fs.readdirSync(path);
@@ -20,6 +22,7 @@ function getFiles(path) {
     return files;
 }
 
+// Generate file data
 var out = [];
 out = out.concat(getFiles(__dirname + "/actions"));
 out = out.concat(getFiles(__dirname + "/goals"));
@@ -29,15 +32,20 @@ out = out.map(function (filePath) {
 });
 out = [
     "var Anslem = {};",
-    "var Actions = {};",
-    "var Goals = {};",
-    "var Idea = require('./Idea');",
+    "var Actions = {}; var actionIdCounter = 1;",
+    "var Goals = {}; var goalIdCounter = 1;",
+    "var Ideas = {};",
+    "var Population = {}",
     "var Sprites = require('./Sprites');",
     "var UniverseConfig = require('./UniverseConfig');"
 ].concat(out);
 out = out.concat([
+    "for (var name in Goals)",
+    "Goals[Goals[name].id] = Goals[name];",
     "module.exports = Anslem;"
 ]);
+
+// Write to file
 fs.writeFileSync(__dirname + "/anslem.compiled.js", out.join('\n\n'), 'utf-8');
 console.log(__dirname + "/anslem.compiled.js built.");
 

@@ -6,6 +6,7 @@
  * @static
  */
 Goals.Dead = {
+    id: goalIdCounter++,
     description: "Dead",
     label: "Dead",
     getAction: function () {

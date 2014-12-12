@@ -14,7 +14,8 @@
             "frameCount": 1,
             "frameSpeed": 0,
             "loop": true,
-            "singleImage": true
+            "singleImage": true,
+            "topOffset": 160
         }
     },
     "blockStoneTall": {
@@ -23,7 +24,8 @@
             "frameCount": 1,
             "frameSpeed": 0,
             "loop": true,
-            "singleImage": true
+            "singleImage": true,
+            "topOffset": 160
         }
     },
     "star": {

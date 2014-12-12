@@ -5,14 +5,15 @@
  * @class Attack
  * @constructor
  * @param {Object} params {dir: 1 || -1, target: {Idea}}
- * @param {Number} speed
+ * @param {Number} speed modifier
  */
 function Attack(params, speed) {
+    this.id = actionIdCounter++;
     this.description = "Attack";
     this.label = "Attack";
     this.params = params;
     this.progress = 0;
-    this.speed = speed || 36;
+    this.speed = 12 * (speed || 1);
     Attack.prototype.run = function (params) {
         this.facing = params.dir;
 
@@ -25,7 +26,7 @@ function Attack(params, speed) {
     Attack.prototype.updateAnimation = function () {
         this.setAnimation("attack");
         if (this.sprite.animation === "attack")
-            this.sprite.frameSpeed = this.sprite.src["attack"].frameCount / this.action.speed;
+            this.sprite.frameSpeed = this.sprite.frameCount / this.action.speed;
     };
 }
 Actions.Attack = Attack;

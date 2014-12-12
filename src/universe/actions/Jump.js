@@ -6,6 +6,7 @@
  * @constructor
  */
 function Jump() {
+    this.id = actionIdCounter++;
     this.description = "Jump";
     this.label = "Jump";
     this.params = false;

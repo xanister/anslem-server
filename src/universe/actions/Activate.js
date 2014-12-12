@@ -7,6 +7,7 @@
  * @param {Object} params {target: {Idea}}
  */
 function Activate(params) {
+    this.id = actionIdCounter++;
     this.description = "Activate";
     this.label = "Activate";
     this.params = params;

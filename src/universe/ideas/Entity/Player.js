@@ -92,7 +92,9 @@ function Player(client) {
      * @param {Number} scale
      */
     Player.prototype.initializeView = function (scale) {
-        scale = scale || UniverseConfig.viewScale;
+        if (!scale) {
+            scale = this.client.info.screenWidth < 768 ? UniverseConfig.viewScale * 2 : UniverseConfig.viewScale;
+        }
         var viewWidth = this.client.info.screenWidth * scale;
         var viewHeight = this.client.info.screenHeight * scale;
 
@@ -149,16 +151,17 @@ function Player(client) {
             };
         }
 
-
         // Maintain view
-        if (this.x > this.view.x + this.view.width - this.view.xBuffer)
-            this.view.x = this.x + this.view.xBuffer - this.view.width;
-        else if (this.x < this.view.x + this.view.xBuffer)
-            this.view.x = this.x - this.view.xBuffer;
-        if (this.y > this.view.y + this.view.height - this.view.yBuffer)
-            this.view.y = this.y + this.view.yBuffer - this.view.height;
-        else if (this.y < this.view.y + this.view.yBuffer)
-            this.view.y = this.y - this.view.yBuffer;
+        if (!this.stats.godmode) {
+            if (this.x > this.view.x + this.view.width - this.view.xBuffer)
+                this.view.x = this.x + this.view.xBuffer - this.view.width;
+            else if (this.x < this.view.x + this.view.xBuffer)
+                this.view.x = this.x - this.view.xBuffer;
+            if (this.y > this.view.y + this.view.height - this.view.yBuffer)
+                this.view.y = this.y + this.view.yBuffer - this.view.height;
+            else if (this.y < this.view.y + this.view.yBuffer)
+                this.view.y = this.y - this.view.yBuffer;
+        }
 
         if (this.view.x < 0)
             this.view.x = 0;
@@ -176,6 +179,6 @@ function Player(client) {
     this.stats.strength = 50;
 }
 Player.prototype = new Entity();
-Player.prototype.constructor = Entity;
+Player.prototype.constructor = Player;
 
 Anslem.Player = Player;

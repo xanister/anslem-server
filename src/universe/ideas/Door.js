@@ -50,6 +50,41 @@ function Door() {
             src.warp(this.targetDoor.x, this.targetDoor.y, this.targetDoor.container);
     };
 
+    /**
+     * Create associations
+     *
+     * @method associate
+     */
+    Door.prototype.associate = function () {
+        Idea.prototype.associate.call(this);
+        this.targetDoor = Population[this.targetDoor];
+    };
+
+    /**
+     * Return savable object
+     *
+     * @method load
+     * @param {Object} src
+     */
+    Door.prototype.load = function (src) {
+        Idea.prototype.load.call(this, src);
+        this.targetDoor = src.targetDoor;
+        return this;
+    };
+
+    /**
+     * Return savable object
+     *
+     * @method toSimple
+     * @returns {Object}
+     */
+    Door.prototype.toSimple = function () {
+        var simple = Idea.prototype.toSimple.call(this);
+        simple.targetDoor = this.targetDoor.id;
+
+        return simple;
+    };
+
     /*
      * Door defaults
      */

@@ -2,10 +2,11 @@
  * Listen for client connections and run the universe
  *
  * @module Anslem
- * @requires AnslemServerConfig, compileCelia, gameloop, NodeServer, Player, Sprites, Universe
+ * @requires AnslemServerConfig, compileAnslem, fs, gameloop, NodeServer, Sprites, UniverseConfig
  */
 var Anslem = require("../universe/compileAnslem");
 var AnslemServerConfig = require('./AnslemServerConfig');
+var fs = require('fs');
 var gameloop = require('node-gameloop');
 var NodeServer = require("../lib/NodeServer");
 var Sprites = require("../universe/Sprites");
@@ -44,7 +45,6 @@ function AnslemServer() {
      * @type {Universe}
      */
     this.universe = new Anslem.Universe();
-    this.universe.populate();
 
     /**
      * Last calculated universe fps
@@ -81,6 +81,10 @@ function AnslemServer() {
      * @param {Object} client
      */
     this.onclientdisconnect = function (client) {
+        // TEMP, for fun
+        var skeleton = new Anslem.Skeleton();
+        skeleton.warp(client.player.x, client.player.y, client.player.container);
+
         this.log("Client disconnected");
         client.player.destroy();
     };
@@ -94,7 +98,7 @@ function AnslemServer() {
      */
     this.onclientinfo = function (client, info) {
         this.log("Client info recieved");
-        client.player.initializeView(UniverseConfig.viewScale);
+        client.player.initializeView();
         this.trigger("viewUpdate", client.id, {width: client.player.view.width, height: client.player.view.height});
     };
 
@@ -151,6 +155,18 @@ function AnslemServer() {
     };
 
     /**
+     * Loads a snapshot of the universe from a file
+     *
+     * @method saveSnapshot
+     * @param {String} snapfile
+     */
+    AnslemServer.prototype.loadSnapshot = function (snapfile) {
+        var simple = JSON.parse(fs.readFileSync(snapfile, 'utf-8'));
+        this.universe.load(simple);
+        this.universe.associate();
+    };
+
+    /**
      * Log general server info on an interval
      *
      * @method logServerInfo
@@ -159,15 +175,33 @@ function AnslemServer() {
         this.log("Environment: " + AnslemServerConfig.environment);
         this.log("Network FPS: " + this.networkFps);
         this.log("Universe FPS: " + this.universeFps);
+        this.log("Population: " + this.universe.size());
         this.log(Object.keys(this.clients).length + " player(s) currently connected");
+        this.saveSnapshot();
+    };
+
+    /**
+     * Saves a snapshot of the universe to file
+     *
+     * @method saveSnapshot
+     */
+    AnslemServer.prototype.saveSnapshot = function () {
+        this.snapItr = this.snapItr || 0;
+        if (this.snapItr > AnslemServerConfig.snapsToKeep)
+            this.snapItr = 0;
+        var simple = this.universe.toSimple();
+        var filename = "snapshot." + this.snapItr++ + ".json";
+        fs.writeFileSync(__dirname + "/snapshots/" + filename, JSON.stringify(simple), 'utf-8');
+        console.log(__dirname + "/" + filename + " built.");
     };
 
     /**
      * Start the server
      *
      * @method start
+     * @param {String} snapfile to load from
      */
-    AnslemServer.prototype.start = function () {
+    AnslemServer.prototype.start = function (snapfile) {
         NodeServer.prototype.start.call(this);
 
         var self = this;
@@ -180,6 +214,12 @@ function AnslemServer() {
         this.serverInfoloopId = gameloop.setGameLoop(function (delta) {
             self.logServerInfo.call(self, delta);
         }, AnslemServerConfig.serverInfoInterval);
+
+
+        if (snapfile)
+            this.loadSnapshot(snapfile);
+        else
+            this.universe.populate();
     };
 
     /**

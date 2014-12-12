@@ -13,8 +13,7 @@
             "frameSpeed": 0.5,
             "loop": true,
             "singleImage": true,
-            "xOffset": 0,
-            "yOffset": 20
+            "bottomOffset": 20
         },
         "die": {
             "imagePath": "/sprites/skeleton/skeleton-die",
@@ -22,7 +21,7 @@
             "frameSpeed": 0.3,
             "loop": false,
             "singleImage": true,
-            "yOffset": 10
+            "bottomOffset": 10
         },
         "flinch": {
             "imagePath": "/sprites/skeleton/skeleton-flinch",

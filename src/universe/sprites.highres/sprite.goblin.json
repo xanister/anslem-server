@@ -5,7 +5,10 @@
             "frameCount": 10,
             "frameSpeed": 0.2,
             "loop": true,
-            "singleImage": true
+            "singleImage": true,
+            "bottomOffset": 15,
+            "leftOffset": 20,
+            "rightOffset": 20
         },
         "attack": {
             "imagePath": "/sprites/goblin/goblin-attack",
@@ -22,8 +25,8 @@
             "frameSpeed": 0.3,
             "loop": false,
             "singleImage": true,
-            "yOffset": 10,
-            "xOffset": 0
+            "xOffset": 10,
+            "yOffset": 10
         },
         "flinch": {
             "imagePath": "/sprites/goblin/goblin-flinch",

@@ -32,6 +32,14 @@ function ActionTemplate(params) {
     this.params = params || {};
 
     /**
+     * ID for uniqueness
+     *
+     * @property id
+     * @type {Number}
+     */
+    this.id = actionIdCounter++;
+
+    /**
      * How far the action has progressed so far in frames
      *
      * @property progress

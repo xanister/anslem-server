@@ -6,6 +6,7 @@
  * @constructor
  */
 function Idle() {
+    this.id = actionIdCounter++;
     this.description = "Idle";
     this.label = "Idle";
     this.params = false;
@@ -19,9 +20,11 @@ function Idle() {
             this.setAnimation("die");
         else if (this.ySpeed !== 0)
             this.setAnimation("jump");
-        else if (this.xSpeed !== 0)
+        else if (this.xSpeed !== 0) {
             this.setAnimation("walk");
-        else if (this.stats.health < 50)
+            if (this.sprite.animation === "walk")
+                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed / this.stats.speed) * 0.75) + 0.25;
+        } else if (this.stats.health < 50)
             this.setAnimation("tired");
         else
             this.setAnimation("default");

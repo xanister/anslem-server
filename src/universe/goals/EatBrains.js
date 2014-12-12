@@ -6,6 +6,7 @@
  * @static
  */
 Goals.EatBrains = {
+    id: goalIdCounter++,
     description: "Eat brains",
     label: "Eat brains",
     getAction: function () {

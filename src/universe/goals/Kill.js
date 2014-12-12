@@ -6,6 +6,7 @@
  * @static
  */
 Goals.Kill = {
+    id: goalIdCounter++,
     description: "Kill target",
     label: "Kill",
     getAction: function (params) {

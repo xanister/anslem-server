@@ -7,11 +7,12 @@
  * @param {Object} params {dir: 1 || -1, strength: 5}
  */
 function Flinch(params) {
+    this.id = actionIdCounter++;
     this.description = "Take a hit";
     this.label = "Flinch";
     this.params = params;
     this.progress = 0;
-    this.speed = 20;
+    this.speed = 8;
     Flinch.prototype.run = function (params) {
         if (this.action.progress === 0) {
             // Knockback

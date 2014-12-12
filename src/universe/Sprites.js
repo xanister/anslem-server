@@ -37,8 +37,13 @@ for (var index in Sprites) {
     for (var animation in Sprites[index]) {
         var dim = sizeOf(AnslemServerConfig.assetPath + Sprites[index][animation].imagePath + (Sprites[index][animation].singleImage ? "" : "__000") + ".png");
 
+        Sprites[index][animation].frameSpeed *= UniverseConfig.fpsFactor;
         Sprites[index][animation].width = Sprites[index][animation].singleImage ? dim.width / Sprites[index][animation].frameCount : dim.width;
         Sprites[index][animation].height = dim.height;
+        Sprites[index][animation].leftOffset = Sprites[index][animation].leftOffset || 0;
+        Sprites[index][animation].rightOffset = Sprites[index][animation].rightOffset || 0;
+        Sprites[index][animation].topOffset = Sprites[index][animation].topOffset || 0;
+        Sprites[index][animation].bottomOffset = Sprites[index][animation].bottomOffset || 0;
         Sprites[index][animation].xOffset = Sprites[index][animation].xOffset || 0;
         Sprites[index][animation].yOffset = Sprites[index][animation].yOffset || 0;
     }

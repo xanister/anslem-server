@@ -69,6 +69,16 @@
             "tileX": true
         }
     },
+    "bgMountainsSnow": {
+        "default": {
+            "imagePath": "/sprites/ideas/bg-mountains-snow",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
     "bgNight": {
         "default": {
             "imagePath": "/sprites/bg-night/bg-night",

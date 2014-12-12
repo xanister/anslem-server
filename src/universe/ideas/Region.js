@@ -40,7 +40,7 @@ function Region() {
      * @property height
      * @type {Number}
      */
-    this.height = 1048 * UniverseConfig.scaleFactor;
+    this.height = 4096 * UniverseConfig.scaleFactor;
 
     /**
      * Size in x dimension
@@ -48,7 +48,19 @@ function Region() {
      * @property width
      * @type {Number}
      */
-    this.width = 30000 * UniverseConfig.scaleFactor;
+    this.width = 10000 * UniverseConfig.scaleFactor;
+
+    /**
+     * Return savable object
+     *
+     * @method load
+     * @param {Object} src
+     */
+    Region.prototype.load = function (src) {
+        Idea.prototype.load.call(this, src);
+        this.buffer = src.buffer;
+        return this;
+    };
 
     /**
      * Randomly populate the region
@@ -57,13 +69,25 @@ function Region() {
      */
     Region.prototype.populate = function () {
         this.ground = new Idea(['landscape']);
-        this.ground.setSprite("blockStoneTall", true, false, 1);
-        this.ground.warp(0, this.height - (this.ground.height / 2), this);
         this.ground.z = 5;
-        this.buffer.bottom = this.ground.height - 96;
+        this.ground.setSprite("blockStoneTall", true, false, 1);
+        this.ground.warp(0, this.height - (this.ground.sprite.src.default.height / 2), this);
+        this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
 
         this.entrance = new Door();
         this.entrance.warp(200, this.height - this.buffer.bottom - (this.entrance.height / 2), this);
+    };
+
+    /**
+     * Return savable object
+     *
+     * @method toSimple
+     * @returns {Object}
+     */
+    Region.prototype.toSimple = function () {
+        var simple = Idea.prototype.toSimple.call(this);
+        simple.buffer = this.buffer;
+        return simple;
     };
 }
 Region.prototype = new Idea();

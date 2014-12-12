@@ -6,6 +6,7 @@
  * @constructor
  */
 function Die() {
+    this.id = actionIdCounter++;
     this.description = "Die";
     this.label = "Die";
     this.params = false;

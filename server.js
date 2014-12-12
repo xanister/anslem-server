@@ -11,5 +11,4 @@
 var AnslemServer = require('./src/app/AnslemServer');
 
 var anslemServer = new AnslemServer();
-anslemServer.start();
-
+anslemServer.start(process.argv[2] || false);

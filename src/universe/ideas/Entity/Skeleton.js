@@ -33,9 +33,9 @@ function Skeleton() {
      * Skeleton defaults
      */
     this.setSprite("skeleton");
-    this.stats.speed *= 0.25;
+    this.stats.speed *= (0.1 + (Math.random() * 0.4));
 }
 Skeleton.prototype = new Entity();
-Skeleton.prototype.constructor = Entity;
+Skeleton.prototype.constructor = Skeleton;
 
 Anslem.Skeleton = Skeleton;

@@ -7,6 +7,7 @@
  * @param {Object} params direction to move, {dir: 1 || -1}
  */
 function Walk(params) {
+    this.id = actionIdCounter++;
     this.description = "Walk";
     this.label = "Walk";
     this.params = params;
@@ -16,8 +17,8 @@ function Walk(params) {
         if (params.dir !== 0)
             this.facing = params.dir < 0 ? -1 : 1;
         if ((this.xSpeed < this.stats.speed && params.dir > 0) || (this.xSpeed > -this.stats.speed && params.dir < 0)) {
-            var accel = params.dir * this.stats.accel;
-            this.xSpeed += (params.dir * this.stats.accel);
+            var accel = params.dir * (this.stats.accel + this.linearDampening);
+            this.xSpeed += accel;
         }
     };
     Walk.prototype.updateAnimation = function () {
@@ -25,8 +26,8 @@ function Walk(params) {
             this.setAnimation("jump");
         else {
             this.setAnimation("walk");
-            if (this.animation === "walk")
-                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * Math.abs((this.xSpeed) / this.stats.speed);
+            if (this.sprite.animation === "walk")
+                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed / this.stats.speed) * 0.75) + 0.25;
         }
     };
 }
