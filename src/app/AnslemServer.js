@@ -22,9 +22,21 @@ var UniverseConfig = require("../universe/UniverseConfig");
 function AnslemServer() {
     NodeServer.call(this, AnslemServerConfig.port);
 
+    /**
+     * Split packets into chunks
+     *
+     * @property packetIndex
+     * @type {Number}
+     */
     var packetIndex = 0;
 
-    var packetSplit = 2;
+    /**
+     * Number of chunks
+     *
+     * @property packetSplit
+     * @type {Number}
+     */
+    var packetSplit = AnslemServerConfig.networkFps / 30;
 
     /**
      * Clear client input events on update
@@ -144,8 +156,7 @@ function AnslemServer() {
         for (var id in this.clients)
             if (this.clients[id].player.container)
                 this.updateClient(id, this.clients[id].player.getPacket(true, packetIndex, packetSplit));
-        packetIndex++;
-        if (packetIndex > packetSplit)
+        if (++packetIndex === packetSplit)
             packetIndex = 0;
     };
 

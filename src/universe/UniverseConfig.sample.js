@@ -19,19 +19,68 @@ var UniverseConfig = {
      */
     bubbleTime: 60,
     /**
-     * Default view scale
+     * Default stats for all entities
      *
-     * @property viewScale
+     * @property defaultEntityStats
+     * @type {Object}
+     */
+    defaultEntityStats: {
+        accel: 1.5,
+        health: 100,
+        perception: 800,
+        jump: 85,
+        speed: 35,
+        strength: 10
+    },
+    /**
+     * Framerate factor
+     *
+     * @property fpsFactor
      * @type {Number}
      */
-    viewScale: 0.5,
+    fpsFactor: 2.5,
+    /**
+     * Default gravity
+     *
+     * @property gravity
+     * @type {Number}
+     */
+    gravity: 3.8,
+    /**
+     * Default linear dampening
+     *
+     * @property linearDampening
+     * @type {Number}
+     */
+    linearDampening: 0.9,
+    /**
+     * Scaling factor
+     *
+     * @property scaleFactor
+     * @type {Number}
+     */
+    scaleFactor: 1,
+    /**
+     * Theme for sprites
+     *
+     * @property theme
+     * @type {String}
+     */
+    theme: "highres",
+    /**
+     * Universe fps
+     *
+     * @property universeFps
+     * @type {Number}
+     */
+    universeFps: 30,
     /**
      * Default view scale
      *
      * @property viewScale
      * @type {Number}
      */
-    viewScaleStandard: 2,
+    viewScale: 1.5,
     /**
      * Default view speed
      *
@@ -40,61 +89,19 @@ var UniverseConfig = {
      */
     viewSpeed: 2,
     /**
-     * Distance to keep between player and view border,
-     * percent of view width
+     * Default viewXBuffer
      *
      * @property viewXBuffer
      * @type {Number}
      */
-    viewXBuffer: 0.3,
+    viewXBuffer: 0.45,
     /**
-     * Distance to keep between player and view border,
-     * percent of view height
+     * Default viewYBuffer
      *
-     * @property viewXBuffer
+     * @property viewYBuffer
      * @type {Number}
      */
-    viewYBuffer: 0.4
+    viewYBuffer: 0.25
 };
 
-/**
- * Scaling factor
- *
- * @property scaleFactor
- * @type {Number}
- */
-UniverseConfig.scaleFactor = UniverseConfig.viewScale / UniverseConfig.viewScaleStandard;
-
-/**
- * Default gravity
- *
- * @property gravity
- * @type {Number}
- */
-UniverseConfig.gravity = 1.8 * UniverseConfig.scaleFactor;
-
-/**
- * Default linear dampening
- *
- * @property linearDampening
- * @type {Number}
- */
-UniverseConfig.linearDampening = 0.5 * UniverseConfig.scaleFactor;
-
-/**
- * Default stats for all entities
- *
- * @property defaultEntityStats
- * @type {Object}
- */
-UniverseConfig.defaultEntityStats = {
-    accel: 1.1 * UniverseConfig.scaleFactor,
-    health: 100,
-    perception: 800,
-    jump: 25 * UniverseConfig.scaleFactor,
-    speed: 15 * UniverseConfig.scaleFactor,
-    strength: 25 * UniverseConfig.scaleFactor
-};
-
-console.log(UniverseConfig);
 module.exports = UniverseConfig;

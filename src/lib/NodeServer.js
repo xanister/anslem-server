@@ -109,6 +109,7 @@ function NodeServer(port) {
             nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
             nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: {}};
             nodeServer.clients[client.id].latency = 0;
+            nodeServer.clients[client.id].lastUpdateTime = Date.now();
             nodeServer.clients[client.id].state = "connected";
 
             // Server Callback

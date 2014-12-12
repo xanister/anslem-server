@@ -21,7 +21,7 @@ var AnslemServerConfig = {
     /**
      * Environment
      *
-     * @property environment
+     * @propert environment
      * @type {String}
      */
     environment: 'production',
@@ -31,14 +31,7 @@ var AnslemServerConfig = {
      * @property networkFps
      * @type {Number}
      */
-    networkFps: 30,
-    /**
-     * Server info log interval
-     *
-     * @property serverInfoInterval
-     * @type {Number}
-     */
-    serverInfoInterval: 10000,
+    networkFps: 60,
     /**
      * Default listen port
      *
@@ -47,21 +40,19 @@ var AnslemServerConfig = {
      */
     port: 3010,
     /**
-     * Universe fps
+     * Server info log interval
      *
-     * @property universeFps
+     * @property serverInfoInterval
      * @type {Number}
      */
-    universeFps: 60,
+    serverInfoInterval: 60000,
     /**
-     * Standard fps to measure agains
+     * Snap files to keep
      *
-     * @property standardFps
+     * @property snapsToKeep
      * @type {Number}
      */
-    standardFps: 60
+    snapsToKeep: 5
 };
 
-// Scale attributes for framerate
-AnslemServerConfig.fpsFactor = AnslemServerConfig.standardFps / AnslemServerConfig.serverFps;
 module.exports = AnslemServerConfig;
