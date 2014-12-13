@@ -60,12 +60,21 @@ function Universe() {
         zin.populate();
         zin.warp(10, 10, this);
 
+        zin.entrance2 = new Door();
+        zin.entrance2.warp(500, zin.height - zin.buffer.bottom - (zin.entrance2.height / 2), zin);
+
         var forest = new SkeletonForest();
         forest.populate();
         forest.warp(20, 10, this);
 
+        var forest2 = new SkeletonForest();
+        forest2.populate();
+        forest2.warp(30, 10, this);
+
         zin.entrance.targetDoor = forest.entrance;
         forest.entrance.targetDoor = zin.entrance;
+        forest2.entrance.targetDoor = zin.entrance2;
+        zin.entrance2.targetDoor = forest2.entrance;
     };
 
     /*

@@ -80,7 +80,6 @@ function AnslemServer() {
     this.onclientconnect = function (client) {
         this.log("Client connected");
 
-        // TODO: Clean this up
         client.player = new Anslem.Player(client);
         var self = this;
         client.sendViewUpdate = function () {
@@ -198,7 +197,6 @@ function AnslemServer() {
         for (var index in this.clients) {
             this.log("Client[" + this.clients[index].id + "]  Latency: " + this.clients[index].latency);
         }
-        this.saveSnapshot();
     };
 
     /**
@@ -232,10 +230,13 @@ function AnslemServer() {
         this.universeloopId = gameloop.setGameLoop(function (delta) {
             self.updateUniverse.call(self, delta);
         }, 1000 / AnslemServerConfig.universeFps);
-        this.serverInfoloopId = gameloop.setGameLoop(function (delta) {
-            self.logServerInfo.call(self, delta);
-        }, AnslemServerConfig.serverInfoInterval);
 
+        this.serverInfoloopId = setInterval(function () {
+            self.logServerInfo.call(self);
+        }, AnslemServerConfig.serverInfoInterval);
+        this.snapshotloopId = setInterval(function () {
+            self.saveSnapshot.call(self);
+        }, AnslemServerConfig.snapshotInterval);
 
         if (snapfile)
             this.loadSnapshot(snapfile);
@@ -251,7 +252,8 @@ function AnslemServer() {
     AnslemServer.prototype.stop = function () {
         gameloop.clearGameLoop(this.networkloopId);
         gameloop.clearGameLoop(this.universeloopId);
-        gameloop.clearGameLoop(this.serverInfoloopId);
+        clearInterval(this.serverInfoloopId);
+        clearInterval(this.snapshotloopId);
     };
 }
 AnslemServer.prototype = new NodeServer();
