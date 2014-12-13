@@ -190,8 +190,8 @@ function AnslemServer() {
      */
     AnslemServer.prototype.logServerInfo = function () {
         this.log("Environment: " + AnslemServerConfig.environment);
-        this.log("Network FPS: " + this.networkFps);
-        this.log("Universe FPS: " + this.universeFps);
+        this.log("Network FPS(" + AnslemServerConfig.networkFps + "): " + this.networkFps);
+        this.log("Universe FPS(" + UniverseConfig.universeFps + "): " + this.universeFps);
         this.log("Population: " + this.universe.size());
         this.log(Object.keys(this.clients).length + " player(s) currently connected");
         for (var index in this.clients) {
@@ -226,7 +226,7 @@ function AnslemServer() {
         var self = this;
         this.universeloopId = gameloop.setGameLoop(function (delta) {
             self.updateUniverse.call(self, delta);
-        }, 1000 / AnslemServerConfig.universeFps);
+        }, 1000 / UniverseConfig.universeFps);
         this.networkloopId = gameloop.setGameLoop(function (delta) {
             self.updateNetwork.call(self, delta);
         }, 1000 / AnslemServerConfig.networkFps);
