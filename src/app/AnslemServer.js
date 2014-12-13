@@ -224,13 +224,12 @@ function AnslemServer() {
         NodeServer.prototype.start.call(this);
 
         var self = this;
-        this.networkloopId = gameloop.setGameLoop(function (delta) {
-            self.updateNetwork.call(self, delta);
-        }, 1000 / AnslemServerConfig.networkFps);
         this.universeloopId = gameloop.setGameLoop(function (delta) {
             self.updateUniverse.call(self, delta);
         }, 1000 / AnslemServerConfig.universeFps);
-
+        this.networkloopId = gameloop.setGameLoop(function (delta) {
+            self.updateNetwork.call(self, delta);
+        }, 1000 / AnslemServerConfig.networkFps);
         this.serverInfoloopId = setInterval(function () {
             self.logServerInfo.call(self);
         }, AnslemServerConfig.serverInfoInterval);
@@ -250,8 +249,8 @@ function AnslemServer() {
      * @method stop
      */
     AnslemServer.prototype.stop = function () {
-        gameloop.clearGameLoop(this.networkloopId);
         gameloop.clearGameLoop(this.universeloopId);
+        gameloop.clearGameLoop(this.networkloopId);
         clearInterval(this.serverInfoloopId);
         clearInterval(this.snapshotloopId);
     };

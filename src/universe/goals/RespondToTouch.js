@@ -60,22 +60,28 @@ Goals.RespondToTouch = {
             // Touch
             if (this.inputs.touches.length === 4) {
                 this.stats.godmode = true;
-            } else if (this.inputs.touches.length === 2 || this.inputs.events.swipeup) {
-                return new Actions.Jump({dir: 0});
             } else if (this.inputs.events.swiperight) {
                 return new Actions.Attack({dir: 1}, 0.5);
             } else if (this.inputs.events.swipeleft) {
                 return new Actions.Attack({dir: -1}, 0.5);
             } else if (this.inputs.events.swipedown && this.overActivatable) {
                 return new Actions.Activate({target: this.overActivatable});
+            } else if (this.inputs.touches.length === 2 || this.inputs.events.swipeup) {
+                var touch = this.inputs.touches[Object.keys(this.inputs.touches)[0]];
+                var dist = Math.sqrt(Math.pow(touch.startX - touch.x, 2) + Math.pow(touch.startX - touch.x, 2));
+                if (touch.x > touch.startX) {
+                    return new Actions.Jump({dir: dist / 100});
+                } else if (touch.x < touch.startX) {
+                    return new Actions.Jump({dir: -dist / 100});
+                }
+                return new Actions.Jump({dir: 0});
             } else if (this.inputs.touches.length === 1) {
                 var touch = this.inputs.touches[Object.keys(this.inputs.touches)[0]];
-                var dist = 0.25 + ((Math.min(Math.abs(touch.x - touch.startX), 100) / 100) * 0.75);
-                // TODO: Fix speed control
+                var dist = Math.sqrt(Math.pow(touch.startX - touch.x, 2) + Math.pow(touch.startX - touch.x, 2));
                 if (touch.x > touch.startX) {
-                    return new Actions.Walk({dir: 1});
+                    return new Actions.Walk({dir: dist / 150});
                 } else if (touch.x < touch.startX) {
-                    return new Actions.Walk({dir: -1});
+                    return new Actions.Walk({dir: -dist / 150});
                 }
             }
         }
