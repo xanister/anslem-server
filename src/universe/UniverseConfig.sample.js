@@ -28,7 +28,7 @@ var UniverseConfig = {
         accel: 1.5,
         health: 100,
         perception: 800,
-        jump: 85,
+        jump: 60,
         speed: 35,
         strength: 10
     },
