@@ -29,7 +29,7 @@ var UniverseConfig = {
         health: 100,
         perception: 800,
         jump: 60,
-        speed: 35,
+        speed: 25,
         strength: 10
     },
     /**
@@ -38,7 +38,7 @@ var UniverseConfig = {
      * @property fpsFactor
      * @type {Number}
      */
-    fpsFactor: 2.5,
+    fpsFactor: 1,
     /**
      * Default gravity
      *
@@ -73,7 +73,7 @@ var UniverseConfig = {
      * @property universeFps
      * @type {Number}
      */
-    universeFps: 30,
+    universeFps: 60,
     /**
      * Default view scale
      *
