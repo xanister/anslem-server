@@ -122,7 +122,8 @@ function Player(client) {
      */
     Player.prototype.load = function (client, universe) {
         // TODO: Pull from persister
-        this.warp(200, universe.height - (this.height / 2), universe.contents[0][Object.keys(universe.contents[0])[0]]);
+        var startRegion = universe.contents[0][Object.keys(universe.contents[0])[0]];
+        this.warp(200, startRegion.height - startRegion.buffer.bottom - (this.height / 2), startRegion);
     };
 
     /**
