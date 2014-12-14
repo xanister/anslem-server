@@ -25,11 +25,11 @@ var UniverseConfig = {
      * @type {Object}
      */
     defaultEntityStats: {
-        accel: 1.5,
+        accel: 0.3,
         health: 100,
         perception: 800,
-        jump: 60,
-        speed: 25,
+        jump: 25,
+        speed: 9,
         strength: 10
     },
     /**
@@ -45,14 +45,21 @@ var UniverseConfig = {
      * @property gravity
      * @type {Number}
      */
-    gravity: 3.8,
+    gravity: 2.3,
+    /**
+     * Frames between view updates
+     *
+     * @property inViewUpdateDelay
+     * @type {Number}
+     */
+    inViewUpdateDelay: 10,
     /**
      * Default linear dampening
      *
      * @property linearDampening
      * @type {Number}
      */
-    linearDampening: 0.9,
+    linearDampening: 0.2,
     /**
      * Scaling factor
      *
@@ -80,7 +87,7 @@ var UniverseConfig = {
      * @property viewScale
      * @type {Number}
      */
-    viewScale: 1.5,
+    viewScale: 1,
     /**
      * Default view speed
      *
