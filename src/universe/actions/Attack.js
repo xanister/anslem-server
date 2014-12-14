@@ -13,10 +13,13 @@ function Attack(params, speed) {
     this.label = "Attack";
     this.params = params;
     this.progress = 0;
-    this.speed = 12 * (speed || 1);
+    this.speed = 30 * (speed || 1);
     Attack.prototype.run = function (params) {
-        this.facing = params.dir;
-
+        if (this.action.progress === 0) {
+            this.facing = params.dir;
+            this.xSpeed += (this.stats.strength / this.width) * params.dir * 5;
+            this.ySpeed -= ((this.stats.strength / this.width) * params.dir * 15);
+        }
         var hit = params.target ? (this.collides(params.target.bbox()) ? params.target : false) : this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
         if (hit && hit.immunityTimeout === 0) {
             hit.action = new Actions.Flinch({dir: params.dir, strength: this.stats.strength});

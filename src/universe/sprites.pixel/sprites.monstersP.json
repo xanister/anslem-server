@@ -1,48 +1,78 @@
 {
-    "goblin": {
+    "goblin01": {
         "default": {
-            "imagePath": "/sprites/pixel/goblin-walk",
+            "imagePath": "/sprites/pixel/entity/goblin01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0,
             "loop": true,
             "singleImage": true
         },
-        "walk": {
-            "imagePath": "/sprites/pixel/goblin-walk",
+        "attack": {
+            "imagePath": "/sprites/pixel/entity/goblin01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0.25,
+            "loop": false,
+            "singleImage": true
+        },
+        "die": {
+            "imagePath": "/sprites/pixel/misc/skull",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "yOffset": 32
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/entity/goblin01-walk.right",
+            "frameCount": 4,
+            "frameSpeed": 0.15,
             "loop": true,
             "singleImage": true
         }
     },
-    "skeleton": {
+    "skeleton01": {
         "default": {
-            "imagePath": "/sprites/pixel/skeleton-walk",
+            "imagePath": "/sprites/pixel/entity/skeleton01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0,
             "loop": true,
             "singleImage": true
         },
-        "walk": {
-            "imagePath": "/sprites/pixel/skeleton-walk",
+        "attack": {
+            "imagePath": "/sprites/pixel/entity/skeleton01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0.25,
+            "loop": false,
+            "singleImage": true
+        },
+        "die": {
+            "imagePath": "/sprites/pixel/misc/skull",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "yOffset": 32
+        },
+        "walk": {
+            "imagePath": "/sprites/pixel/entity/skeleton01-walk.right",
+            "frameCount": 4,
+            "frameSpeed": 0.15,
             "loop": true,
             "singleImage": true
         }
     },
-    "zombie": {
+    "zombie01": {
         "default": {
-            "imagePath": "/sprites/pixel/zombie-walk",
+            "imagePath": "/sprites/pixel/entity/zombie01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0,
             "loop": true,
             "singleImage": true
         },
         "walk": {
-            "imagePath": "/sprites/pixel/zombie-walk",
+            "imagePath": "/sprites/pixel/entity/zombie01-walk.right",
             "frameCount": 4,
-            "frameSpeed": 0.25,
+            "frameSpeed": 0.15,
             "loop": true,
             "singleImage": true
         }

@@ -670,7 +670,7 @@ function Idea(categories) {
 
         var collides;
 
-        // Fall
+        // Vertical
         this.ySpeed += this.gravity;
         this.y += this.ySpeed;
         collides = this.instancePlace("solid");
@@ -681,6 +681,17 @@ function Idea(categories) {
                 this.y = collides.y + (collides.height / 2) + (this.height / 2);
             }
             this.ySpeed = 0;
+        }
+
+        if (this.y < 0) {
+            this.ySpeed = 0;
+            this.y = 0;
+        } else if (this.below && this.y + (this.height / 2) > this.below.y - (this.below.height / 2)) {
+            this.ySpeed = 0;
+            this.y = this.below.y - (this.below.height / 2) - (this.height / 2);
+        } else if (this.y + (this.height / 2) > this.container.height - this.container.buffer.bottom) {
+            this.ySpeed = 0;
+            this.y = this.container.height - this.container.buffer.bottom - (this.height / 2);
         }
 
         // Horizontal
@@ -704,16 +715,6 @@ function Idea(categories) {
         } else if (this.x > this.container.width) {
             this.xSpeed = 0;
             this.x = this.container.width;
-        }
-        if (this.y < 0) {
-            this.ySpeed = 0;
-            this.y = 0;
-        } else if (this.below && this.y + (this.height / 2) > this.below.y - (this.below.height / 2)) {
-            this.ySpeed = 0;
-            this.y = this.below.y - (this.below.height / 2) - (this.height / 2);
-        } else if (this.y + (this.height / 2) > this.container.height - this.container.buffer.bottom) {
-            this.ySpeed = 0;
-            this.y = this.container.height - this.container.buffer.bottom - (this.height / 2);
         }
     };
 

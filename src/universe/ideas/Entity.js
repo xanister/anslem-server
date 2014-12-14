@@ -38,6 +38,7 @@ function Entity() {
     this.categories.push('alive');
     this.categories.push('entity');
     this.categories.push('physical');
+    this.categories.push('visible');
 
     /**
      * Current goal
@@ -54,6 +55,22 @@ function Entity() {
      * @type {Number}
      */
     this.gravity = UniverseConfig.gravity;
+
+    /**
+     * Object in view
+     *
+     * @property inView
+     * @type {Array}
+     */
+    this.inView = [];
+
+    /**
+     * In view update interval
+     *
+     * @property inViewUpdateDelay
+     * @type {Number}
+     */
+    this.inViewUpdateDelay = this.id % UniverseConfig.inViewUpdateDelay;
 
     /**
      * Memories
@@ -114,14 +131,17 @@ function Entity() {
     Entity.prototype.run = function () {
         Idea.prototype.run.call(this);
 
-        this.inView = [];
-        if (this.container) {
-            for (var id in this.container.contents[0]) {
-                var idea = this.container.contents[0][id];
-                if (idea.hasCategory('landscape') || this.distanceTo(idea.x, idea.y) < this.stats.perception) {
-                    this.inView.push(idea);
+        if (--this.inViewUpdateDelay <= 0) {
+            this.inView = [];
+            if (this.container) {
+                for (var id in this.container.contents.visible) {
+                    var idea = this.container.contents.visible[id];
+                    if (this.distanceTo(idea.x, idea.y) < this.stats.perception) {
+                        this.inView.push(idea);
+                    }
                 }
             }
+            this.inViewUpdateDelay = UniverseConfig.inViewUpdateDelay;
         }
 
         if (this.stats.health <= 0) {

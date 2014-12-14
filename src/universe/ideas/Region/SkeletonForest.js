@@ -21,20 +21,15 @@ function SkeletonForest() {
     SkeletonForest.prototype.populate = function () {
         Region.prototype.populate.call(this);
 
-        this.ground.setSprite("blockGrass", true, false, 1);
-        this.ground.warp(0, this.height - (this.ground.sprite.src.default.height / 2), this);
-        this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
-
-//        var mountains = new Idea("[landscape]");
-//        mountains.setSprite("bgMountainsSnow", true, false, 0.1);
-//        mountains.warp(0, 0, this);
+        var mountains = new Landscape();
+        mountains.z = 1;
+        mountains.setSprite("mountains01", true, false, 0.1);
+        mountains.warp(0, this.height - this.buffer.bottom - (mountains.height / 2), this);
 
         var block = new Platform();
         block.warp(600, this.height - 800, this);
 
-        this.entrance.warp(200, this.height - this.buffer.bottom - (this.entrance.height / 2), this);
-
-        for (var n = 0; n < 15; n++) {
+        for (var n = 0; n < 25; n++) {
             var s = new Skeleton();
             s.warp(1000 + (Math.random() * (this.width - 1000)), 400, this);
         }

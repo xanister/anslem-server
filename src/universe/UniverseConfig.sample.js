@@ -66,7 +66,7 @@ var UniverseConfig = {
      * @property theme
      * @type {String}
      */
-    theme: "highres",
+    theme: "pixel",
     /**
      * Universe fps
      *

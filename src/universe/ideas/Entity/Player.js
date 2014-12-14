@@ -134,25 +134,30 @@ function Player(client) {
     Player.prototype.run = function () {
         Entity.prototype.run.call(this);
 
-        // Clear events
-        this.inputs.events = {};
+        // Add extra in view
+        if (this.container) {
+            for (var id in this.container.contents.landscape)
+                this.inView.push(this.container.contents.landscape[id]);
+        }
 
         // Standing over activatable object
         this.overActivatable = this.instancePlace("activatable");
 
         // Bubble]
-        if (this.inputs.message) {
-            this.bubble = {
-                message: this.inputs.message,
-                time: 60
-            };
-            this.inputs.message = false;
-        } else if (this.overActivatable) {
-            this.bubble = {
-                message: "",
-                star: true,
-                time: 5
-            };
+        if (!this.bubble) {
+            if (this.inputs.message) {
+                this.bubble = {
+                    message: this.inputs.message,
+                    time: 180
+                };
+                this.inputs.message = false;
+            } else if (this.overActivatable) {
+                this.bubble = {
+                    message: "",
+                    star: true,
+                    time: 5
+                };
+            }
         }
 
         // Maintain view
@@ -173,12 +178,15 @@ function Player(client) {
             this.view.x = this.container.width - this.view.width;
         if (this.view.y > (this.container.height - this.view.height))
             this.view.y = this.container.height - this.view.height;
+
+        // Clear events
+        this.inputs.events = {};
     };
 
     /*
      * Player defaults
      */
-    this.setSprite("goblin");
+    this.setSprite("goblin01");
     this.stats.perception *= 4;
     this.stats.strength = 50;
 }

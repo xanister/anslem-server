@@ -21,6 +21,7 @@ function Platform() {
      * @type {Array}
      */
     this.categories.push('solid');
+    this.categories.push('physical');
     this.categories.push('platform');
 
     /**
@@ -34,7 +35,7 @@ function Platform() {
     /*
      * Platform defaults
      */
-    this.setSprite("blockStoneTall");
+    this.setSprite("platform01");
 }
 Platform.prototype = new Idea();
 Platform.prototype.constructor = Platform;

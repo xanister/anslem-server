@@ -50,7 +50,7 @@ Goals.RespondToTouch = {
                     else if (this.view.scale > 4)
                         this.view.scale = 4;
                     this.initializeView(this.view.scale);
-                    this.client.sendViewUpdate(this.view);
+                    this.client.trigger("viewUpdate", {width: this.view.width, height: this.view.height});
                 }
             } else if (this.inputs.events.swipedown) {
                 var block = new Platform();
@@ -77,11 +77,11 @@ Goals.RespondToTouch = {
                 return new Actions.Jump({dir: 0});
             } else if (this.inputs.touches.length === 1) {
                 var touch = this.inputs.touches[Object.keys(this.inputs.touches)[0]];
-                var dist = Math.sqrt(Math.pow(touch.startX - touch.x, 2) + Math.pow(touch.startX - touch.x, 2));
+                var dist = Math.min(Math.sqrt(Math.pow(touch.startX - touch.x, 2) + Math.pow(touch.startX - touch.x, 2)), 150);
                 if (touch.x > touch.startX) {
-                    return new Actions.Walk({dir: dist / 150});
+                    return new Actions.Walk({dir: dist / 50});
                 } else if (touch.x < touch.startX) {
-                    return new Actions.Walk({dir: -dist / 150});
+                    return new Actions.Walk({dir: -dist / 50});
                 }
             }
         }

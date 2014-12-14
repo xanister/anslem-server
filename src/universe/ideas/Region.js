@@ -48,7 +48,7 @@ function Region() {
      * @property width
      * @type {Number}
      */
-    this.width = 10000 * UniverseConfig.scaleFactor;
+    this.width = 20000 * UniverseConfig.scaleFactor;
 
     /**
      * Return savable object
@@ -68,9 +68,7 @@ function Region() {
      * @method populate
      */
     Region.prototype.populate = function () {
-        this.ground = new Idea(['landscape']);
-        this.ground.z = 5;
-        this.ground.setSprite("blockStoneTall", true, false, 1);
+        this.ground = new Landscape();
         this.ground.warp(0, this.height - (this.ground.sprite.src.default.height / 2), this);
         this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
 

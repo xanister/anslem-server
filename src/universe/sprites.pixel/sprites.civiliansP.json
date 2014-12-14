@@ -1,46 +1,46 @@
 {
     "civilian01": {
         "default": {
-            "imagePath": "/sprites/pixel/civilian01",
+            "imagePath": "/sprites/pixel/entity/civilian01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0,
             "loop": true,
             "singleImage": true
         },
         "walk": {
-            "imagePath": "/sprites/pixel/civilian01",
+            "imagePath": "/sprites/pixel/entity/civilian01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0.25,
             "loop": true,
             "singleImage": true
         }
     },
-    "oldman01": {
+    "civilian02": {
         "default": {
-            "imagePath": "/sprites/pixel/oldman01",
+            "imagePath": "/sprites/pixel/entity/civilian02-walk.right",
             "frameCount": 4,
             "frameSpeed": 0,
             "loop": true,
             "singleImage": true
         },
         "walk": {
-            "imagePath": "/sprites/pixel/oldman01",
+            "imagePath": "/sprites/pixel/entity/civilian02-walk.right",
             "frameCount": 4,
             "frameSpeed": 0.25,
             "loop": true,
             "singleImage": true
         }
     },
-    "warrior": {
+    "warrior01": {
         "default": {
-            "imagePath": "/sprites/pixel/warrior-walk",
+            "imagePath": "/sprites/pixel/entity/warrior01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0,
             "loop": true,
             "singleImage": true
         },
         "walk": {
-            "imagePath": "/sprites/pixel/warrior-walk",
+            "imagePath": "/sprites/pixel/entity/warrior01-walk.right",
             "frameCount": 4,
             "frameSpeed": 0.25,
             "loop": true,

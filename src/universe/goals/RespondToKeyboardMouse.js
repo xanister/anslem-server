@@ -10,6 +10,13 @@ Goals.RespondToKeyboardMouse = {
     description: "RespondToKeyboardMouse",
     label: "Player Goal",
     getAction: function () {
+        if (this.inputs.keyboard.M) {
+            this.bubble = {
+                time: 5,
+                message: "test: " + this.xSpeed
+            };
+        }
+
         if (this.stats.godmode) {
             // Keyboard/mouse
             if (this.inputs.events.keydown && this.inputs.events.keydown.V) {

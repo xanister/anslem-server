@@ -22,12 +22,9 @@ function Walk(params) {
         }
     };
     Walk.prototype.updateAnimation = function () {
-        if (this.ySpeed !== 0)
-            this.setAnimation("jump");
-        else {
-            this.setAnimation("walk");
-            if (this.sprite.animation === "walk")
-                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed / this.stats.speed) * 0.75) + 0.25;
+        this.setAnimation("walk");
+        if (this.sprite.animation === "walk") {
+            this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * Math.min(Math.abs(this.xSpeed / this.stats.speed), 1);
         }
     };
 }

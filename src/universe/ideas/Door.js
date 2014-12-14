@@ -22,6 +22,7 @@ function Door() {
      */
     this.categories.push('activatable');
     this.categories.push('door');
+    this.categories.push('visible');
 
     /**
      * Target door
@@ -46,8 +47,11 @@ function Door() {
      * @param {Idea} src
      */
     this.activate = function (src) {
-        if (this.targetDoor)
+        if (this.targetDoor) {
+            if (src.client)
+                src.client.trigger("transition", {start: "pt-page-moveFromBottom", end: ""});
             src.warp(this.targetDoor.x, this.targetDoor.y, this.targetDoor.container);
+        }
     };
 
     /**

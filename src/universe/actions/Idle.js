@@ -23,7 +23,7 @@ function Idle() {
         else if (this.xSpeed !== 0) {
             this.setAnimation("walk");
             if (this.sprite.animation === "walk")
-                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * (Math.abs(this.xSpeed / this.stats.speed) * 0.75) + 0.25;
+                this.sprite.frameSpeed = this.sprite.src["walk"].frameSpeed * Math.min(Math.abs(this.xSpeed / this.stats.speed), 1);
         } else if (this.stats.health < 50)
             this.setAnimation("tired");
         else

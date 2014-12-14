@@ -82,8 +82,8 @@ function AnslemServer() {
 
         client.player = new Anslem.Player(client);
         var self = this;
-        client.sendViewUpdate = function () {
-            self.trigger("viewUpdate", client.id, {width: client.player.view.width, height: client.player.view.height});
+        client.trigger = function (eventName, params) {
+            self.trigger(eventName, client.id, params);
         };
 
         return {message: 'Welcome to Anslem!'};

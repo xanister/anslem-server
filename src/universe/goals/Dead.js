@@ -19,11 +19,11 @@ Goals.Dead = {
             this.baseGoal = Goals.PlayerInput;
             this.addCategory('physical');
             this.addCategory("alive");
-            if (this.sprite.name === "goblin") {
+            if (this.sprite.name === "goblin01") {
                 this.addCategory('hasbrains');
-                this.setSprite("warrior");
+                this.setSprite("warrior01");
             } else {
-                this.setSprite("skeleton");
+                this.setSprite("zombie01");
             }
         }
         if (!this.inputs && ((new Date()).getTime() > (this.stats.timeOfDeath + 60000))) {
