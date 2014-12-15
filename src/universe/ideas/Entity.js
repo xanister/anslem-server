@@ -41,6 +41,14 @@ function Entity() {
     this.categories.push('visible');
 
     /**
+     * Entity's current focus
+     *
+     * @property focus
+     * @type {Object}
+     */
+    this.focus = false;
+
+    /**
      * Current goal
      *
      * @property goal
@@ -62,7 +70,7 @@ function Entity() {
      * @property inView
      * @type {Array}
      */
-    this.inView = [];
+    this.inView = {0: {}};
 
     /**
      * In view update interval
@@ -79,6 +87,22 @@ function Entity() {
      * @type {Array}
      */
     this.memory = [];
+
+    /**
+     * Objects just noticed
+     *
+     * @property inViewAdded
+     * @type {Array}
+     */
+    this.inViewAdded = {0: {}};
+
+    /**
+     * Objects just lost track of
+     *
+     * @property inViewRemoved
+     * @type {Array}
+     */
+    this.inViewRemoved = {0: {}};
 
     /**
      * Stats
@@ -110,6 +134,37 @@ function Entity() {
     };
 
     /**
+     * Return idea closest to given point
+     *
+     * @method instanceNearest
+     * @param {String} category
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Boolean} includeDistant search outside of view
+     * @return {Idea}
+     */
+    Entity.prototype.instanceNearest = function (category, x, y, includeDistant) {
+        category = category || 0;
+        this.x = x || this.x;
+        this.y = y || this.y;
+        if (includeDistant)
+            return Idea.prototype.instanceNearest.call(this, category, x, y);
+        var nearest = false;
+        var dist = 1000000;
+        for (var id in this.inView[category]) {
+            var e = this.inView[category][id];
+            if (e.id !== this.id) {
+                var thisDist = this.distanceTo(e.x, e.y);
+                if (thisDist < dist) {
+                    nearest = e;
+                    dist = thisDist;
+                }
+            }
+        }
+        return nearest;
+    };
+
+    /**
      * Return savable object
      *
      * @method load
@@ -131,25 +186,52 @@ function Entity() {
     Entity.prototype.run = function () {
         Idea.prototype.run.call(this);
 
+        // Update in view periodically
+        this.inViewAdded = [];
+        this.inViewRemoved = [];
         if (--this.inViewUpdateDelay <= 0) {
-            this.inView = [];
             if (this.container) {
+                var newInView = {0: {}};
                 for (var id in this.container.contents.visible) {
                     var idea = this.container.contents.visible[id];
                     if (this.distanceTo(idea.x, idea.y) < this.stats.perception) {
-                        this.inView.push(idea);
+                        if (!this.inView[0][idea.id])
+                            this.inViewAdded.push[idea];
+                        else
+                            delete this.inView[0][idea.id];
+                        newInView[0][idea.id] = idea;
+                        for (var index in idea.categories) {
+                            if (!newInView[idea.categories[index]])
+                                newInView[idea.categories[index]] = {};
+                            newInView[idea.categories[index]][idea.id] = idea;
+                        }
                     }
                 }
+                for (var id in this.inView[0])
+                    this.inViewRemoved.push(this.inView[0][id]);
+                this.inView = newInView;
             }
             this.inViewUpdateDelay = UniverseConfig.inViewUpdateDelay;
         }
 
+        // Handle interupts
+        if (this.inViewAdded.length > 0 || this.inViewRemoved.length > 0)
+            this.goal = false;
+
+        // Die if needed
         if (this.stats.health <= 0) {
-            this.baseGoal = Goals.Dead;
             this.action = false;
+            this.goal = false;
+            this.baseGoal = Goals.Dead;
         }
-        if (!this.action || this.action.progress >= this.action.speed)
-            this.action = this.baseGoal.getAction.call(this);
+
+        // Get new action if needed
+        if (!this.action || this.action.progress >= this.action.speed) {
+            this.goal = this.goal || this.baseGoal;
+            this.action = this.goal ? this.goal.getAction.call(this) : false;
+        }
+
+        // Run the action
         if (this.action) {
             this.action.run.call(this, this.action.params);
             this.action.updateAnimation.call(this);

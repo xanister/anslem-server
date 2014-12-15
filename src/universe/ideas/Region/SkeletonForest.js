@@ -22,14 +22,17 @@ function SkeletonForest() {
         Region.prototype.populate.call(this);
 
         var mountains = new Landscape();
-        mountains.z = 1;
-        mountains.setSprite("mountains01", true, false, 0.1);
         mountains.warp(0, this.height - this.buffer.bottom - (mountains.height / 2), this);
+
+        var mountains2 = new Landscape();
+        mountains2.z = 2;
+        mountains2.sprite.scrollSpeed = 0.5;
+        mountains2.warp(200, this.height - this.buffer.bottom - (mountains.height * 0.4), this);
 
         var block = new Platform();
         block.warp(600, this.height - 800, this);
 
-        for (var n = 0; n < 25; n++) {
+        for (var n = 0; n < 50; n++) {
             var s = new Skeleton();
             s.warp(1000 + (Math.random() * (this.width - 1000)), 400, this);
         }

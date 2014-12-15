@@ -226,22 +226,38 @@ function Idea(categories) {
         };
     };
 
+    /**
+     * Returns true if self collides with given bbox
+     *
+     * @method collides
+     * @param {Idea} idea
+     * @return {Boolean}
+     */
+    Idea.prototype.collides = function (idea) {
+        return (
+                this.x - (this.width / 2) < idea.x + (idea.width / 2) &&
+                idea.x - (idea.width / 2) < this.x + (this.width / 2) &&
+                this.y - (this.height / 2) < idea.y + (idea.height / 2) &&
+                idea.y - (idea.height / 2) < this.y + (this.height / 2)
+                );
+    };
 
     /**
      * Returns true if self collides with given bbox
      *
      * @method collides
-     * @param {Object} bbox
+     * @param {Number} left
+     * @param {Number} top
+     * @param {Number} right
+     * @param {Number} bottom
      * @return {Boolean}
      */
-    Idea.prototype.collides = function (bbox) {
-        var rect1 = this.bbox();
-        var rect2 = bbox;
+    Idea.prototype.collidesRect = function (left, top, right, bottom) {
         return (
-                rect1.left < rect2.right &&
-                rect1.right > rect2.left &&
-                rect1.top < rect2.bottom &&
-                rect1.bottom > rect2.top
+                this.x - (this.width / 2) < right &&
+                left < this.x + (this.width / 2) &&
+                this.y - (this.height / 2) < bottom &&
+                bottom < this.y + (this.height / 2)
                 );
     };
 
@@ -380,7 +396,7 @@ function Idea(categories) {
         this.y = y || this.y;
         for (var id in this.container.contents[category]) {
             var e = this.container.contents[category][id];
-            if (e.id !== this.id && this.collides(e.bbox())) {
+            if (e.id !== this.id && this.collides(e)) {
                 this.x = oldX;
                 this.y = oldY;
                 return e;
@@ -420,7 +436,7 @@ function Idea(categories) {
     Idea.prototype.instanceRect = function (category, r) {
         for (var id in this.container.contents[category]) {
             var e = this.container.contents[category][id];
-            if (e.collides(r))
+            if (e.collidesRect(r.left, r.top, r.right, r.bottom))
                 return e;
         }
         return false;
@@ -438,7 +454,7 @@ function Idea(categories) {
         var toReturn = [];
         for (var id in this.container.contents[category]) {
             var e = this.container.contents[category][id];
-            if (e.collides(r))
+            if (e.collidesRect(r.left, r.top, r.right, r.bottom))
                 toReturn.push(e);
         }
         return toReturn;
@@ -490,7 +506,7 @@ function Idea(categories) {
         for (var index in this.categories)
             if (this.categories[index] === category)
                 this.categories.splice(index, 1);
-        if (this.container)
+        if (this.container && this.container.contents[category] && this.container.contents[category][this.id])
             delete this.container.contents[category][this.id];
     };
 
@@ -500,9 +516,10 @@ function Idea(categories) {
      * @method run
      */
     Idea.prototype.run = function () {
-        // Physics
         if (this.immunityTimeout > 0)
             this.immunityTimeout--;
+
+        // Physics
         if (this.gravity > 0)
             this.updatePhysics();
 
@@ -648,73 +665,68 @@ function Idea(categories) {
 
     /**
      * Update physics
+     * TODO: Optimize optimize optimize
      *
      * @method updatePhysics
      */
     Idea.prototype.updatePhysics = function () {
-        // Find object below
-        var belows = this.instancesRect("solid", {
-            left: this.x - (this.width / 2),
-            right: this.x + (this.width / 2),
-            top: this.y + (this.height / 2),
-            bottom: this.container.height
-        });
-        if (belows.length > 0) {
-            belows.sort(function (a, b) {
-                return a.distanceTo(this) > b.distanceTo(this);
-            });
-            this.below = belows[0];
-        } else {
-            this.below = false;// this.container.ground;
-        }
-
-        var collides;
-
         // Vertical
-        this.ySpeed += this.gravity;
-        this.y += this.ySpeed;
-        collides = this.instancePlace("solid");
-        if (collides) {
-            if (this.ySpeed > 0) {
-                this.y = collides.y - (collides.height / 2) - (this.height / 2);
-            } else {
-                this.y = collides.y + (collides.height / 2) + (this.height / 2);
-            }
-            this.ySpeed = 0;
-        }
-
-        if (this.y < 0) {
-            this.ySpeed = 0;
-            this.y = 0;
-        } else if (this.below && this.y + (this.height / 2) > this.below.y - (this.below.height / 2)) {
-            this.ySpeed = 0;
-            this.y = this.below.y - (this.below.height / 2) - (this.height / 2);
-        } else if (this.y + (this.height / 2) > this.container.height - this.container.buffer.bottom) {
-            this.ySpeed = 0;
+        if (this.y + (this.height / 2) + this.ySpeed >= this.container.height - this.container.buffer.bottom) {
             this.y = this.container.height - this.container.buffer.bottom - (this.height / 2);
+            this.ySpeed = 0;
+        } else {
+            // Find object below
+            /*
+             var belows = this.instancesRect("solid", {
+             left: this.x - (this.width / 2),
+             right: this.x + (this.width / 2),
+             top: this.y + (this.height / 2),
+             bottom: this.container.height
+             });
+             if (belows.length > 0) {
+             belows.sort(function (a, b) {
+             return a.distanceTo(this) > b.distanceTo(this);
+             });
+             this.below = belows[0];
+             }
+             */
+
+            this.ySpeed += this.gravity;
+            this.y += this.ySpeed;
+
+            var collides = this.instancePlace("solid");
+            if (collides) {
+                this.y = this.ySpeed > 0 ?
+                        collides.y - (collides.height / 2) - (this.height / 2) :
+                        collides.y + (collides.height / 2) + (this.height / 2);
+                this.ySpeed = 0;
+            }
+            if (this.y < 0) {
+                this.y = 0;
+                this.ySpeed = 0;
+            }
         }
 
         // Horizontal
-        this.xSpeed -= (this.xSpeed > 0 ? this.linearDampening : -this.linearDampening);
-        if (Math.abs(this.xSpeed) <= this.linearDampening)
+        if (this.xSpeed >= -this.linearDampening && this.xSpeed <= this.linearDampening)
             this.xSpeed = 0;
-        this.x += this.xSpeed;
-        collides = this.instancePlace("solid");
-        if (collides) {
-            if (this.xSpeed > 0) {
-                this.x = collides.x - (this.width / 2) - (collides.width / 2);
-            } else {
-                this.x = collides.x + (this.width / 2) + (collides.width / 2);
-            }
-            this.xSpeed = 0;
-        }
+        if (this.xSpeed !== 0) {
+            this.xSpeed -= (this.xSpeed > 0 ? this.linearDampening : -this.linearDampening);
+            this.x += this.xSpeed;
 
-        if (this.x < 0) {
-            this.xSpeed = 0;
-            this.x = 0;
-        } else if (this.x > this.container.width) {
-            this.xSpeed = 0;
-            this.x = this.container.width;
+            var collides = this.instancePlace("solid");
+            if (collides) {
+                this.x = (this.xSpeed > 0 ? (collides.x - (this.width / 2) - (collides.width / 2)) : (collides.x + (this.width / 2) + (collides.width / 2)));
+                this.xSpeed = 0;
+            }
+
+            if (this.x < 0) {
+                this.xSpeed = 0;
+                this.x = 0;
+            } else if (this.x > this.container.width) {
+                this.xSpeed = 0;
+                this.x = this.container.width;
+            }
         }
     };
 

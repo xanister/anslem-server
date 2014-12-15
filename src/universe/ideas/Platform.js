@@ -23,6 +23,7 @@ function Platform() {
     this.categories.push('solid');
     this.categories.push('physical');
     this.categories.push('platform');
+    this.categories.push('visible');
 
     /**
      * Depth

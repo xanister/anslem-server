@@ -9,10 +9,10 @@ Goals.Kill = {
     id: goalIdCounter++,
     description: "Kill target",
     label: "Kill",
-    getAction: function (params) {
-        var dist = this.distanceTo(params.x, params.y);
+    getAction: function () {
+        var dist = this.distanceTo(this.focus.x, this.focus.y);
         if (dist < this.width)
-            return new Actions.Attack({dir: params.x > this.x ? 1 : -1, target: params});
-        return Goals.Goto.getAction.call(this, params);
+            return new Actions.Attack({dir: this.focus.x > this.x ? 1 : -1, target: this.focus});
+        return Goals.Goto.getAction.call(this);
     }
 };

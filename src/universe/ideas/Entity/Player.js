@@ -70,6 +70,8 @@ function Player(client) {
      *
      * @method getPacket
      * @param {Boolean} isSource
+     * @param packetIndex
+     * @param packetSplit
      * @return {Object}
      */
     Player.prototype.getPacket = function (isSource, packetIndex, packetSplit) {
@@ -79,9 +81,11 @@ function Player(client) {
                 viewY: this.view.y,
                 inView: {}
             };
-            for (var index in this.inView) {
+            var index = 0;
+            for (var id in this.inView[0]) {
                 if (index % packetSplit === packetIndex)
-                    packet.inView[this.inView[index].id] = this.inView[index].getPacket();
+                    packet.inView[id] = this.inView[0][id].getPacket();
+                index++;
             }
             return packet;
         }
@@ -137,7 +141,7 @@ function Player(client) {
         // Add extra in view
         if (this.container) {
             for (var id in this.container.contents.landscape)
-                this.inView.push(this.container.contents.landscape[id]);
+                this.inView[0][id] = this.container.contents.landscape[id];
         }
 
         // Standing over activatable object

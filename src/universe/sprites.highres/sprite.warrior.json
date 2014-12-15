@@ -1,5 +1,5 @@
 {
-    "warrior": {
+    "warrior01": {
         "default": {
             "imagePath": "/sprites/warrior/warrior-idle",
             "frameCount": 8,

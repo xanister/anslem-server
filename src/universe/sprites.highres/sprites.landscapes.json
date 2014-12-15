@@ -1,0 +1,111 @@
+{
+    "clouds01": {
+        "default": {
+            "imagePath": "/sprites/bg-clouds/bg-clouds",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "forest01": {
+        "default": {
+            "imagePath": "/sprites/bg-forest/bg-forest",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "forest02": {
+        "default": {
+            "imagePath": "/sprites/bg-forest-midground/bg-forest-midground",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "grass01": {
+        "default": {
+            "imagePath": "/sprites/bg-ground/bg-ground",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "grass02": {
+        "default": {
+            "imagePath": "/sprites/bg-ground-grass/bg-ground-grass",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "mountains01": {
+        "default": {
+            "imagePath": "/sprites/bg-mountains/bg-mountains",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "mountains02": {
+        "default": {
+            "imagePath": "/sprites/bg-mountains-midground/bg-mountains-midground",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "mountains03": {
+        "default": {
+            "imagePath": "/sprites/ideas/bg-mountains-snow",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "night01": {
+        "default": {
+            "imagePath": "/sprites/bg-night/bg-night",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "trees01": {
+        "default": {
+            "imagePath": "/sprites/bg-trees/bg-trees",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "tileX": true
+        }
+    },
+    "coin01": {
+        "default": {
+            "imagePath": "/sprites/coin/coin",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

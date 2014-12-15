@@ -11,6 +11,7 @@ var gameloop = require('node-gameloop');
 var NodeServer = require("../lib/NodeServer");
 var Sprites = require("../universe/Sprites");
 var UniverseConfig = require("../universe/UniverseConfig");
+var usage = require('usage');
 
 /**
  * Anslem game server wrapper
@@ -190,13 +191,18 @@ function AnslemServer() {
      */
     AnslemServer.prototype.logServerInfo = function () {
         this.log("Environment: " + AnslemServerConfig.environment);
-        this.log("Network FPS(" + AnslemServerConfig.networkFps + "): " + this.networkFps);
-        this.log("Universe FPS(" + UniverseConfig.universeFps + "): " + this.universeFps);
         this.log("Population: " + this.universe.size());
         this.log(Object.keys(this.clients).length + " player(s) currently connected");
         for (var index in this.clients) {
             this.log("Client[" + this.clients[index].id + "]  Latency: " + this.clients[index].latency);
         }
+        this.log("Network FPS(" + AnslemServerConfig.networkFps + "): " + this.networkFps);
+        this.log("Universe FPS(" + UniverseConfig.universeFps + "): " + this.universeFps);
+        var self = this;
+        usage.lookup(process.pid, function (err, result) {
+            self.log("CPU Usage(%): " + result.cpu);
+            self.log("Memory Usage(MB): " + result.memory / 1000000);
+        });
     };
 
     /**

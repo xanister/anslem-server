@@ -21,7 +21,6 @@ function Landscape() {
      * @type {Array}
      */
     this.categories.push('landscape');
-    this.categories.push('visible');
 
     /**
      * Depth
@@ -29,12 +28,12 @@ function Landscape() {
      * @property z
      * @type {Number}
      */
-    this.z = 50;
+    this.z = 1;
 
     /*
      * Landscape defaults
      */
-    this.setSprite("grass01", true, false, 1);
+    this.setSprite("mountains01", true, false, 0.1);
 }
 Landscape.prototype = new Idea();
 Landscape.prototype.constructor = Landscape;

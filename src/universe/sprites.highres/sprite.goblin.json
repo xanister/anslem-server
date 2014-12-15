@@ -1,5 +1,5 @@
 {
-    "goblin": {
+    "goblin01": {
         "default": {
             "imagePath": "/sprites/goblin/goblin-idle",
             "frameCount": 10,

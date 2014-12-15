@@ -9,7 +9,7 @@ Goals.Goto = {
     id: goalIdCounter++,
     description: "Go to target",
     label: "Go to",
-    getAction: function (params) {
-        return new Actions.Walk({dir: params.x > this.x ? 1 : -1});
+    getAction: function () {
+        return new Actions.Walk({dir: this.focus.x > this.x ? 1 : -1});
     }
 };

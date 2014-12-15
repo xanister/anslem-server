@@ -45,7 +45,7 @@ var AnslemServerConfig = {
      * @property serverInfoInterval
      * @type {Number}
      */
-    serverInfoInterval: 5000,
+    serverInfoInterval: 30000,
     /**
      * Save snapshots on interval
      *

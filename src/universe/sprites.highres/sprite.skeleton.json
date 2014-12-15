@@ -1,5 +1,5 @@
 {
-    "skeleton": {
+    "skeleton01": {
         "default": {
             "imagePath": "/sprites/skeleton/skeleton-idle",
             "frameCount": 8,

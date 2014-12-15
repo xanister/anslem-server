@@ -1,0 +1,48 @@
+{
+    "door01": {
+        "default": {
+            "imagePath": "/sprites/ideas/door01-closed",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "platform01": {
+        "default": {
+            "imagePath": "/sprites/ideas/block-stone-tall",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "topOffset": 130
+        }
+    },
+    "star01": {
+        "default": {
+            "imagePath": "/sprites/ideas/star",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "shadow01": {
+        "default": {
+            "imagePath": "/sprites/ideas/shadow-radial",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "skull01": {
+        "default": {
+            "imagePath": "/sprites/ideas/star",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}
