@@ -5,7 +5,6 @@
  * @requires fs
  */
 var fs = require('fs');
-var AnslemServerConfig = require("../app/AnslemServerConfig");
 
 // Recursivly search for files, sorted
 function getFiles(path) {
@@ -24,6 +23,7 @@ function getFiles(path) {
 
 // Generate file data
 var out = [];
+out = out.concat(getFiles(__dirname + "/regions"));
 out = out.concat(getFiles(__dirname + "/actions"));
 out = out.concat(getFiles(__dirname + "/goals"));
 out = out.concat(getFiles(__dirname + "/ideas"));
@@ -31,8 +31,12 @@ out = out.map(function (filePath) {
     return fs.readFileSync(filePath, 'utf-8');
 });
 out = [
+    "var exec = require('child_process').exec;",
     "var Anslem = {};",
+    "var AnslemServerConfig = require('../app/AnslemServerConfig');",
+    "var Regions = {}",
     "var Actions = {}; var actionIdCounter = 1;",
+    "var async = require('async');",
     "var Goals = {}; var goalIdCounter = 1;",
     "var Ideas = {};",
     "var Population = {}",
@@ -40,8 +44,13 @@ out = [
     "var UniverseConfig = require('./UniverseConfig');"
 ].concat(out);
 out = out.concat([
-    "for (var name in Goals)",
-    "Goals[Goals[name].id] = Goals[name];",
+    "Anslem.Regions = Regions;",
+    "Anslem.Actions = Actions;",
+    "Anslem.Goals = Goals;",
+    "Anslem.Ideas = Ideas;",
+    "Anslem.Population = Population;",
+    "Anslem.Sprites = Sprites;",
+    "Anslem.Config = UniverseConfig;",
     "module.exports = Anslem;"
 ]);
 

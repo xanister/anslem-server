@@ -65,6 +65,14 @@ function Entity() {
     this.gravity = UniverseConfig.gravity;
 
     /**
+     * Something changed
+     *
+     * @property interrupt
+     * @type {Boolean}
+     */
+    this.interrupt = false;
+
+    /**
      * Object in view
      *
      * @property inView
@@ -78,7 +86,7 @@ function Entity() {
      * @property inViewUpdateDelay
      * @type {Number}
      */
-    this.inViewUpdateDelay = this.id % UniverseConfig.inViewUpdateDelay;
+    this.inViewUpdateDelay = (this.id + 1000) % UniverseConfig.inViewUpdateDelay;
 
     /**
      * Memories
@@ -119,6 +127,20 @@ function Entity() {
      * @type {Number}
      */
     this.z = 200;
+
+    /**
+     * Create from simple object
+     *
+     * @method fromSimple
+     * @param {Object} src
+     */
+    Entity.prototype.fromSimple = function (src) {
+        Idea.prototype.fromSimple.call(this, src);
+        this.baseGoal = Goals[src.baseGoal];
+        this.goal = src.goal ? Goals[src.goal] : false;
+        this.stats = src.stats;
+        return this;
+    };
 
     /**
      * Generate packet of information required
@@ -165,20 +187,6 @@ function Entity() {
     };
 
     /**
-     * Return savable object
-     *
-     * @method load
-     * @param {Object} src
-     */
-    Entity.prototype.load = function (src) {
-        Idea.prototype.load.call(this, src);
-        this.baseGoal = Goals[src.baseGoal];
-        this.goal = src.goal ? Goals[src.goal] : false;
-        this.stats = src.stats;
-        return this;
-    };
-
-    /**
      * Runs single frame
      *
      * @method run
@@ -196,7 +204,7 @@ function Entity() {
                     var idea = this.container.contents.visible[id];
                     if (this.distanceTo(idea.x, idea.y) < this.stats.perception) {
                         if (!this.inView[0][idea.id])
-                            this.inViewAdded.push[idea];
+                            this.inViewAdded.push(idea);
                         else
                             delete this.inView[0][idea.id];
                         newInView[0][idea.id] = idea;
@@ -207,16 +215,19 @@ function Entity() {
                         }
                     }
                 }
-                for (var id in this.inView[0])
-                    this.inViewRemoved.push(this.inView[0][id]);
+                for (var id in this.inView[0]) {
+                    if (this.inView.visible && this.inView.visible[id])
+                        this.inViewRemoved.push(this.inView[0][id]);
+                }
                 this.inView = newInView;
             }
             this.inViewUpdateDelay = UniverseConfig.inViewUpdateDelay;
         }
 
         // Handle interupts
-        if (this.inViewAdded.length > 0 || this.inViewRemoved.length > 0)
-            this.goal = false;
+        if (this.inViewAdded.length > 0 || this.inViewRemoved.length > 0) {
+            this.interrupt = true;
+        }
 
         // Die if needed
         if (this.stats.health <= 0) {
@@ -227,7 +238,7 @@ function Entity() {
 
         // Get new action if needed
         if (!this.action || this.action.progress >= this.action.speed) {
-            this.goal = this.goal || this.baseGoal;
+            this.goal = (this.interrupt || !this.goal ? this.baseGoal : this.goal);
             this.action = this.goal ? this.goal.getAction.call(this) : false;
         }
 
@@ -237,6 +248,9 @@ function Entity() {
             this.action.updateAnimation.call(this);
             this.action.progress++;
         }
+
+        // Reset interrupt
+        this.interrupt = false;
     };
 
     /**

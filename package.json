@@ -1,14 +1,16 @@
 {
-  "name": "anslem-server",
-  "description": "Anslem game server",
-  "author": "Nicholas Frees",
-  "dependencies": {
-    "image-size": ">= 0.3.5",
-    "node-gameloop": ">= 0.1.0",
-    "socket.io": ">= 1.2.1",
-    "usage": "*"
-  },
-  "devDependencies": {
-  },
-  "engine": "node >= 0.10.25"
+    "name": "anslem-server",
+    "description": "Anslem game server",
+    "author": "Nicholas Frees",
+    "dependencies": {
+        "image-size": ">= 0.3.5",
+        "node-gameloop": ">= 0.1.0",
+        "socket.io": ">= 1.2.1",
+        "usage": "*",
+        "async": "*",
+        "socket.io-client": "*"
+    },
+    "devDependencies": {
+    },
+    "engine": "node >= 0.10.25"
 }

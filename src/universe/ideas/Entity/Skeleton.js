@@ -29,6 +29,14 @@ function Skeleton() {
      */
     this.categories.push('undead');
 
+    /**
+     * Label
+     *
+     * @property label
+     * @type {String}
+     */
+    this.label = "Skeleton";
+
     /*
      * Skeleton defaults
      */

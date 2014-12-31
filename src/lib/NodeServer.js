@@ -7,6 +7,176 @@
 var IO = require('socket.io');
 
 /**
+ * Client object
+ *
+ * @class Client
+ * @constructor
+ */
+function Client() {
+    /**
+     * Client information, ie screen size, pixel density, etc
+     *
+     * @property info
+     * @type {Object}
+     */
+    this.info = {};
+
+    /**
+     * Client inputs. Includes keyboard, touches and events
+     *
+     * @property inputs
+     * @type {Object}
+     */
+    this.inputs = {keyboard: {}, touches: {}, events: {}};
+
+    /**
+     * Last measured latency
+     *
+     * @property latency
+     * @type {Number}
+     */
+    this.latency = 0;
+
+    /**
+     * Start ping time
+     *
+     * @property pingStart
+     * @type {Number}
+     * @protected
+     */
+    this.pingStart = 0;
+
+    /**
+     * Current client state
+     *
+     * @property state
+     * @type {String}
+     */
+    this.state = "connected";
+
+    /**
+     * On new client connect, return initial data to send to client
+     *
+     * @event onconnect
+     */
+    this.onconnect = false;
+
+    /**
+     * Client updated info callback
+     *
+     * @event oninfo
+     * @param {Object} info
+     */
+    this.oninfo = false;
+
+    /**
+     * On client input callback
+     *
+     * @event oninput
+     * @param {Object} input
+     */
+    this.oninput = false;
+
+    /**
+     * On client input callback
+     *
+     * @event onstatechange
+     * @param {String} state
+     */
+    this.onstatechange = false;
+
+    /**
+     * Ping client to measure latency
+     *
+     * @method ping
+     * @protected
+     */
+    this.ping = function () {
+        this.pingStart = Date.now();
+        this.trigger("ping");
+    };
+
+    /**
+     * Trigger event to client
+     *
+     * @method trigger
+     * @param {String} eventName
+     * @param {Object} [packet]
+     */
+    this.trigger = function (eventName, packet) {
+        this.emit(eventName, packet);
+    };
+
+    /**
+     * Recieved client info update
+     *
+     * @event info
+     * @param {Object} info
+     * @protected
+     */
+    this.on("info", function (info) {
+        for (var index in info)
+            this.info[index] = info[index];
+        if (this.oninfo)
+            this.oninfo(info);
+    });
+
+    /**
+     * Recieved client input update
+     *
+     * @event input
+     * @param {Object} input
+     * @protected
+     */
+    this.on("input", function (inputs) {
+        this.inputs.keyboard = inputs.keyboard;
+        this.inputs.touches = inputs.touches;
+        this.inputs.events = inputs.events;
+        if (this.oninput)
+            this.oninput(inputs);
+    });
+
+    /**
+     * Recieved client state change update
+     *
+     * @event stateChange
+     * @param {Object} state
+     * @protected
+     */
+    this.on("stateChange", function (state) {
+        this.state = state;
+        if (this.onstatechange)
+            this.onstatechange(state);
+    });
+
+    /**
+     * Client disconnected
+     *
+     * @event disconnect
+     * @protected
+     */
+    this.on("disconnect", function () {
+        if (this.ondisconnect)
+            this.ondisconnect();
+    });
+
+    /**
+     * Recieved response from ping
+     *
+     * @event pong
+     * @protected
+     */
+    this.on("pong", function () {
+        this.latency = Date.now() - this.pingStart;
+    });
+
+    /**
+     * Emit connection event on new client
+     */
+    this.emit('connection', {message: 'welcome'});
+}
+
+/**
  * NodeServer
  *
  * @class NodeServer
@@ -18,44 +188,23 @@ function NodeServer(port) {
      * IO socket
      *
      * @property socket
-     * @type {Object}
      * @private
+     * @type {Object}
      */
     var socket;
-
-    /**
-     * Clear client input events on update
-     *
-     * @property clearEventsOnUpdate
-     * @type {Boolean}
-     */
-    this.clearEventsOnUpdate = true;
 
     /**
      * Connected clients
      *
      * @property clients
-     * @protected
      * @type {Object}
      */
     this.clients = {};
 
     /**
-     * Port to listen on
-     *
-     * @property port
-     * @protected
-     * @type {Number}
-     * @default 3010
-     */
-    this.port = port || 3010;
-
-    /**
      * On new client connect, return initial data to send to client
      *
      * @event onclientconnect
-     * @param {Object} client
-     * @return {Object} Return initial data to send to client
      */
     this.onclientconnect = false;
 
@@ -63,112 +212,17 @@ function NodeServer(port) {
      * On client disconnect callback
      *
      * @event onclientdisconnect
-     * @param {Object} client
      */
     this.onclientdisconnect = false;
 
     /**
-     * Client updated info callback
+     * Port to listen on
      *
-     * @event onclientinfo
-     * @param {Object} client
-     * @param {Object} info
+     * @property port
+     * @type {Number}
+     * @default 3010
      */
-    this.onclientinfo = false;
-
-    /**
-     * On client input callback
-     *
-     * @event onclientinput
-     * @param {Object} client
-     * @param {Object} input
-     */
-    this.onclientinput = false;
-
-    /**
-     * On client input callback
-     *
-     * @event onclientstatechange
-     * @param {Object} client
-     * @param {String} state
-     */
-    this.onclientstatechange = false;
-
-    /**
-     * Bind events
-     *
-     * @method bindEvents
-     */
-    this.bindEvents = function () {
-        // Listen for connections and bind events per client
-        var nodeServer = this;
-        socket.on('connection', function (client) {
-            // Save client
-            var screenSize = client.handshake.query.screenSize.split(',');
-            nodeServer.clients[client.id] = client;
-            nodeServer.clients[client.id].info = {screenWidth: screenSize[0], screenHeight: screenSize[1]};
-            nodeServer.clients[client.id].inputs = {keyboard: {}, touches: {}, events: {}};
-            nodeServer.clients[client.id].latency = 0;
-            nodeServer.clients[client.id].lastUpdateTime = Date.now();
-            nodeServer.clients[client.id].state = "connected";
-
-            // Server Callback
-            var initialData = nodeServer.onclientconnect ? nodeServer.onclientconnect.call(nodeServer, client) : {};
-
-            // Send initial data to client
-            client.emit('connection', {message: 'welcome', clientId: client.id, initialData: initialData});
-
-            // Accept input
-            client.on("clientInput", function (inputs) {
-                if (client.state !== "ready")
-                    return false;
-                nodeServer.clients[client.id].inputs.keyboard = inputs.keyboard;
-                nodeServer.clients[client.id].inputs.touches = inputs.touches;
-                nodeServer.clients[client.id].inputs.events = inputs.events;
-                nodeServer.clients[client.id].inputs.message = inputs.message || nodeServer.clients[client.id].inputs.message;
-                if (nodeServer.onclientinput)
-                    nodeServer.onclientinput.call(nodeServer, client, inputs);
-            });
-
-            // Accept client info
-            client.on("clientInfo", function (info) {
-                for (var index in info)
-                    nodeServer.clients[client.id].info[index] = info[index];
-                if (nodeServer.onclientinfo)
-                    nodeServer.onclientinfo.call(nodeServer, client, info);
-            });
-
-            // Update on state change
-            client.on("clientStateChange", function (state) {
-                client.state = state;
-                if (nodeServer.onclientstatechange)
-                    nodeServer.onclientstatechange.call(nodeServer, client, state);
-            });
-
-            // Update on disconnect
-            client.on("disconnect", function () {
-                if (nodeServer.onclientdisconnect)
-                    nodeServer.onclientdisconnect.call(nodeServer, client);
-                delete nodeServer.clients[client.id];
-            });
-
-            // Response to updates for latency checks
-            client.on("updateResponse", function () {
-                client.latency = Date.now() - client.lastUpdateTime;
-            });
-        });
-    };
-
-    /**
-     * Send event to all connected clients
-     *
-     * @method broadcast
-     * @param {String} eventName
-     * @param {Object} packet
-     */
-    NodeServer.prototype.broadcast = function (eventName, packet) {
-        socket.sockets.emit(eventName, packet);
-    };
+    this.port = port || 3010;
 
     /**
      * Log out to server
@@ -198,46 +252,29 @@ function NodeServer(port) {
      */
     NodeServer.prototype.start = function () {
         socket = IO.listen(this.port);
-        this.bindEvents();
+        var self = this;
+        socket.on('connection', function (client) {
+            Client.call(client);
+            self.clients[client.id] = client;
+            if (self.onclientconnect)
+                self.onclientconnect(client);
+            client.on("disconnect", function () {
+                delete self.clients[client.id];
+                if (self.onclientdisconnect)
+                    self.onclientdisconnect(client);
+            });
+        });
     };
 
     /**
-     * Send event to client
+     * Send event to all connected clients
      *
-     * @method emit
+     * @method trigger
      * @param {String} eventName
-     * @param {Object} clientId
-     * @param {Object} packet
+     * @param {Object} [packet]
      */
-    NodeServer.prototype.trigger = function (eventName, clientId, packet) {
-        if (this.clients[clientId])
-            this.clients[clientId].emit(eventName, packet);
-    };
-
-    /**
-     * Sync data to client
-     *
-     * @method updateClient
-     * @param {Object} clientId
-     * @param {Object} packet
-     */
-    NodeServer.prototype.updateClient = function (clientId, packet) {
-        if (this.clients[clientId]) {
-            if (this.clearEventsOnUpdate)
-                this.clients[clientId].inputs.events = {};
-            this.clients[clientId].lastUpdateTime = Date.now();
-            this.clients[clientId].emit("update", {packet: packet});
-        }
-    };
-
-    /**
-     * Sync data to all clients
-     *
-     * @method updateAll
-     * @param {Object} packet
-     */
-    NodeServer.prototype.updateAll = function (packet) {
-        socket.sockets.emit("update", {packet: packet});
+    NodeServer.prototype.trigger = function (eventName, packet) {
+        socket.sockets.emit(eventName, packet);
     };
 }
 

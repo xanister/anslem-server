@@ -27,9 +27,9 @@ var UniverseConfig = {
     defaultEntityStats: {
         accel: 0.3,
         health: 100,
-        perception: 900,
+        perception: 200,
         jump: 25,
-        speed: 19,
+        speed: 9,
         strength: 10
     },
     /**
@@ -52,7 +52,7 @@ var UniverseConfig = {
      * @property inViewUpdateDelay
      * @type {Number}
      */
-    inViewUpdateDelay: 10,
+    inViewUpdateDelay: 30,
     /**
      * Default linear dampening
      *
@@ -75,19 +75,12 @@ var UniverseConfig = {
      */
     theme: "highres",
     /**
-     * Universe fps
-     *
-     * @property universeFps
-     * @type {Number}
-     */
-    universeFps: 60,
-    /**
      * Default view scale
      *
      * @property viewScale
      * @type {Number}
      */
-    viewScale: 2.5,
+    viewScale: 1,
     /**
      * Default view speed
      *

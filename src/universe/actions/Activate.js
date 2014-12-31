@@ -15,8 +15,7 @@ function Activate(params) {
     this.speed = 20;
     Activate.prototype.run = function (params) {
         if (this.action.progress === 0) {
-            if (this.client)
-                this.client.trigger("transition", {start: "pt-page-moveToBottom", end: ""});
+
         } else if (this.action.progress === 5) {
             params.target.activate.call(params.target, this);
         }

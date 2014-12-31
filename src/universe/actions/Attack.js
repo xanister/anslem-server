@@ -22,6 +22,7 @@ function Attack(params, speed) {
         }
         var hit = params.target ? (this.collides(params.target.bbox()) ? params.target : false) : this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
         if (hit && hit.immunityTimeout === 0) {
+            hit.interrupt = true;
             hit.action = new Actions.Flinch({dir: params.dir, strength: this.stats.strength});
             hit.immunityTimeout = this.action.speed;
         }

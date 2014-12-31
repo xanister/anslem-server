@@ -22,6 +22,13 @@ function Landscape() {
      */
     this.categories.push('landscape');
 
+    /** Label
+     *
+     * @property label
+     * @type {String}
+     */
+    this.label = "Landscape";
+
     /**
      * Depth
      *

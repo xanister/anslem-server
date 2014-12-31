@@ -11,13 +11,9 @@ Goals.EatBrains = {
     label: "Eat brains",
     getAction: function () {
         var nearest = this.instanceNearest("hasbrains");
-        if (nearest)
+        if (nearest) {
             return new Actions.Think({goal: Goals.Kill, focus: nearest});
-
-        if (!this.focus || (this.distanceTo(this.focus.x, this.y) < this.width)) {
-            this.focus = {x: Math.random() * this.container.width, y: this.y};
         }
-
-        return Goals.Goto.getAction.call(this);
+        return new Actions.Think({goal: Goals.Goto, focus: {x: Math.random() * this.container.innerWidth, y: this.y}});
     }
 };

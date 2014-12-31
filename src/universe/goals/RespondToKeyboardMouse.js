@@ -10,60 +10,55 @@ Goals.RespondToKeyboardMouse = {
     description: "RespondToKeyboardMouse",
     label: "Player Goal",
     getAction: function () {
-        if (this.inputs.keyboard.M) {
-            this.bubble = {
-                time: 5,
-                message: "test: " + this.xSpeed
-            };
+        if (this.client.inputs.keyboard.M) {
+            console.log(this.getPacket(true));
         }
 
         if (this.stats.godmode) {
-            // Keyboard/mouse
-            if (this.inputs.events.keydown && this.inputs.events.keydown.V) {
+            if (this.client.inputs.events.keydown && this.client.inputs.events.keydown.V) {
                 this.stats.godmode = false;
-            } else if (this.inputs.events.mousedown) {
-                if (this.inputs.events.mousedown[0]) {
-                    this.grabbed = this.instancePoint(0, this.view.x + (this.inputs.events.mousedown[0].x * this.view.scale), this.view.y + (this.inputs.events.mousedown[0].y * this.view.scale));
+            } else if (this.client.inputs.events.mousedown) {
+                if (this.client.inputs.events.mousedown[0]) {
+                    this.grabbed = this.instancePoint(0, this.view.x + (this.client.inputs.events.mousedown[0].x * this.view.scale), this.view.y + (this.client.inputs.events.mousedown[0].y * this.view.scale));
                 }
-            } else if (this.grabbed && this.inputs.events.mousemove) {
-                this.grabbed.warp(this.view.x + (this.inputs.events.mousemove.x * this.view.scale), this.view.y + (this.inputs.events.mousemove.y * this.view.scale));
-            } else if (this.grabbed && this.inputs.events.mouseup) {
-                if (this.inputs.events.mouseup[0])
+            } else if (this.grabbed && this.client.inputs.events.mousemove) {
+                this.grabbed.warp(this.view.x + (this.client.inputs.events.mousemove.x * this.view.scale), this.view.y + (this.client.inputs.events.mousemove.y * this.view.scale));
+            } else if (this.grabbed && this.client.inputs.events.mouseup) {
+                if (this.client.inputs.events.mouseup[0])
                     this.grabbed = false;
-            } else if (this.inputs.events.keydown && this.inputs.events.keydown.C) {
+            } else if (this.client.inputs.events.keydown && this.client.inputs.events.keydown.C) {
                 var block = new Platform();
-                block.warp(this.x, this.y - 300, this.container);
-            } else if (this.inputs.keyboard.D) {
+                block.warp(this.x, this.y - 300, this.container.slug);
+            } else if (this.client.inputs.keyboard.D) {
                 this.view.x += (this.view.speed * 2);
-            } else if (this.inputs.keyboard.A) {
+            } else if (this.client.inputs.keyboard.A) {
                 this.view.x -= (this.view.speed * 2);
             }
-            if (this.inputs.keyboard.S) {
+            if (this.client.inputs.keyboard.S) {
                 this.view.y += (this.view.speed * 2);
-            } else if (this.inputs.keyboard.W) {
+            } else if (this.client.inputs.keyboard.W) {
                 this.view.y -= (this.view.speed * 2);
             }
         } else {
-            // Keyboard/mouse
-            if (this.inputs.events.keydown) {
-                if (this.inputs.events.keydown.F) {
+            if (this.client.inputs.events.keydown) {
+                if (this.client.inputs.events.keydown.F) {
                     return new Actions.Attack({dir: this.facing}, 0.5);
-                } else if (this.inputs.events.keydown.S && this.overActivatable) {
+                } else if (this.client.inputs.events.keydown.S && this.overActivatable) {
                     return new Actions.Activate({target: this.overActivatable});
-                } else if (this.inputs.events.keydown.V) {
+                } else if (this.client.inputs.events.keydown.V) {
                     this.stats.godmode = true;
                 }
-            } else if (this.inputs.keyboard.W) {
-                if (this.inputs.keyboard.A) {
+            } else if (this.client.inputs.keyboard.W) {
+                if (this.client.inputs.keyboard.A) {
                     return new Actions.Jump({dir: -1});
-                } else if (this.inputs.keyboard.D) {
+                } else if (this.client.inputs.keyboard.D) {
                     return new Actions.Jump({dir: 1});
                 } else {
                     return new Actions.Jump({dir: 0});
                 }
-            } else if (this.inputs.keyboard.A) {
+            } else if (this.client.inputs.keyboard.A) {
                 return new Actions.Walk({dir: -1});
-            } else if (this.inputs.keyboard.D) {
+            } else if (this.client.inputs.keyboard.D) {
                 return new Actions.Walk({dir: 1});
             }
         }

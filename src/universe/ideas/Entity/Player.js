@@ -10,10 +10,25 @@
  * @class Player
  * @constructor
  * @extends Entity
- * @param {Object} client
  */
-function Player(client) {
+function Player() {
     Entity.call(this);
+    /**
+     * Split packets into chunks
+     *
+     * @property packetIndex
+     * @type {Number}
+     */
+    var packetIndex = 0;
+
+    /**
+     * Number of chunks
+     *
+     * @property packetSplit
+     * @type {Number}
+     */
+    var packetSplit = 2;
+
     /**
      * Basic driving goal
      *
@@ -37,15 +52,15 @@ function Player(client) {
      * @property client
      * @type {Object}
      */
-    this.client = client;
+    this.client = false;
 
     /**
-     * Attached user inputs for easy access
+     * Label
      *
-     * @property inputs
-     * @type {Object}
+     * @property label
+     * @type {String}
      */
-    this.inputs = client.inputs;
+    this.label = "Player";
 
     /**
      * Player view
@@ -53,15 +68,57 @@ function Player(client) {
      * @property view
      * @type {Object}
      */
-    this.view = {
-        x: 0,
-        y: 0,
-        xBuffer: this.client.info.screenWidth * UniverseConfig.viewXBuffer,
-        yBuffer: this.client.info.screenWidth * UniverseConfig.viewYBuffer,
-        scale: UniverseConfig.viewScale,
-        speed: UniverseConfig.viewSpeed,
-        width: this.client.info.screenWidth * UniverseConfig.viewScale,
-        height: this.client.info.screenHeight * UniverseConfig.viewScale
+    this.view = false;
+
+    /**
+     * Attach client to player
+     *
+     * @method attachClient
+     * @param {Object} client
+     */
+    Player.prototype.attachClient = function (client) {
+        this.client = client;
+        this.baseGoal = Goals.PlayerInput;
+
+        var self = this;
+        /**
+         * Client disconnected
+         *
+         * @method ondisconnect
+         */
+        client.ondisconnect = function () {
+            //TODO
+        };
+
+        /**
+         * Client info recieved callback
+         *
+         * @method onclientinfo
+         */
+        client.oninfo = function () {
+            self.initializeView();
+            this.trigger("viewUpdate", {width: self.view.width, height: self.view.height});
+        };
+
+        /**
+         * Client state changed update
+         *
+         * @event onstatechange
+         * @param {String} state
+         */
+        client.onstatechange = function (state) {
+            switch (state) {
+                case "paused":
+                    break;
+                case "ready":
+                    break;
+            }
+        };
+
+        /*
+         * Update the client with needed info
+         */
+        client.emit("attached", this.id);
     };
 
     /**
@@ -70,23 +127,22 @@ function Player(client) {
      *
      * @method getPacket
      * @param {Boolean} isSource
-     * @param packetIndex
-     * @param packetSplit
      * @return {Object}
      */
-    Player.prototype.getPacket = function (isSource, packetIndex, packetSplit) {
+    Player.prototype.getPacket = function (isSource) {
         if (isSource) {
             var packet = {
                 viewX: this.view.x,
                 viewY: this.view.y,
                 inView: {}
             };
-            var index = 0;
+            var index = 1;
             for (var id in this.inView[0]) {
-                if (index % packetSplit === packetIndex)
+                if (index++ % packetSplit === packetIndex)
                     packet.inView[id] = this.inView[0][id].getPacket();
-                index++;
             }
+            if (++packetIndex > packetSplit)
+                packetIndex = 0;
             return packet;
         }
         return Entity.prototype.getPacket.call(this);
@@ -94,14 +150,12 @@ function Player(client) {
 
     /**
      * Initialize player view
+     * TODO: Organize
      *
      * @method initializeView
-     * @param {Number} scale
      */
-    Player.prototype.initializeView = function (scale) {
-        if (!scale) {
-            scale = this.client.info.screenWidth < 768 ? UniverseConfig.viewScale * 2 : UniverseConfig.viewScale;
-        }
+    Player.prototype.initializeView = function () {
+        var scale = this.client.info.screenWidth < 768 ? UniverseConfig.viewScale * 2 : UniverseConfig.viewScale;
         var viewWidth = this.client.info.screenWidth * scale;
         var viewHeight = this.client.info.screenHeight * scale;
 
@@ -118,19 +172,6 @@ function Player(client) {
     };
 
     /**
-     * Load
-     *
-     * @method load
-     * @param {Object} client
-     * @param {Idea} universe
-     */
-    Player.prototype.load = function (client, universe) {
-        // TODO: Pull from persister
-        var startRegion = universe.contents[0][Object.keys(universe.contents[0])[0]];
-        this.warp(200, startRegion.height - startRegion.buffer.bottom - (this.height / 2), startRegion);
-    };
-
-    /**
      * Runs single frame
      *
      * @method run
@@ -138,23 +179,23 @@ function Player(client) {
     Player.prototype.run = function () {
         Entity.prototype.run.call(this);
 
+        if (!this.client || !this.container)
+            return false;
+
         // Add extra in view
-        if (this.container) {
-            for (var id in this.container.contents.landscape)
-                this.inView[0][id] = this.container.contents.landscape[id];
-        }
+        for (var id in this.container.contents.landscape)
+            this.inView[0][id] = this.container.contents.landscape[id];
 
         // Standing over activatable object
         this.overActivatable = this.instancePlace("activatable");
 
-        // Bubble]
+        // Bubble
         if (!this.bubble) {
-            if (this.inputs.message) {
+            if (this.client.inputs.events.message) {
                 this.bubble = {
-                    message: this.inputs.message,
+                    message: this.client.inputs.events.message,
                     time: 180
                 };
-                this.inputs.message = false;
             } else if (this.overActivatable) {
                 this.bubble = {
                     message: "",
@@ -175,22 +216,37 @@ function Player(client) {
             else if (this.y < this.view.y + this.view.yBuffer)
                 this.view.y = this.y - this.view.yBuffer;
         }
-
         if (this.view.x < 0)
             this.view.x = 0;
-        if (this.view.x + this.view.width > this.container.width)
-            this.view.x = this.container.width - this.view.width;
-        if (this.view.y > (this.container.height - this.view.height))
-            this.view.y = this.container.height - this.view.height;
+        if (this.view.x + this.view.width > this.container.innerWidth)
+            this.view.x = this.container.innerWidth - this.view.width;
+        if (this.view.y > (this.container.innerHeight - this.view.height))
+            this.view.y = this.container.innerHeight - this.view.height;
+
+        this.client.trigger("frameUpdate", this.getPacket(true));
 
         // Clear events
-        this.inputs.events = {};
+        this.client.inputs.events = {};
+    };
+
+    /**
+     * Warp to given coords and maintain associative lists
+     *
+     * @method warp
+     * @param {Number} targetX
+     * @param {Number} targetY
+     * @param {Idea} container
+     */
+    Player.prototype.warp = function (targetX, targetY, container) {
+        if (this.client)
+            this.client.trigger("transition", {start: "pt-page-moveToBottom", end: "pt-page-moveFromBottom", duration: 1000});
+        Idea.prototype.warp.call(this, targetX, targetY, container);
     };
 
     /*
      * Player defaults
      */
-    this.setSprite("goblin01");
+    this.setSprite("warrior01");
     this.stats.perception *= 4;
     this.stats.strength = 50;
 }

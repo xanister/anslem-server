@@ -2,10 +2,7 @@
  * Basic universal contruct used to define the world
  *
  * @module Anslem.Universe
- * @requires Sprites
  */
-var Sprites = require("./Sprites");
-var UniverseConfig = require("./UniverseConfig");
 
 /**
  * Global id counter
@@ -118,6 +115,14 @@ function Idea(categories) {
      * @type {Number}
      */
     this.linearDampening = UniverseConfig.linearDampening;
+
+    /**
+     * Unique slug
+     *
+     * @property slug
+     * @type {String}
+     */
+    this.slug = "idea" + this.id;
 
     /**
      * Visual representation
@@ -257,7 +262,7 @@ function Idea(categories) {
                 this.x - (this.width / 2) < right &&
                 left < this.x + (this.width / 2) &&
                 this.y - (this.height / 2) < bottom &&
-                bottom < this.y + (this.height / 2)
+                top < this.y + (this.height / 2)
                 );
     };
 
@@ -305,6 +310,42 @@ function Idea(categories) {
      */
     Idea.prototype.distanceTo = function (tarX, tarY) {
         return Math.sqrt(Math.pow(tarX - this.x, 2) + Math.pow(tarY - this.y, 2));
+    };
+
+    /**
+     * Find idea inside
+     *
+     * @method findById
+     * @param {Number} id
+     * @returns {Idea}
+     */
+    Idea.prototype.findById = function (id) {
+        if (this.id === id)
+            return this;
+        for (var id in this.contents[0]) {
+            var r = this.contents[0][id].findById(id);
+            if (r)
+                return r;
+        }
+        return false;
+    };
+
+    /**
+     * Find idea inside
+     *
+     * @method findBySlug
+     * @param {String} slug
+     * @returns {Idea}
+     */
+    Idea.prototype.findBySlug = function (slug) {
+        if (this.slug === slug)
+            return this;
+        for (var id in this.contents[0]) {
+            var r = this.contents[0][id].findBySlug(slug);
+            if (r)
+                return r;
+        }
+        return false;
     };
 
     /**
@@ -395,11 +436,16 @@ function Idea(categories) {
         this.x = x || this.x;
         this.y = y || this.y;
         for (var id in this.container.contents[category]) {
-            var e = this.container.contents[category][id];
-            if (e.id !== this.id && this.collides(e)) {
+            var idea = this.container.contents[category][id];
+            if (idea.id !== this.id && (
+                    this.x - (this.width / 2) < idea.x + (idea.width / 2) &&
+                    idea.x - (idea.width / 2) < this.x + (this.width / 2) &&
+                    this.y - (this.height / 2) < idea.y + (idea.height / 2) &&
+                    idea.y - (idea.height / 2) < this.y + (this.height / 2)
+                    )) {
                 this.x = oldX;
                 this.y = oldY;
-                return e;
+                return idea;
             }
         }
         this.x = oldX;
@@ -463,16 +509,18 @@ function Idea(categories) {
     /**
      * Recreate from object
      *
-     * @method load
+     * @method fromSimple
      * @param {Object} src
      */
-    Idea.prototype.load = function (src) {
+    Idea.prototype.fromSimple = function (src) {
+        console.log("creating " + src.label);
         this.categories = src.categories;
         this.description = src.description;
         this.facing = src.facing;
         this.gravity = src.gravity;
         this.label = src.label;
         this.linearDampening = src.linearDampening;
+        this.slug = src.slug;
         if (src.sprite)
             this.setSprite(src.sprite.name, src.sprite.tileX, src.sprite.tileY, src.sprite.scrollSpeed);
         this.x = src.x;
@@ -487,7 +535,7 @@ function Idea(categories) {
             var t = src.contents[index].type;
             if (t !== "Player") {
                 var n = new Anslem[t]();
-                n.load(src.contents[index]);
+                n.fromSimple(src.contents[index]);
                 n.warp(n.x, n.y, this);
             }
         }
@@ -537,11 +585,6 @@ function Idea(categories) {
         // Bubble
         if (this.bubble && this.bubble.time-- <= 0)
             this.bubble = false;
-
-        // Run contents
-        for (var id in this.contents[0]) {
-            this.contents[0][id].run();
-        }
     };
 
     /**
@@ -644,6 +687,7 @@ function Idea(categories) {
             id: this.id,
             label: this.label,
             linearDampening: this.linearDampening,
+            slug: this.slug,
             sprite: this.sprite ? {
                 name: this.sprite.name,
                 tileX: this.sprite.tileX,
@@ -671,8 +715,10 @@ function Idea(categories) {
      */
     Idea.prototype.updatePhysics = function () {
         // Vertical
-        if (this.y + (this.height / 2) + this.ySpeed >= this.container.height - this.container.buffer.bottom) {
-            this.y = this.container.height - this.container.buffer.bottom - (this.height / 2);
+        this.ySpeed += this.gravity;
+        this.y += this.ySpeed;
+        if (this.y + (this.height / 2) >= this.container.innerHeight - this.container.buffer.bottom) {
+            this.y = this.container.innerHeight - this.container.buffer.bottom - (this.height / 2);
             this.ySpeed = 0;
         } else {
             // Find object below
@@ -690,9 +736,6 @@ function Idea(categories) {
              this.below = belows[0];
              }
              */
-
-            this.ySpeed += this.gravity;
-            this.y += this.ySpeed;
 
             var collides = this.instancePlace("solid");
             if (collides) {
@@ -723,9 +766,12 @@ function Idea(categories) {
             if (this.x < 0) {
                 this.xSpeed = 0;
                 this.x = 0;
-            } else if (this.x > this.container.width) {
+                if (this.container.container) {
+                    this.warp(this.container.x, this.container.y, this.container.container);
+                }
+            } else if (this.x > this.container.innerWidth) {
                 this.xSpeed = 0;
-                this.x = this.container.width;
+                this.x = this.container.innerWidth;
             }
         }
     };
@@ -739,23 +785,47 @@ function Idea(categories) {
      * @param {Idea} container
      */
     Idea.prototype.warp = function (targetX, targetY, container) {
+        console.log("warping " + this.slug + (container ? " to " + container.slug : ""));
         this.x = targetX;
         this.y = targetY;
         if (container) {
-            if (this.container) {
+            // Clear from curent container
+            if (this.container.categories) {
                 delete this.container.contents[0][this.id];
                 for (var index in this.categories) {
                     var c = this.categories[index];
                     delete this.container.contents[c][this.id];
                 }
             }
-            this.container = container;
-            this.container.contents[0][this.id] = this;
-            for (var index in this.categories) {
-                var c = this.categories[index];
-                if (!this.container.contents[c])
-                    this.container.contents[c] = {};
-                this.container.contents[c][this.id] = this;
+
+            // Add to new container
+            if (this.container && container.portOffset !== this.container.portOffset) {
+                // Different region server
+                var regionAddress = AnslemServerConfig.serverAddress + ":" + (AnslemServerConfig.port + container.portOffset);
+                console.log("transferring " + this.slug + " to " + regionAddress);
+                var socket = require('socket.io-client')("http://" + regionAddress, {
+                    'forceNew': true,
+                    'sync disconnect on unload': true
+                });
+                var self = this;
+                socket.on('connect', function () {
+                    console.log("connected to " + regionAddress);
+                    socket.emit("warp", {idea: self.toSimple(), regionSlug: container.slug, x: targetX, y: targetY});
+                    if (self.client) {
+                        self.client.emit("forward", regionAddress);
+                    }
+                    socket.disconnect();
+                });
+            } else {
+                // Same region server
+                this.container = container;
+                this.container.contents[0][this.id] = this;
+                for (var index in this.categories) {
+                    var c = this.categories[index];
+                    if (!this.container.contents[c])
+                        this.container.contents[c] = {};
+                    this.container.contents[c][this.id] = this;
+                }
             }
         }
     };

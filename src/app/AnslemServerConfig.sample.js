@@ -24,7 +24,7 @@ var AnslemServerConfig = {
      * @propert environment
      * @type {String}
      */
-    environment: 'production',
+    environment: 'dev1',
     /**
      * Network fps
      *
@@ -38,14 +38,28 @@ var AnslemServerConfig = {
      * @property port
      * @type {Number}
      */
-    port: 3010,
+    port: 3011,
+    /**
+     * Region fps
+     *
+     * @property regionFps
+     * @type {Number}
+     */
+    regionFps: 60,
+    /**
+     * Server address
+     *
+     * @property serverAddress
+     * @type {String}
+     */
+    serverAddress: "devclient1.anslemgalaxy.com",
     /**
      * Server info log interval
      *
      * @property serverInfoInterval
      * @type {Number}
      */
-    serverInfoInterval: 30000,
+    serverInfoInterval: 5000,
     /**
      * Save snapshots on interval
      *

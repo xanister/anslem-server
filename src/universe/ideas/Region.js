@@ -13,6 +13,7 @@
  */
 function Region() {
     Idea.call(this);
+
     /**
      * Obstruction buffer, for grounds and ceilings
      *
@@ -33,47 +34,140 @@ function Region() {
      * @type {Array}
      */
     this.categories.push('region');
+    this.categories.push('activatable');
 
     /**
-     * Size in y dimension
+     * Label
      *
-     * @property height
-     * @type {Number}
+     * @property label
+     * @type {String}
      */
-    this.height = 4096 * UniverseConfig.scaleFactor;
-
-    /**
-     * Size in x dimension
-     *
-     * @property width
-     * @type {Number}
-     */
-    this.width = 40000 * UniverseConfig.scaleFactor;
+    this.label = "Region";
 
     /**
      * Return savable object
      *
-     * @method load
+     * @method fromSimple
      * @param {Object} src
      */
-    Region.prototype.load = function (src) {
-        Idea.prototype.load.call(this, src);
+    Region.prototype.fromSimple = function (src) {
+        Idea.prototype.fromSimple.call(this, src);
         this.buffer = src.buffer;
+        this.portOffset = src.portOffset;
         return this;
     };
 
+
     /**
-     * Randomly populate the region
+     * Depth
+     *
+     * @property z
+     * @type {Number}
+     */
+    this.z = 100;
+
+    /**
+     * Activate region from outside
+     *
+     * @method activate
+     * @param {Idea} src
+     */
+    this.activate = function (src) {
+        src.warp(src.width, this.innerHeight - this.buffer.bottom - (src.height / 2), this);
+    };
+
+    /**
+     * Initialize the region
+     *
+     * @method init
+     * @param {String} slug
+     */
+    Region.prototype.init = function (slug) {
+        /**
+         * Slug
+         *
+         * @property regionSlug
+         * @type {Sting}
+         */
+        this.slug = slug || "region-" + this.id;
+
+        /**
+         * Size in y dimension
+         *
+         * @property height
+         * @type {Number}
+         */
+        this.innerHeight = Regions[this.slug].innerHeight * UniverseConfig.scaleFactor;
+
+        /**
+         * Size in x dimension
+         *
+         * @property width
+         * @type {Number}
+         */
+        this.innerWidth = Regions[this.slug].innerWidth * UniverseConfig.scaleFactor;
+
+        /**
+         * Port offset from base
+         *
+         * @property portOffset
+         * @type {Number}
+         */
+        this.portOffset = Regions[this.slug].portOffset;
+
+        /*
+         * Set container
+         */
+        this.container = Regions[Regions[this.slug].container];
+
+        /*
+         * Initialize position
+         */
+        this.x = Regions[this.slug].x || 500;
+        this.y = Regions[this.slug].y || (Regions[this.slug].innerHeight - (this.height / 2));
+    };
+
+    /**
+     * Populate the region. Only call if region is
+     * running in same region server as parent
      *
      * @method populate
      */
     Region.prototype.populate = function () {
-        this.ground = new Ground();
-        this.ground.warp(0, this.height - (this.ground.sprite.src.default.height / 2), this);
-        this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
+        for (var index in Regions[this.slug].contents) {
+            // Create it
+            var s = Regions[this.slug].contents[index];
+            var newRegion = new Anslem[Regions[s].type]();
+            newRegion.init(s);
 
-        this.entrance = new Door();
-        this.entrance.warp(200, this.height - this.buffer.bottom - (this.entrance.height / 2), this);
+            // Start it
+            if (newRegion.portOffset !== newRegion.container.portOffset) {
+                console.log("starting child region " + newRegion.slug);
+                exec("screen -d -m node server.js " + newRegion.slug);
+            } else {
+                console.log("populating " + newRegion.slug);
+                newRegion.populate();
+            }
+
+            // Add it
+            newRegion.warp(Regions[s].x || 500, Regions[s].y || (this.innerHeight - this.buffer.bottom - (newRegion.height / 2)), this);
+        }
+    };
+
+    /**
+     * Run the region and all contents
+     *
+     * @method run
+     */
+    Region.prototype.run = function () {
+        for (var id in this.contents[0]) {
+            var c = this.contents[0][id];
+            if (!c.portOffset || c.portOffset === this.portOffset) {
+                setImmediate(function (idea) {
+                    idea.run.call(idea);
+                }, c);
+            }
+        }
     };
 
     /**
@@ -85,6 +179,7 @@ function Region() {
     Region.prototype.toSimple = function () {
         var simple = Idea.prototype.toSimple.call(this);
         simple.buffer = this.buffer;
+        simple.portOffset = this.portOffset;
         return simple;
     };
 }

@@ -10,37 +10,54 @@
  * @class SkeletonForest
  * @constructor
  * @extends Idea
+ * @param {String} slug
  */
-function SkeletonForest() {
-    Region.call(this);
+function SkeletonForest(slug) {
+    Region.call(this, slug);
+
     /**
-     * Populate
+     * Categories
+     *
+     * @property categories
+     * @type {Array}
+     */
+    this.categories.push('forest');
+    this.categories.push('visible');
+
+    /**
+     * Randomly populate the region
      *
      * @method populate
+     * @param {String} slug
      */
-    SkeletonForest.prototype.populate = function () {
-        Region.prototype.populate.call(this);
+    SkeletonForest.prototype.populate = function (slug) {
+        Region.prototype.populate.call(this, slug);
 
+        // Ground
+        this.ground = new Ground();
+        this.ground.warp(0, this.innerHeight - (this.ground.sprite.src.default.height / 2), this);
+        this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
+
+        // Landscape
         var mountains = new Landscape();
-        mountains.warp(0, this.height - this.buffer.bottom - (mountains.height / 2), this);
+        mountains.warp(0, this.innerHeight - this.buffer.bottom - (mountains.height / 2), this);
 
         var mountains2 = new Landscape();
         mountains2.z = 2;
-        mountains2.sprite.scrollSpeed = 0.5;
-        mountains2.warp(200, this.height - this.buffer.bottom - (mountains.height * 0.4), this);
+        mountains2.sprite.scrollSpeed = 0.2;
+        mountains2.warp(200, this.innerHeight - this.buffer.bottom - (mountains.height * 0.4), this);
 
-        var block = new Platform();
-        block.warp(600, this.height - 800, this);
-
-        for (var n = 0; n < 50; n++) {
+        // Monsters
+        for (var n = 0; n < 5; n++) {
             var s = new Skeleton();
-            s.warp(1000 + (Math.random() * (this.width - 1000)), 400, this);
+            s.warp(500 + (Math.random() * (this.innerWidth - 1000)), this.innerHeight - this.buffer.bottom - (s.height / 2), this);
         }
     };
 
     /*
      * SkeletonForest defaults
      */
+    this.setSprite("door01");
 }
 SkeletonForest.prototype = new Region();
 SkeletonForest.prototype.constructor = SkeletonForest;
