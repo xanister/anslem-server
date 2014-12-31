@@ -1,0 +1,11 @@
+{
+    "house01": {
+        "default": {
+            "imagePath": "/sprites/pixel/building/house01",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

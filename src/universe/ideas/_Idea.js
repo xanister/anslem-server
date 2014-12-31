@@ -367,6 +367,7 @@ function Idea(categories) {
                 scrollSpeed: this.sprite.scrollSpeed,
                 tileX: this.sprite.tileX,
                 tileY: this.sprite.tileY,
+                tint: this.sprite.tint,
                 width: this.sprite.src[this.sprite.animation].width,
                 height: this.sprite.src[this.sprite.animation].height
             },
@@ -651,7 +652,8 @@ function Idea(categories) {
             src: Sprites[sprite],
             scrollSpeed: scrollSpeed || 1,
             tileX: tileX || false,
-            tileY: tileY || false
+            tileY: tileY || false,
+            tint: 0xFFFFFF
         };
         this.width = Sprites[sprite]["default"].width - (Sprites[sprite]["default"].leftOffset + Sprites[sprite]["default"].rightOffset);
         this.height = Sprites[sprite]["default"].height - (Sprites[sprite]["default"].topOffset + Sprites[sprite]["default"].bottomOffset);

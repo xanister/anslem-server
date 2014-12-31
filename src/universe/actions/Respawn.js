@@ -11,15 +11,15 @@ function Respawn() {
     this.label = "Respawn";
     this.params = false;
     this.progress = 0;
-    this.speed = 20;
+    this.speed = 5;
     Respawn.prototype.run = function () {
-        if (this.action.progress === 0) {
+        if (this.action.progress === 4) {
             this.stats.health = 100;
             this.addCategory("alive");
             this.addCategory('physical');
             if (this.client) {
                 this.addCategory("undead");
-                this.setSprite("zombie01");
+                this.setSprite("skeleton02");
                 this.baseGoal = Goals.PlayerInput;
             } else {
                 this.baseGoal = Goals.EatBrains;

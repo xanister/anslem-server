@@ -20,15 +20,20 @@ Goals.RespondToKeyboardMouse = {
             } else if (this.client.inputs.events.mousedown) {
                 if (this.client.inputs.events.mousedown[0]) {
                     this.grabbed = this.instancePoint(0, this.view.x + (this.client.inputs.events.mousedown[0].x * this.view.scale), this.view.y + (this.client.inputs.events.mousedown[0].y * this.view.scale));
+                    if (this.grabbed) {
+                        this.grabbed.sprite.tint = 0xFF0000;
+                    }
                 }
             } else if (this.grabbed && this.client.inputs.events.mousemove) {
                 this.grabbed.warp(this.view.x + (this.client.inputs.events.mousemove.x * this.view.scale), this.view.y + (this.client.inputs.events.mousemove.y * this.view.scale));
             } else if (this.grabbed && this.client.inputs.events.mouseup) {
-                if (this.client.inputs.events.mouseup[0])
+                if (this.client.inputs.events.mouseup[0]) {
+                    this.grabbed.sprite.tint = 0xFFFFFF;
                     this.grabbed = false;
+                }
             } else if (this.client.inputs.events.keydown && this.client.inputs.events.keydown.C) {
-                var block = new Platform();
-                block.warp(this.x, this.y - 300, this.container.slug);
+                var newIdea = new House01();
+                newIdea.warp(this.x, this.y - 300, this.container);
             } else if (this.client.inputs.keyboard.D) {
                 this.view.x += (this.view.speed * 2);
             } else if (this.client.inputs.keyboard.A) {

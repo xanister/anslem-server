@@ -229,15 +229,10 @@ function Entity() {
             this.interrupt = true;
         }
 
-        // Die if needed
-        if (this.stats.health <= 0) {
-            this.action = false;
-            this.goal = false;
-            this.baseGoal = Goals.Dead;
-        }
-
         // Get new action if needed
-        if (!this.action || this.action.progress >= this.action.speed) {
+        if (this.baseGoal !== Goals.Dead && this.stats.health <= 0) {
+            this.action = new Actions.Die();
+        } else if (!this.action || this.action.progress >= this.action.speed) {
             this.goal = (this.interrupt || !this.goal ? this.baseGoal : this.goal);
             this.action = this.goal ? this.goal.getAction.call(this) : false;
         }

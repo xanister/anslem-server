@@ -100,6 +100,11 @@ function Player() {
             this.trigger("viewUpdate", {width: self.view.width, height: self.view.height});
         };
 
+        client.oninput = function () {
+            if (this.inputs.events.message)
+                console.log(this.inputs.events.message);
+        };
+
         /**
          * Client state changed update
          *
@@ -161,7 +166,7 @@ function Player() {
 
         this.view = {
             x: this.x - (viewWidth / 2),
-            y: this.y - (viewHeight / 2),
+            y: this.y - (viewHeight - this.height),
             xBuffer: viewWidth * UniverseConfig.viewXBuffer,
             yBuffer: viewHeight * UniverseConfig.viewYBuffer,
             scale: scale,
@@ -181,6 +186,11 @@ function Player() {
 
         if (!this.client || !this.container)
             return false;
+
+        // Debugging
+        if (this.client.inputs.keyboard.K) {
+            console.log(this.baseGoal.label);
+        }
 
         // Add extra in view
         for (var id in this.container.contents.landscape)
@@ -238,15 +248,18 @@ function Player() {
      * @param {Idea} container
      */
     Player.prototype.warp = function (targetX, targetY, container) {
-        if (this.client)
-            this.client.trigger("transition", {start: "pt-page-moveToBottom", end: "pt-page-moveFromBottom", duration: 1000});
         Idea.prototype.warp.call(this, targetX, targetY, container);
+
+        if (this.client) {
+            this.client.trigger("transition", {start: "pt-page-moveToBottom", end: "pt-page-moveFromBottom", duration: 1000});
+            this.initializeView();
+        }
     };
 
     /*
      * Player defaults
      */
-    this.setSprite("warrior01");
+    this.setSprite("xanister");
     this.stats.perception *= 4;
     this.stats.strength = 50;
 }

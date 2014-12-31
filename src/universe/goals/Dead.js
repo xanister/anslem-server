@@ -11,11 +11,8 @@ Goals.Dead = {
     label: "Dead",
     params: false,
     getAction: function () {
-        if (this.hasCategory("alive"))
-            return new Actions.Die();
-
         // Respawn for testing
-        if (this.inputs && ((this.inputs.events.keydown && this.inputs.events.keydown.R) || this.inputs.events.swipeup)) {
+        if (this.client && this.client.inputs && ((this.client.inputs.events.keydown && this.client.inputs.events.keydown.R) || this.client.inputs.events.swipeup)) {
             return new Actions.Respawn();
         }
 //        if (!this.inputs && ((new Date()).getTime() > (this.stats.timeOfDeath + 60000))) {

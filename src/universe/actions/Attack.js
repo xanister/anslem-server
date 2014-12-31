@@ -17,10 +17,10 @@ function Attack(params, speed) {
     Attack.prototype.run = function (params) {
         if (this.action.progress === 0) {
             this.facing = params.dir;
-            this.xSpeed += (this.stats.strength / this.width) * params.dir * 5;
-            this.ySpeed -= ((this.stats.strength / this.width) * params.dir * 15);
+            //this.xSpeed += (this.stats.strength / this.width) * params.dir * 5;
+            //this.ySpeed -= ((this.stats.strength / this.width) * params.dir * 15);
         }
-        var hit = params.target ? (this.collides(params.target.bbox()) ? params.target : false) : this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
+        var hit = params.target ? (this.collides(params.target) ? params.target : false) : this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
         if (hit && hit.immunityTimeout === 0) {
             hit.interrupt = true;
             hit.action = new Actions.Flinch({dir: params.dir, strength: this.stats.strength});

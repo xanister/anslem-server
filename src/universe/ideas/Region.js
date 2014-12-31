@@ -64,7 +64,7 @@ function Region() {
      * @property z
      * @type {Number}
      */
-    this.z = 100;
+    this.z = 150;
 
     /**
      * Activate region from outside

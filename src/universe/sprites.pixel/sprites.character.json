@@ -1,0 +1,86 @@
+{
+    "skeleton02": {
+        "default": {
+            "imagePath": "/sprites/lpc/skeleton",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 11
+        },
+        "attack": {
+            "imagePath": "/sprites/lpc/skeleton",
+            "frameCount": 6,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 15
+        },
+        "die": {
+            "imagePath": "/sprites/lpc/skeleton",
+            "frameCount": 6,
+            "frameSpeed": 0.25,
+            "loop": false,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 20
+        },
+        "walk": {
+            "imagePath": "/sprites/lpc/skeleton",
+            "frameCount": 9,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 11
+        }
+    },
+    "xanister": {
+        "default": {
+            "imagePath": "/sprites/lpc/xanister",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 11
+        },
+        "attack": {
+            "imagePath": "/sprites/lpc/xanister",
+            "frameCount": 6,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 15
+        },
+        "die": {
+            "imagePath": "/sprites/lpc/xanister",
+            "frameCount": 6,
+            "frameSpeed": 0.25,
+            "loop": false,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 20
+        },
+        "walk": {
+            "imagePath": "/sprites/lpc/xanister",
+            "frameCount": 9,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "maxFrameCount": 13,
+            "singleImage": true,
+            "verticalCount": 21,
+            "verticalIndex": 11
+        }
+    }
+}

@@ -13,11 +13,13 @@ function Die() {
     this.progress = 0;
     this.speed = 20;
     Die.prototype.run = function () {
-        if (this.action.progress === 0) {
+        if (this.baseGoal !== Goals.Dead) {
             this.stats.timeOfDeath = (new Date()).getTime();
             this.removeCategory("alive");
             this.removeCategory('hasbrains');
             this.removeCategory('physical');
+            this.goal = false;
+            this.baseGoal = Goals.Dead;
         }
     };
     Die.prototype.updateAnimation = function () {

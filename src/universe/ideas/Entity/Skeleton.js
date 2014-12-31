@@ -40,7 +40,7 @@ function Skeleton() {
     /*
      * Skeleton defaults
      */
-    this.setSprite("skeleton01");
+    this.setSprite("skeleton02");
     this.stats.speed *= (0.1 + (Math.random() * 0.4));
 }
 Skeleton.prototype = new Entity();
