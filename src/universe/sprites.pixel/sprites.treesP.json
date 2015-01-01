@@ -1,0 +1,11 @@
+{
+    "tree01": {
+        "default": {
+            "imagePath": "/sprites/pixel/trees/tree01",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    }
+}

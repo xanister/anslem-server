@@ -1,17 +1,17 @@
 /**
- * House01
+ * Tree01
  *
  * @module Anslem.Universe
  */
 
 /**
- * House01
+ * Tree01
  *
- * @class House01
+ * @class Tree01
  * @constructor
  * @extends Idea
  */
-function House01() {
+function Tree01() {
     Landscape.call(this);
 
     /**
@@ -20,7 +20,7 @@ function House01() {
      * @property categories
      * @type {Array}
      */
-    this.categories.push('building', 'house');
+    this.categories.push('tree');
 
     /**
      * Depth
@@ -31,11 +31,11 @@ function House01() {
     this.z = 150;
 
     /*
-     * House01 defaults
+     * Tree01 defaults
      */
-    this.setSprite("house01");
+    this.setSprite("tree01");
 }
-House01.prototype = new Landscape();
-House01.prototype.constructor = House01;
+Tree01.prototype = new Landscape();
+Tree01.prototype.constructor = Tree01;
 
-Anslem.House01 = House01;
+Anslem.Tree01 = Tree01;

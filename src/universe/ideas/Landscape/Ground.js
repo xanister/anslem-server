@@ -28,12 +28,12 @@ function Ground() {
      * @property z
      * @type {Number}
      */
-    this.z = 50;
+    this.z = 200;
 
     /*
      * Ground defaults
      */
-    this.setSprite("grass01", true, false, 1);
+    this.setSprite("grass03", true, false, 1);
 }
 Ground.prototype = new Landscape();
 Ground.prototype.constructor = Ground;

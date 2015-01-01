@@ -117,6 +117,14 @@ function Idea(categories) {
     this.linearDampening = UniverseConfig.linearDampening;
 
     /**
+     * On solid object
+     *
+     * @property onSolid
+     * @type {Object|Boolean}
+     */
+    this.onSolid = false;
+
+    /**
      * Unique slug
      *
      * @property slug
@@ -719,9 +727,11 @@ function Idea(categories) {
         // Vertical
         this.ySpeed += this.gravity;
         this.y += this.ySpeed;
+        this.onSolid = false;
         if (this.y + (this.height / 2) >= this.container.innerHeight - this.container.buffer.bottom) {
             this.y = this.container.innerHeight - this.container.buffer.bottom - (this.height / 2);
             this.ySpeed = 0;
+            this.onSolid = true;
         } else {
             // Find object below
             /*
@@ -741,9 +751,13 @@ function Idea(categories) {
 
             var collides = this.instancePlace("solid");
             if (collides) {
-                this.y = this.ySpeed > 0 ?
-                        collides.y - (collides.height / 2) - (this.height / 2) :
-                        collides.y + (collides.height / 2) + (this.height / 2);
+                if (this.ySpeed > 0) {
+                    this.y = collides.y - (collides.height / 2) - (this.height / 2);
+                    this.onSolid = collides;
+                } else {
+                    this.y = collides.y + (collides.height / 2) + (this.height / 2);
+                }
+
                 this.ySpeed = 0;
             }
             if (this.y < 0) {

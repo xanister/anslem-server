@@ -9,6 +9,25 @@
             "topOffset": 16
         }
     },
+    "grass02": {
+        "default": {
+            "imagePath": "/sprites/pixel/landscape/grass02",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "grass03": {
+        "default": {
+            "imagePath": "/sprites/pixel/landscape/grass03",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "topOffset": 48
+        }
+    },
     "mountains01": {
         "default": {
             "imagePath": "/sprites/pixel/landscape/mountains01",

@@ -31,7 +31,7 @@ function Platform() {
      * @property z
      * @type {Number}
      */
-    this.z = 100;
+    this.z = 325;
 
     /*
      * Platform defaults

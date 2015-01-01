@@ -13,7 +13,7 @@ function Attack(params, speed) {
     this.label = "Attack";
     this.params = params;
     this.progress = 0;
-    this.speed = 30 * (speed || 1);
+    this.speed = 45 * (speed || 1);
     Attack.prototype.run = function (params) {
         if (this.action.progress === 0) {
             this.facing = params.dir;

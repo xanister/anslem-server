@@ -49,6 +49,14 @@ function Entity() {
     this.focus = false;
 
     /**
+     * Entity gender
+     *
+     * @property gender
+     * @type {String}
+     */
+    this.gender = false;
+
+    /**
      * Current goal
      *
      * @property goal
@@ -126,7 +134,7 @@ function Entity() {
      * @property z
      * @type {Number}
      */
-    this.z = 200;
+    this.z = 350;
 
     /**
      * Create from simple object
@@ -184,6 +192,22 @@ function Entity() {
             }
         }
         return nearest;
+    };
+
+    /**
+     * Generate random name
+     *
+     * @method getRandomName
+     * @returns {String}
+     */
+    Entity.prototype.getRandomName = function () {
+        var names = ["Pat", "Sam", "Elliot"];
+        if (this.gender === "male") {
+            names = ["Cliff", "Norm", "Sam", "Paul", "Woody", "Coach"];
+        } else if (this.gender === "female") {
+            names = ["Carla", "Diane", "Rebecca", "Serafina", "Loretta"];
+        }
+        return names[Math.floor(Math.random * names.length)];
     };
 
     /**

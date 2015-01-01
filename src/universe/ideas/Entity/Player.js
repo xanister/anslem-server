@@ -200,6 +200,8 @@ function Player() {
         this.overActivatable = this.instancePlace("activatable");
 
         // Bubble
+        // TODO: Handle occasional missed message (from
+        //   multiple input events)
         if (!this.bubble) {
             if (this.client.inputs.events.message) {
                 this.bubble = {
