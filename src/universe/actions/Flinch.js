@@ -15,6 +15,8 @@ function Flinch(params) {
     this.speed = 8;
     Flinch.prototype.run = function (params) {
         if (this.action.progress === 0) {
+            this.interrupt = true;
+
             // Knockback
             this.xSpeed += ((this.height / 10) * params.dir);
             this.ySpeed -= ((this.height / 10) * 0.5);

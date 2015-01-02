@@ -13,20 +13,51 @@ function Attack(params, speed) {
     this.label = "Attack";
     this.params = params;
     this.progress = 0;
-    this.speed = 45 * (speed || 1);
+    this.speed = 30 * (speed || 1);
     Attack.prototype.run = function (params) {
-        if (this.action.progress === 0) {
+        // Face the direction I'm attacking
+        if (this.action.progress === 0)
             this.facing = params.dir;
-            //this.xSpeed += (this.stats.strength / this.width) * params.dir * 5;
-            //this.ySpeed -= ((this.stats.strength / this.width) * params.dir * 15);
+
+        // Did I hit something(what was I aiming at)
+        var hit = false;
+        if (params.target) {
+            if (this.facing === 1) {
+                hit = params.target.collidesRect(
+                        this.x, this.y - (this.height / 2),
+                        this.x + this.sprite.src[this.sprite.animation].width, this.y + (this.height / 2)
+                        ) ? params.target : false;
+            } else {
+                hit = params.target.collidesRect(
+                        this.x - this.sprite.src[this.sprite.animation].width, this.y - (this.height / 2),
+                        this.x, this.y + (this.height / 2)
+                        ) ? params.target : false;
+            }
+        } else {
+            if (this.facing === 1) {
+                hit = this.instanceRect("physical", {
+                    left: this.x + (this.width / 2),
+                    top: this.y - (this.height / 2),
+                    right: this.x + (this.sprite.src[this.sprite.animation].width / 2),
+                    bottom: this.y + (this.height / 2)
+                });
+            } else {
+                hit = this.instanceRect("physical", {
+                    left: this.x - (this.sprite.src[this.sprite.animation].width / 2),
+                    top: this.y - (this.height / 2),
+                    right: this.x - (this.width / 2),
+                    bottom: this.y + (this.height / 2)
+                });
+            }
         }
-        var hit = params.target ? (this.collides(params.target) ? params.target : false) : this.instancePlace("physical", this.x + ((this.width / 2) * params.dir), this.y);
-        if (hit && hit.immunityTimeout === 0) {
-            hit.interrupt = true;
+
+        // If the hit is valid...HITEM
+        if (hit && hit.immunityTimeout <= 0) {
             hit.action = new Actions.Flinch({dir: params.dir, strength: this.stats.strength});
             hit.immunityTimeout = this.action.speed;
         }
-    };
+    }
+    ;
     Attack.prototype.updateAnimation = function () {
         this.setAnimation("attack");
         if (this.sprite.animation === "attack")

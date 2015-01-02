@@ -110,6 +110,7 @@
             "singleImage": true,
             "verticalCount": 33,
             "verticalIndex": 11,
+            "topOffset": 10,
             "leftOffset": 40,
             "rightOffset": 40
         },

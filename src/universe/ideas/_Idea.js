@@ -499,7 +499,7 @@ function Idea(categories) {
      *
      * @method instanceRect
      * @param {String} category
-     * @param {Object} r {left: {Number}, right: {Number}, top: {Number}, bottom: {Number}}
+     * @param {Object} r {left: {Number}, top: {Number}, bottom: {Number}, right: {Number}}
      * @return {Idea}
      */
     Idea.prototype.instanceRect = function (category, r) {

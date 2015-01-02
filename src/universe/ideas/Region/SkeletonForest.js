@@ -67,6 +67,16 @@ function SkeletonForest(slug) {
             } while (t.instancePlace("tree"));
         }
 
+        // Objects
+        for (var x = 256; x < this.innerWidth; x += 256) {
+            var platform = new Platform();
+            platform.warp(
+                    x,
+                    this.innerHeight - this.buffer.bottom - midground.height + Math.floor(Math.random() * midground.height * 0.5),
+                    this
+                    );
+        }
+
         // Monsters
         for (var n = 0; n < 5; n++) {
             var s = new Skeleton();
