@@ -74,7 +74,8 @@ function Player() {
          * @method ondisconnect
          */
         client.ondisconnect = function () {
-            //TODO
+            if (self.container)
+                self.destroy();
         };
 
         /**
@@ -84,6 +85,7 @@ function Player() {
          */
         client.oninfo = function () {
             self.initializeView();
+            this.trigger("transition", {start: "pt-page-moveToBottom", end: "pt-page-moveFromBottom", duration: 1000});
             this.trigger("viewUpdate", {width: self.view.width, height: self.view.height});
         };
 
@@ -126,6 +128,20 @@ function Player() {
      */
     Player.prototype.getPacket = function (isSource) {
         if (isSource) {
+            // Add extras for this player only
+            if (!this.bubble && this.overActivatable) {
+                this.bubble = {
+                    message: "",
+                    star: true,
+                    time: 10
+                };
+                if (!this.changed) {
+                    this.changed = true;
+                    this.inViewChanged.push(this);
+                }
+            }
+
+            // Generate packet
             var packet = {
                 viewX: this.view.x,
                 viewY: this.view.y,
@@ -154,7 +170,7 @@ function Player() {
      * @method initializeView
      */
     Player.prototype.initializeView = function () {
-        var scale = this.client.info.screenWidth < 768 ? UniverseConfig.viewScale * 2 : UniverseConfig.viewScale;
+        var scale = ((1024 / this.client.info.screenWidth) / UniverseConfig.viewScale);
         var viewWidth = this.client.info.screenWidth * scale;
         var viewHeight = this.client.info.screenHeight * scale;
 
@@ -190,20 +206,14 @@ function Player() {
         this.overActivatable = this.instancePlace("activatable");
 
         // Bubble
-        // TODO: Handle occasional missed message (from
-        //   multiple input events)
-        if (!this.bubble) {
-            if (this.client.inputs.events.message) {
-                this.bubble = {
-                    message: this.client.inputs.events.message,
-                    time: 180
-                };
-            } else if (this.overActivatable) {
-                this.bubble = {
-                    message: "",
-                    star: true,
-                    time: 5
-                };
+        if (this.client.inputs.events.message) {
+            this.bubble = {
+                message: this.client.inputs.events.message,
+                time: 180
+            };
+            if (!this.changed) {
+                this.changed = true;
+                this.inViewChanged.push(this);
             }
         }
 
@@ -226,7 +236,8 @@ function Player() {
             this.view.y = this.container.innerHeight - this.view.height;
 
         // Update client if needed
-        if (this.inViewAdded.length > 0 || this.inViewChanged.length > 0 || this.inViewRemoved.length > 0) {
+        if (this.changed || this.inViewAdded.length > 0 || this.inViewChanged.length > 0 || this.inViewRemoved.length > 0) {
+            //console.log(Date.now() + " update");
             this.client.trigger("frameUpdate", this.getPacket(true));
         }
 

@@ -588,6 +588,7 @@ function Idea(categories) {
      */
     Idea.prototype.run = function () {
         // Maintain check for change
+        var oldBubble = this.bubble ? true : false;
         var oldX = this.x;
         var oldY = this.y;
         var oldSpriteFrame = this.sprite.frame;
@@ -616,7 +617,7 @@ function Idea(categories) {
             this.bubble = false;
 
         // Keep track of changed
-        this.changed = (this.x !== oldX || this.y !== oldY || this.sprite.frame !== oldSpriteFrame);
+        this.changed = ((this.bubble ? oldBubble === false : oldBubble === true) || this.x !== oldX || this.y !== oldY || this.sprite.frame !== oldSpriteFrame);
     };
 
     /**
@@ -842,6 +843,7 @@ function Idea(categories) {
                         self.client.emit("forward", regionAddress);
                     }
                     socket.disconnect();
+                    delete Population[self.id];
                 });
             } else {
                 // Same region server
