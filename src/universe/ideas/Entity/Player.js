@@ -13,21 +13,6 @@
  */
 function Player() {
     Entity.call(this);
-    /**
-     * Split packets into chunks
-     *
-     * @property packetIndex
-     * @type {Number}
-     */
-    var packetIndex = 0;
-
-    /**
-     * Number of chunks
-     *
-     * @property packetSplit
-     * @type {Number}
-     */
-    var packetSplit = 2;
 
     /**
      * Basic driving goal
@@ -115,6 +100,11 @@ function Player() {
                 case "running":
                     if (!self.container && callback)
                         callback();
+                    else {
+                        self.changed = true;
+                        self.updateInView();
+                        self.client.trigger("frameUpdate", self.getPacket(true));
+                    }
                     break;
             }
         };

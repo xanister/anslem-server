@@ -275,7 +275,7 @@ function Entity() {
             var newInView = {0: {}};
             for (var id in this.container.contents.visible) {
                 var idea = this.container.contents.visible[id];
-                if (idea.sprite.tileX || this.distanceTo(idea.x, idea.y) < this.stats.perception) {
+                if (idea.sprite.tileX || (this.distanceTo(idea.x, idea.y) < this.stats.perception)) {
                     if (!this.inView[0][idea.id])
                         this.inViewAdded.push(idea);
                     else {

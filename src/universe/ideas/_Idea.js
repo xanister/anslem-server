@@ -376,16 +376,8 @@ function Idea(categories) {
             bubble: this.bubble,
             id: this.id,
             sprite: {
-                animation: this.sprite.animation,
-                frame: Math.floor(this.sprite.frame),
-                mirror: this.facing,
                 name: this.sprite.name,
-                scrollSpeed: this.sprite.scrollSpeed,
-                tileX: this.sprite.tileX,
-                tileY: this.sprite.tileY,
-                tint: this.sprite.tint,
-                width: this.sprite.src[this.sprite.animation].width,
-                height: this.sprite.src[this.sprite.animation].height
+                scrollSpeed: this.sprite.scrollSpeed
             },
             width: this.sprite.src[this.sprite.animation].width,
             height: this.sprite.src[this.sprite.animation].height,
@@ -393,6 +385,19 @@ function Idea(categories) {
             y: this.y + this.sprite.src[this.sprite.animation].yOffset,
             z: this.z
         };
+        if (this.sprite.animation !== "default")
+            packet.sprite.animation = this.sprite.animation;
+        if (this.sprite.frame !== 0)
+            packet.sprite.frame = Math.floor(this.sprite.frame);
+        if (this.facing !== 1)
+            packet.sprite.mirror = true;
+        if (this.sprite.tint)
+            packet.sprite.tint = this.sprite.tint;
+        if (this.sprite.tileX)
+            packet.sprite.tileX = this.sprite.tileX;
+        if (this.sprite.tileY)
+            packet.sprite.tileY = this.sprite.tileY;
+
         return packet;
     };
 

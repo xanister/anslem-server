@@ -161,6 +161,8 @@ function Region() {
      * @method run
      */
     Region.prototype.run = function () {
+        Idea.prototype.run.call(this);
+
         for (var id in this.contents[0]) {
             var c = this.contents[0][id];
             if (!c.portOffset || c.portOffset === this.portOffset) {
