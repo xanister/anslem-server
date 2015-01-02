@@ -75,8 +75,10 @@ function Player() {
      *
      * @method attachClient
      * @param {Object} client
+     * @param {Function} callback
      */
-    Player.prototype.attachClient = function (client) {
+    Player.prototype.attachClient = function (client, callback) {
+        console.log("attaching client to " + this.slug);
         this.client = client;
         this.baseGoal = Goals.PlayerInput;
 
@@ -100,11 +102,6 @@ function Player() {
             this.trigger("viewUpdate", {width: self.view.width, height: self.view.height});
         };
 
-        client.oninput = function () {
-            if (this.inputs.events.message)
-                console.log(this.inputs.events.message);
-        };
-
         /**
          * Client state changed update
          *
@@ -115,7 +112,9 @@ function Player() {
             switch (state) {
                 case "paused":
                     break;
-                case "ready":
+                case "running":
+                    if (!self.container && callback)
+                        callback();
                     break;
             }
         };
@@ -124,6 +123,7 @@ function Player() {
          * Update the client with needed info
          */
         client.emit("attached", this.id);
+        self.inView = {0: {}};
     };
 
     /**
@@ -139,15 +139,19 @@ function Player() {
             var packet = {
                 viewX: this.view.x,
                 viewY: this.view.y,
-                inView: {}
+                inViewAdded: [],
+                inViewChanged: [],
+                inViewRemoved: []
             };
-            var index = 1;
-            for (var id in this.inView[0]) {
-                if (index++ % packetSplit === packetIndex)
-                    packet.inView[id] = this.inView[0][id].getPacket();
+            for (var index in this.inViewAdded) {
+                packet.inViewAdded.push(this.inViewAdded[index].getPacket());
             }
-            if (++packetIndex > packetSplit)
-                packetIndex = 0;
+            for (var index in this.inViewChanged) {
+                packet.inViewChanged.push(this.inViewChanged[index].getPacket());
+            }
+            for (var index in this.inViewRemoved) {
+                packet.inViewRemoved.push(this.inViewRemoved[index].getPacket());
+            }
             return packet;
         }
         return Entity.prototype.getPacket.call(this);
@@ -192,10 +196,6 @@ function Player() {
             console.log(this.baseGoal.label);
         }
 
-        // Add extra in view
-        for (var id in this.container.contents.landscape)
-            this.inView[0][id] = this.container.contents.landscape[id];
-
         // Standing over activatable object
         this.overActivatable = this.instancePlace("activatable");
 
@@ -235,7 +235,10 @@ function Player() {
         if (this.view.y > (this.container.innerHeight - this.view.height))
             this.view.y = this.container.innerHeight - this.view.height;
 
-        this.client.trigger("frameUpdate", this.getPacket(true));
+        // Update client if needed
+        if (this.inViewAdded.length > 0 || this.inViewChanged.length > 0 || this.inViewRemoved.length > 0) {
+            this.client.trigger("frameUpdate", this.getPacket(true));
+        }
 
         // Clear events
         this.client.inputs.events = {};
@@ -251,8 +254,11 @@ function Player() {
      */
     Player.prototype.warp = function (targetX, targetY, container) {
         Idea.prototype.warp.call(this, targetX, targetY, container);
-
+        this.view.x = -10000;
+        this.view.y = -10000;
+        this.updateInView();
         if (this.client) {
+            this.client.trigger("frameUpdate", this.getPacket(true));
             this.client.trigger("transition", {start: "pt-page-moveToBottom", end: "pt-page-moveFromBottom", duration: 1000});
             this.initializeView();
         }

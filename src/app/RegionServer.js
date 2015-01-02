@@ -58,8 +58,9 @@ function RegionServer(regionSlug) {
                 Anslem.Population[event.playerId].attachClient(client);
             } else {
                 var newPlayer = new Anslem.Player();
-                newPlayer.warp(500, 500, self.region);
-                newPlayer.attachClient(client);
+                newPlayer.attachClient(client, function () {
+                    newPlayer.warp(500, 500, self.region);
+                });
             }
         });
 

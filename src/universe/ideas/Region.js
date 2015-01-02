@@ -35,6 +35,7 @@ function Region() {
      */
     this.categories.push('region');
     this.categories.push('activatable');
+    this.categories.push('visible');
 
     /**
      * Label

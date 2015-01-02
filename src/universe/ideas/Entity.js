@@ -88,6 +88,10 @@ function Entity() {
      */
     this.inView = {0: {}};
 
+    this.inViewAdded = [];
+    this.inViewChanged = [];
+    this.inViewRemoved = [];
+
     /**
      * In view update interval
      *
@@ -219,34 +223,7 @@ function Entity() {
         Idea.prototype.run.call(this);
 
         // Update in view periodically
-        this.inViewAdded = [];
-        this.inViewRemoved = [];
-        if (--this.inViewUpdateDelay <= 0) {
-            if (this.container) {
-                var newInView = {0: {}};
-                for (var id in this.container.contents.visible) {
-                    var idea = this.container.contents.visible[id];
-                    if (this.distanceTo(idea.x, idea.y) < this.stats.perception) {
-                        if (!this.inView[0][idea.id])
-                            this.inViewAdded.push(idea);
-                        else
-                            delete this.inView[0][idea.id];
-                        newInView[0][idea.id] = idea;
-                        for (var index in idea.categories) {
-                            if (!newInView[idea.categories[index]])
-                                newInView[idea.categories[index]] = {};
-                            newInView[idea.categories[index]][idea.id] = idea;
-                        }
-                    }
-                }
-                for (var id in this.inView[0]) {
-                    if (this.inView.visible && this.inView.visible[id])
-                        this.inViewRemoved.push(this.inView[0][id]);
-                }
-                this.inView = newInView;
-            }
-            this.inViewUpdateDelay = UniverseConfig.inViewUpdateDelay;
-        }
+        this.updateInView();
 
         // Handle interupts
         if (this.inViewAdded.length > 0 || this.inViewRemoved.length > 0) {
@@ -283,6 +260,43 @@ function Entity() {
         simple.baseGoal = this.baseGoal.id;
         simple.stats = JSON.parse(JSON.stringify(this.stats));
         return simple;
+    };
+
+    /**
+     * Update in view
+     *
+     * @method updateInView
+     */
+    Entity.prototype.updateInView = function () {
+        this.inViewAdded = [];
+        this.inViewChanged = [];
+        this.inViewRemoved = [];
+        if (this.container) {
+            var newInView = {0: {}};
+            for (var id in this.container.contents.visible) {
+                var idea = this.container.contents.visible[id];
+                if (idea.sprite.tileX || this.distanceTo(idea.x, idea.y) < this.stats.perception) {
+                    if (!this.inView[0][idea.id])
+                        this.inViewAdded.push(idea);
+                    else {
+                        if (idea.changed || (this.changed && idea.sprite.tileX))
+                            this.inViewChanged.push(idea);
+                        delete this.inView[0][idea.id];
+                    }
+                    newInView[0][idea.id] = idea;
+                    for (var index in idea.categories) {
+                        if (!newInView[idea.categories[index]])
+                            newInView[idea.categories[index]] = {};
+                        newInView[idea.categories[index]][idea.id] = idea;
+                    }
+                }
+            }
+            for (var id in this.inView[0]) {
+                if (this.inView.visible && this.inView.visible[id])
+                    this.inViewRemoved.push(this.inView[0][id]);
+            }
+            this.inView = newInView;
+        }
     };
 }
 Entity.prototype = new Idea();

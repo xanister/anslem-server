@@ -45,6 +45,15 @@ function Idea(categories) {
     this.categories = categories || [];
 
     /**
+     * Has the idea changed this frame
+     *
+     * @property changed
+     * @type {Boolean}
+     */
+    this.changed = false;
+
+
+    /**
      * Parent object
      *
      * @property container
@@ -363,8 +372,7 @@ function Idea(categories) {
      * @return {Object}
      */
     Idea.prototype.getPacket = function () {
-        return {
-            belowY: this.below ? this.below.y - (this.below.height / 2) : false,
+        var packet = {
             bubble: this.bubble,
             id: this.id,
             sprite: {
@@ -385,6 +393,7 @@ function Idea(categories) {
             y: this.y + this.sprite.src[this.sprite.animation].yOffset,
             z: this.z
         };
+        return packet;
     };
 
     /**
@@ -573,6 +582,12 @@ function Idea(categories) {
      * @method run
      */
     Idea.prototype.run = function () {
+        // Maintain check for change
+        var oldX = this.x;
+        var oldY = this.y;
+        var oldSpriteFrame = this.sprite.frame;
+        this.changed = false;
+
         if (this.immunityTimeout > 0)
             this.immunityTimeout--;
 
@@ -594,6 +609,9 @@ function Idea(categories) {
         // Bubble
         if (this.bubble && this.bubble.time-- <= 0)
             this.bubble = false;
+
+        // Keep track of changed
+        this.changed = (this.x !== oldX || this.y !== oldY || this.sprite.frame !== oldSpriteFrame);
     };
 
     /**
@@ -724,31 +742,16 @@ function Idea(categories) {
      * @method updatePhysics
      */
     Idea.prototype.updatePhysics = function () {
+        this.onSolid = false;
+
         // Vertical
         this.ySpeed += this.gravity;
         this.y += this.ySpeed;
-        this.onSolid = false;
         if (this.y + (this.height / 2) >= this.container.innerHeight - this.container.buffer.bottom) {
             this.y = this.container.innerHeight - this.container.buffer.bottom - (this.height / 2);
             this.ySpeed = 0;
             this.onSolid = true;
         } else {
-            // Find object below
-            /*
-             var belows = this.instancesRect("solid", {
-             left: this.x - (this.width / 2),
-             right: this.x + (this.width / 2),
-             top: this.y + (this.height / 2),
-             bottom: this.container.height
-             });
-             if (belows.length > 0) {
-             belows.sort(function (a, b) {
-             return a.distanceTo(this) > b.distanceTo(this);
-             });
-             this.below = belows[0];
-             }
-             */
-
             var collides = this.instancePlace("solid");
             if (collides) {
                 if (this.ySpeed > 0) {
@@ -802,6 +805,9 @@ function Idea(categories) {
      */
     Idea.prototype.warp = function (targetX, targetY, container) {
         console.log("warping " + this.slug + (container ? " to " + container.slug : ""));
+
+        this.changed = true;
+
         this.x = targetX;
         this.y = targetY;
         if (container) {

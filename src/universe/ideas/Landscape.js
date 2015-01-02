@@ -21,6 +21,7 @@ function Landscape() {
      * @type {Array}
      */
     this.categories.push('landscape');
+    this.categories.push('visible');
 
     /** Label
      *
