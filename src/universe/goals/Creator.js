@@ -24,7 +24,7 @@ Goals.Creator = {
                     newIdea.setSprite("celia");
                     newIdea.gender = "female";
                     newIdea.label = newIdea.getRandomName();
-                    newIdea.baseGoal = Goals.Live;
+                    newIdea.baseGoal = Goals.FartAround;
                 }
 
                 newIdea.warp(this.x, this.y - 300, this.container);

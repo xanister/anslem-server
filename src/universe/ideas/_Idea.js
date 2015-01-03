@@ -617,7 +617,7 @@ function Idea(categories) {
             this.bubble = false;
 
         // Keep track of changed
-        this.changed = ((this.bubble ? oldBubble === false : oldBubble === true) || this.x !== oldX || this.y !== oldY || this.sprite.frame !== oldSpriteFrame);
+        this.changed = ((this.bubble ? oldBubble === false : oldBubble === true) || this.x !== oldX || this.y !== oldY || Math.floor(this.sprite.frame) !== Math.floor(oldSpriteFrame));
     };
 
     /**
@@ -685,7 +685,7 @@ function Idea(categories) {
             scrollSpeed: scrollSpeed || 1,
             tileX: tileX || false,
             tileY: tileY || false,
-            tint: 0xFFFFFF
+            tint: false
         };
         this.width = Sprites[sprite]["default"].width - (Sprites[sprite]["default"].leftOffset + Sprites[sprite]["default"].rightOffset);
         this.height = Sprites[sprite]["default"].height - (Sprites[sprite]["default"].topOffset + Sprites[sprite]["default"].bottomOffset);

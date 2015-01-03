@@ -9,6 +9,7 @@
             "singleImage": true,
             "verticalCount": 21,
             "verticalIndex": 11,
+            "topOffset": 10,
             "leftOffset": 40,
             "rightOffset": 40
         },
@@ -59,6 +60,7 @@
             "singleImage": true,
             "verticalCount": 33,
             "verticalIndex": 11,
+            "topOffset": 10,
             "leftOffset": 40,
             "rightOffset": 40
         },
@@ -89,6 +91,70 @@
         },
         "walk": {
             "imagePath": "/sprites/lpc/celia",
+            "frameCount": 9,
+            "frameSpeed": 0.25,
+            "loop": true,
+            "maxFrameCount": 24,
+            "singleImage": true,
+            "verticalCount": 33,
+            "verticalIndex": 11,
+            "leftOffset": 40,
+            "rightOffset": 40
+        }
+    },
+    "justin": {
+        "default": {
+            "imagePath": "/sprites/lpc/justin",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "maxFrameCount": 24,
+            "singleImage": true,
+            "verticalCount": 33,
+            "verticalIndex": 11,
+            "topOffset": 10,
+            "leftOffset": 40,
+            "rightOffset": 40
+        },
+        "attack": {
+            "imagePath": "/sprites/lpc/justin",
+            "frameCount": 6,
+            "frameSpeed": 0.1,
+            "loop": true,
+            "maxFrameCount": 8,
+            "singleImage": true,
+            "verticalCount": 10,
+            "verticalIndex": 9,
+            "yOffset": -16,
+            "leftOffset": 40,
+            "rightOffset": 40
+        },
+        "die": {
+            "imagePath": "/sprites/lpc/justin",
+            "frameCount": 6,
+            "frameSpeed": 0.25,
+            "loop": false,
+            "maxFrameCount": 24,
+            "singleImage": true,
+            "verticalCount": 33,
+            "verticalIndex": 20,
+            "leftOffset": 40,
+            "rightOffset": 40
+        },
+        "jump": {
+            "imagePath": "/sprites/lpc/justin",
+            "frameCount": 9,
+            "frameSpeed": 0.5,
+            "loop": true,
+            "maxFrameCount": 24,
+            "singleImage": true,
+            "verticalCount": 33,
+            "verticalIndex": 11,
+            "leftOffset": 40,
+            "rightOffset": 40
+        },
+        "walk": {
+            "imagePath": "/sprites/lpc/justin",
             "frameCount": 9,
             "frameSpeed": 0.25,
             "loop": true,

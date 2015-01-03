@@ -61,14 +61,14 @@ function SkeletonForest(slug) {
             do {
                 t.warp(
                         Math.floor(Math.random() * this.innerWidth),
-                        midground.y + Math.floor(Math.random() * midground.height) - (midground.height / 2) - (t.height * 0.4),
+                        midground.y + Math.floor(Math.random() * (midground.height * 0.5)) - (midground.height * 0.75),
                         this
                         );
             } while (t.instancePlace("tree"));
         }
 
         // Objects
-        for (var x = 256; x < this.innerWidth; x += 256) {
+        for (var x = 2048; x < this.innerWidth; x += 512) {
             var platform = new Platform();
             platform.warp(
                     x,

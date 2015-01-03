@@ -279,7 +279,7 @@ function Entity() {
                     if (!this.inView[0][idea.id])
                         this.inViewAdded.push(idea);
                     else {
-                        if (idea.changed || (this.changed && idea.sprite.tileX))
+                        if (idea.changed)
                             this.inViewChanged.push(idea);
                         delete this.inView[0][idea.id];
                     }

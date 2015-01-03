@@ -184,6 +184,8 @@ function Player() {
             width: viewWidth,
             height: viewHeight
         };
+
+        this.stats.perception = viewWidth > viewHeight ? viewWidth : viewHeight;
     };
 
     /**
@@ -237,7 +239,7 @@ function Player() {
 
         // Update client if needed
         if (this.changed || this.inViewAdded.length > 0 || this.inViewChanged.length > 0 || this.inViewRemoved.length > 0) {
-            //console.log(Date.now() + " update");
+            console.log(Date.now() + " client update with " + (this.inViewAdded.length + this.inViewChanged.length + this.inViewRemoved.length) + " objects.  " + this.inViewAdded.length + " added, " + this.inViewChanged.length + " changed, " + this.inViewRemoved.length + " removed");
             this.client.trigger("frameUpdate", this.getPacket(true));
         }
 
@@ -268,7 +270,7 @@ function Player() {
     /*
      * Player defaults
      */
-    this.setSprite("xanister");
+    this.setSprite("justin");
     this.stats.perception *= 4;
     this.stats.strength = 50;
 }
