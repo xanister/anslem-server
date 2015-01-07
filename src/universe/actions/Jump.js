@@ -14,7 +14,8 @@ function Jump(params) {
     this.progress = 0;
     this.speed = 5;
     Jump.prototype.run = function (params) {
-        this.xSpeed += ((this.stats.accel + this.linearDampening) * params.dir * 0.75);
+        if (Math.abs(this.xSpeed) < this.stats.speed)
+            this.xSpeed += ((this.stats.accel + this.linearDampening) * params.dir * 0.75);
         this.ySpeed -= (this.onSolid ? this.stats.jump : this.gravity * 0.5);
     };
     Jump.prototype.updateAnimation = function () {

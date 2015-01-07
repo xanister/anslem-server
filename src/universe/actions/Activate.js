@@ -14,9 +14,7 @@ function Activate(params) {
     this.progress = 0;
     this.speed = 20;
     Activate.prototype.run = function (params) {
-        if (this.action.progress === 0) {
-
-        } else if (this.action.progress === 5) {
+        if (this.action.progress === 5) {
             params.target.activate.call(params.target, this);
         }
     };

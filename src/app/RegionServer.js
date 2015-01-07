@@ -44,42 +44,29 @@ function RegionServer(regionSlug) {
      * @param {Object} client
      */
     this.onclientconnect = function (client) {
-        this.log("client connected");
+        this.log("connection received");
 
         var self = this;
-        client.on("assetRequest", function () {
-            self.log("received assetRequest");
-            self.trigger("assetUpdate", {sprites: Anslem.Sprites, sounds: {}});
-        });
-
         client.on("playerjoin", function (event) {
-            self.log("received playerjoin" + (event.playerId ? " from player " + event.playerId : " from new player"));
+            self.log("playerjoin received" + (event.playerId ? " from player " + event.playerId : " from new player"));
             if (event.playerId) {
                 Anslem.Population[event.playerId].attachClient(client);
+                client.trigger("transition", {class: "pt-page-moveFromBottom", pauseRender: 30});
             } else {
                 var newPlayer = new Anslem.Player();
                 newPlayer.attachClient(client, function () {
+                    self.log("player " + newPlayer.id + " ready");
                     newPlayer.warp(500, 500, self.region);
                 });
             }
         });
 
         client.on("warp", function (event) {
-            self.log("received warp");
+            self.log("warp received");
             var newIdea = new Anslem[event.idea.type]();
             newIdea.fromSimple(event.idea);
             newIdea.warp(event.x, event.y, self.region.findBySlug(event.regionSlug));
         });
-    };
-
-    /**
-     * Client disconnected
-     *
-     * @method onclientdisconnect
-     * @param {Object} client
-     */
-    this.onclientdisconnect = function (client) {
-        this.log("client disconnected");
     };
 
     /**
@@ -88,7 +75,6 @@ function RegionServer(regionSlug) {
      * @method logServerInfo
      */
     RegionServer.prototype.logServerInfo = function () {
-        this.log("\n*************************************************************");
         this.log("Region: " + this.region.slug);
         this.log("Environment: " + AnslemServerConfig.environment);
         this.log("Population: " + this.region.size());
@@ -101,7 +87,6 @@ function RegionServer(regionSlug) {
         usage.lookup(process.pid, function (err, result) {
             self.log("CPU Usage(%): " + result.cpu);
             self.log("Memory Usage(MB): " + result.memory / 1000000);
-            self.log("*************************************************************\n");
         });
     };
 
@@ -116,9 +101,7 @@ function RegionServer(regionSlug) {
         this.region.init(regionSlug);
         this.region.populate();
 
-        this.log("\n*************************************************************");
         this.log("server started. listening on " + this.port);
-        this.log("*************************************************************\n");
 
         var self = this;
         this.regionloopId = gameloop.setGameLoop(function (delta) {

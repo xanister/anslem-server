@@ -24,7 +24,6 @@ function Respawn() {
             } else {
                 this.baseGoal = Goals.EatBrains;
             }
-
         }
     };
     Respawn.prototype.updateAnimation = function () {

@@ -536,7 +536,7 @@ function Idea(categories) {
      * @param {Object} src
      */
     Idea.prototype.fromSimple = function (src) {
-        console.log("creating " + src.label);
+        console.log("[info] loading " + src.label);
         this.categories = src.categories;
         this.description = src.description;
         this.facing = src.facing;
@@ -592,6 +592,7 @@ function Idea(categories) {
         var oldX = this.x;
         var oldY = this.y;
         var oldSpriteFrame = this.sprite.frame;
+        var oldSpriteAnimation = this.sprite.animation;
         this.changed = false;
 
         if (this.immunityTimeout > 0)
@@ -617,7 +618,14 @@ function Idea(categories) {
             this.bubble = false;
 
         // Keep track of changed
-        this.changed = ((this.bubble ? oldBubble === false : oldBubble === true) || this.x !== oldX || this.y !== oldY || Math.floor(this.sprite.frame) !== Math.floor(oldSpriteFrame));
+        this.changed = ((this.bubble ? oldBubble === false : oldBubble === true) || (this.x !== oldX || this.y !== oldY) || (Math.floor(this.sprite.frame)) !== Math.floor(oldSpriteFrame) || (this.sprite.animation !== oldSpriteAnimation));
+
+        if (this.changed && this.portOffset) {
+            console.log(this.x, oldX);
+            console.log(this.y, oldY);
+            console.log(Math.floor(this.sprite.frame), Math.floor(oldSpriteFrame));
+            console.log(this.sprite.animation, oldSpriteAnimation);
+        }
     };
 
     /**
@@ -807,46 +815,47 @@ function Idea(categories) {
      * @method warp
      * @param {Number} targetX
      * @param {Number} targetY
-     * @param {Idea} container
+     * @param {Idea} [container=false]
      */
     Idea.prototype.warp = function (targetX, targetY, container) {
-        console.log("warping " + this.slug + (container ? " to " + container.slug : ""));
+        console.log("[info] warping " + this.slug + (container ? " to " + container.slug : ""));
 
         this.changed = true;
 
         this.x = targetX;
         this.y = targetY;
         if (container) {
-            // Clear from curent container
+            // Clear from departing container
             if (this.container.categories) {
                 delete this.container.contents[0][this.id];
                 for (var index in this.categories) {
-                    var c = this.categories[index];
-                    delete this.container.contents[c][this.id];
+                    delete this.container.contents[this.categories[index]][this.id];
                 }
             }
 
-            // Add to new container
+            // Add to arriving container
+            // TODO: Add server address
             if (this.container && container.portOffset !== this.container.portOffset) {
                 // Different region server
                 var regionAddress = AnslemServerConfig.serverAddress + ":" + (AnslemServerConfig.port + container.portOffset);
-                console.log("transferring " + this.slug + " to " + regionAddress);
                 var socket = require('socket.io-client')("http://" + regionAddress, {
                     'forceNew': true,
                     'sync disconnect on unload': true
                 });
                 var self = this;
+
+                console.log("[info] transferring " + this.slug + " to " + regionAddress);
                 socket.on('connect', function () {
-                    console.log("connected to " + regionAddress);
+                    console.log("[info] connected to " + regionAddress);
                     socket.emit("warp", {idea: self.toSimple(), regionSlug: container.slug, x: targetX, y: targetY});
                     if (self.client) {
                         self.client.emit("forward", regionAddress);
+                        self.client = false;
                     }
                     socket.disconnect();
                     delete Population[self.id];
                 });
             } else {
-                // Same region server
                 this.container = container;
                 this.container.contents[0][this.id] = this;
                 for (var index in this.categories) {

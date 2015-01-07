@@ -46,6 +46,26 @@ function Region() {
     this.label = "Region";
 
     /**
+     * Depth
+     *
+     * @property z
+     * @type {Number}
+     */
+    this.z = 150;
+
+    /**
+     * Activate region from outside
+     * this.innerHeight - this.buffer.bottom - (src.height / 2) = Ground height. Warp
+     * player to ground height
+     *
+     * @method activate
+     * @param {Idea} src calling entity
+     */
+    Region.prototype.activate = function (src) {
+        src.warp(src.width, this.innerHeight - this.buffer.bottom - (src.height / 2), this);
+    };
+
+    /**
      * Return savable object
      *
      * @method fromSimple
@@ -56,25 +76,6 @@ function Region() {
         this.buffer = src.buffer;
         this.portOffset = src.portOffset;
         return this;
-    };
-
-
-    /**
-     * Depth
-     *
-     * @property z
-     * @type {Number}
-     */
-    this.z = 150;
-
-    /**
-     * Activate region from outside
-     *
-     * @method activate
-     * @param {Idea} src
-     */
-    this.activate = function (src) {
-        src.warp(src.width, this.innerHeight - this.buffer.bottom - (src.height / 2), this);
     };
 
     /**
@@ -143,10 +144,10 @@ function Region() {
 
             // Start it
             if (newRegion.portOffset !== newRegion.container.portOffset) {
-                console.log("starting child region " + newRegion.slug);
+                console.log("[info] starting child region " + newRegion.slug);
                 exec("screen -d -m node server.js " + newRegion.slug);
             } else {
-                console.log("populating " + newRegion.slug);
+                console.log("[info] populating " + newRegion.slug);
                 newRegion.populate();
             }
 

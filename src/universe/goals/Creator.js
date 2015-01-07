@@ -96,7 +96,7 @@ Goals.Creator = {
                     this.view.scale = 0.1;
                 else if (this.view.scale > 4)
                     this.view.scale = 4;
-                this.initializeView(this.view.scale);
+                this.updateView(true);
                 this.client.trigger("viewUpdate", {width: this.view.width, height: this.view.height});
             }
         }

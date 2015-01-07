@@ -229,9 +229,10 @@ function NodeServer(port) {
      *
      * @method log
      * @param {String} message
+     * @param {String} [logType=info]
      */
-    NodeServer.prototype.log = function (message) {
-        console.log(message);
+    NodeServer.prototype.log = function (message, logType) {
+        console.log("[" + (logType || "info") + "] " + message);
     };
 
     /**

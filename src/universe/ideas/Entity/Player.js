@@ -63,7 +63,6 @@ function Player() {
      * @param {Function} callback
      */
     Player.prototype.attachClient = function (client, callback) {
-        console.log("attaching client to " + this.slug);
         this.client = client;
         this.baseGoal = Goals.PlayerInput;
 
@@ -84,38 +83,36 @@ function Player() {
          * @method onclientinfo
          */
         client.oninfo = function () {
-            self.initializeView();
-            this.trigger("transition", {start: "pt-page-moveToBottom", end: "pt-page-moveFromBottom", duration: 1000});
+            self.updateView(true);
             this.trigger("viewUpdate", {width: self.view.width, height: self.view.height});
         };
 
         /**
-         * Client state changed update
+         * Client ready to go
          *
-         * @event onstatechange
-         * @param {String} state
+         * @event ready
          */
-        client.onstatechange = function (state) {
-            switch (state) {
-                case "paused":
-                    break;
-                case "running":
-                    if (!self.container && callback)
-                        callback();
-                    else {
-                        self.changed = true;
-                        self.updateInView();
-                        self.client.trigger("frameUpdate", self.getPacket(true));
-                    }
-                    break;
-            }
-        };
+        client.on("ready", function () {
+            if (callback)
+                callback();
+        });
 
         /*
          * Update the client with needed info
          */
-        client.emit("attached", this.id);
-        self.inView = {0: {}};
+        this.inView = {0: {}};
+        this.updateView(true);
+        client.emit("attached", {
+            assets: {
+                sprites: Anslem.Sprites,
+                sounds: {}
+            },
+            playerId: this.id,
+            view: {
+                width: self.view.width,
+                height: self.view.height
+            }
+        });
     };
 
     /**
@@ -143,8 +140,8 @@ function Player() {
 
             // Generate packet
             var packet = {
-                viewX: this.view.x,
-                viewY: this.view.y,
+                viewX: Math.floor(this.view.x),
+                viewY: Math.floor(this.view.y),
                 inViewAdded: [],
                 inViewChanged: [],
                 inViewRemoved: []
@@ -164,31 +161,6 @@ function Player() {
     };
 
     /**
-     * Initialize player view
-     * TODO: Organize
-     *
-     * @method initializeView
-     */
-    Player.prototype.initializeView = function () {
-        var scale = ((1024 / this.client.info.screenWidth) / UniverseConfig.viewScale);
-        var viewWidth = this.client.info.screenWidth * scale;
-        var viewHeight = this.client.info.screenHeight * scale;
-
-        this.view = {
-            x: this.x - (viewWidth / 2),
-            y: this.y - (viewHeight - this.height),
-            xBuffer: viewWidth * UniverseConfig.viewXBuffer,
-            yBuffer: viewHeight * UniverseConfig.viewYBuffer,
-            scale: scale,
-            speed: UniverseConfig.viewSpeed * scale,
-            width: viewWidth,
-            height: viewHeight
-        };
-
-        this.stats.perception = viewWidth > viewHeight ? viewWidth : viewHeight;
-    };
-
-    /**
      * Runs single frame
      *
      * @method run
@@ -196,16 +168,15 @@ function Player() {
     Player.prototype.run = function () {
         Entity.prototype.run.call(this);
 
+        // Handle disconnect race
         if (!this.client || !this.container)
             return false;
 
-        // Debugging
-        if (this.client.inputs.keyboard.K) {
-            console.log(this.baseGoal.label);
-        }
-
         // Standing over activatable object
         this.overActivatable = this.instancePlace("activatable");
+
+        // Maintain view
+        this.updateView();
 
         // Bubble
         if (this.client.inputs.events.message) {
@@ -219,7 +190,44 @@ function Player() {
             }
         }
 
-        // Maintain view
+        // Update client if needed
+        if (this.changed || this.inViewAdded.length > 0 || this.inViewChanged.length > 0 || this.inViewRemoved.length > 0) {
+            console.log("[info] " + Date.now() + " client update with " + (this.inViewAdded.length + this.inViewChanged.length + this.inViewRemoved.length) + " objects.  " + this.inViewAdded.length + " added, " + this.inViewChanged.length + " changed, " + this.inViewRemoved.length + " removed");
+            this.client.trigger("frameUpdate", this.getPacket(true));
+        }
+
+        // Clear events
+        this.client.inputs.events = {};
+    };
+
+    /**
+     * Updates player view
+     * TODO: Pretty this up
+     *
+     * @method updateView
+     * @param {Boolean} updateSize update view size as well as position
+     */
+    Player.prototype.updateView = function (updateSize) {
+        // Update size to handle window resizes
+        if (updateSize) {
+            var scale = ((1024 / this.client.info.screenWidth) / UniverseConfig.viewScale);
+            var viewWidth = this.client.info.screenWidth * scale;
+            var viewHeight = this.client.info.screenHeight * scale;
+            this.view = {
+                x: this.x - (viewWidth / 2),
+                y: this.y - (viewHeight - this.height),
+                xBuffer: viewWidth * UniverseConfig.viewXBuffer,
+                yBuffer: viewHeight * UniverseConfig.viewYBuffer,
+                scale: scale,
+                speed: UniverseConfig.viewSpeed * scale,
+                width: viewWidth,
+                height: viewHeight
+            };
+
+            this.stats.perception = viewWidth > viewHeight ? viewWidth : viewHeight;
+        }
+
+        // Keep view near player if not in god node
         if (!this.stats.godmode) {
             if (this.x > this.view.x + this.view.width - this.view.xBuffer)
                 this.view.x = this.x + this.view.xBuffer - this.view.width;
@@ -230,21 +238,14 @@ function Player() {
             else if (this.y < this.view.y + this.view.yBuffer)
                 this.view.y = this.y - this.view.yBuffer;
         }
+
+        // Keep view with room boundries
         if (this.view.x < 0)
             this.view.x = 0;
         if (this.view.x + this.view.width > this.container.innerWidth)
             this.view.x = this.container.innerWidth - this.view.width;
         if (this.view.y > (this.container.innerHeight - this.view.height))
             this.view.y = this.container.innerHeight - this.view.height;
-
-        // Update client if needed
-        if (this.changed || this.inViewAdded.length > 0 || this.inViewChanged.length > 0 || this.inViewRemoved.length > 0) {
-            console.log(Date.now() + " client update with " + (this.inViewAdded.length + this.inViewChanged.length + this.inViewRemoved.length) + " objects.  " + this.inViewAdded.length + " added, " + this.inViewChanged.length + " changed, " + this.inViewRemoved.length + " removed");
-            this.client.trigger("frameUpdate", this.getPacket(true));
-        }
-
-        // Clear events
-        this.client.inputs.events = {};
     };
 
     /**
@@ -256,15 +257,14 @@ function Player() {
      * @param {Idea} container
      */
     Player.prototype.warp = function (targetX, targetY, container) {
+        if (this.client)
+            this.client.trigger("transition", {class: "pt-page-moveToBottom", pauseRender: 600});
         Idea.prototype.warp.call(this, targetX, targetY, container);
-        this.view.x = -10000;
-        this.view.y = -10000;
-        this.updateInView();
-        if (this.client) {
-            this.client.trigger("frameUpdate", this.getPacket(true));
-            this.client.trigger("transition", {start: "pt-page-moveToBottom", end: "pt-page-moveFromBottom", duration: 1000});
-            this.initializeView();
-        }
+        var self = this;
+        setTimeout(function () {
+            if (self.client)
+                self.client.trigger("transition", {class: "pt-page-moveFromBottom", pauseRender: 30});
+        }, 600);
     };
 
     /*
