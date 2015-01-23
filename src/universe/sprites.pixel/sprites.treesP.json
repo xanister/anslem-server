@@ -7,5 +7,14 @@
             "loop": true,
             "singleImage": true
         }
+    },
+    "tree02": {
+        "default": {
+            "imagePath": "/sprites/pixel/trees/tree02",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
     }
 }

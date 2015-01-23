@@ -170,6 +170,8 @@ function Region() {
                 setImmediate(function (idea) {
                     idea.run.call(idea);
                 }, c);
+            } else {
+                c.changed = false;
             }
         }
     };

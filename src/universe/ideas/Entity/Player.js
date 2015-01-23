@@ -130,7 +130,7 @@ function Player() {
                 this.bubble = {
                     message: "",
                     star: true,
-                    time: 10
+                    time: 30
                 };
                 if (!this.changed) {
                     this.changed = true;
@@ -192,8 +192,14 @@ function Player() {
 
         // Update client if needed
         if (this.changed || this.inViewAdded.length > 0 || this.inViewChanged.length > 0 || this.inViewRemoved.length > 0) {
-            console.log("[info] " + Date.now() + " client update with " + (this.inViewAdded.length + this.inViewChanged.length + this.inViewRemoved.length) + " objects.  " + this.inViewAdded.length + " added, " + this.inViewChanged.length + " changed, " + this.inViewRemoved.length + " removed");
+            //console.log("[info] " + Date.now() + " client update with " + (this.inViewAdded.length + this.inViewChanged.length + this.inViewRemoved.length) + " objects.  " + this.inViewAdded.length + " added, " + this.inViewChanged.length + " changed, " + this.inViewRemoved.length + " removed");
+
             this.client.trigger("frameUpdate", this.getPacket(true));
+
+//            var self = this;
+//            setImmediate(function () {
+//                self.client.trigger("frameUpdate", self.getPacket(true));
+//            });
         }
 
         // Clear events
@@ -262,8 +268,10 @@ function Player() {
         Idea.prototype.warp.call(this, targetX, targetY, container);
         var self = this;
         setTimeout(function () {
-            if (self.client)
+            if (self.client) {
                 self.client.trigger("transition", {class: "pt-page-moveFromBottom", pauseRender: 30});
+                self.client.trigger("headline", {message: self.container.label});
+            }
         }, 600);
     };
 

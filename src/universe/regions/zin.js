@@ -1,35 +1,57 @@
 Regions.zin = {
-    "container": "universe",
+    "container": "muraii",
     "contents": [
-        "skeletonForest1",
-        "skeletonForest2"
+        "zinHouse01",
+        "skeletonForest4"
     ],
     "innerHeight": 4096,
-    "innerWidth": 40000,
+    "innerWidth": 10000,
     "portOffset": 0,
     "slug": "zin",
     "type": "Village",
-    "x": 1000
+    "x": 1500
 };
 
-Regions.skeletonForest1 = {
+Regions.zinHouse01 = {
     "container": "zin",
     "contents": [],
     "innerHeight": 4096,
     "innerWidth": 10000,
     "portOffset": 0,
-    "slug": "skeletonForest1",
+    "slug": "zinHouse01",
+    "type": "Building",
+    "x": 500
+};
+
+Regions.skeletonForest4 = {
+    "container": "zin",
+    "contents": [],
+    "innerHeight": 4096,
+    "innerWidth": 10000,
+    "portOffset": 0,
+    "slug": "skeletonForest4",
     "type": "SkeletonForest",
     "x": 500
 };
 
-Regions.skeletonForest2 = {
-    "container": "zin",
-    "contents": [],
-    "innerHeight": 4096,
-    "innerWidth": 10000,
-    "portOffset": 1,
-    "slug": "skeletonForest2",
-    "type": "SkeletonForest",
-    "x": 1000
-};
+//Regions.skeletonForest5 = {
+//    "container": "zin",
+//    "contents": [],
+//    "innerHeight": 4096,
+//    "innerWidth": 10000,
+//    "portOffset": 0,
+//    "slug": "skeletonForest5",
+//    "type": "SkeletonForest",
+//    "x": 1500
+//};
+//
+//Regions.skeletonForest6 = {
+//    "container": "zin",
+//    "contents": [],
+//    "innerHeight": 4096,
+//    "innerWidth": 10000,
+//    "portOffset": 0,
+//    "slug": "skeletonForest6",
+//    "type": "SkeletonForest",
+//    "x": 2500
+//};

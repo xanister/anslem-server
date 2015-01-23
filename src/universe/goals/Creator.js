@@ -34,7 +34,7 @@ Goals.Creator = {
         // Move ideas
         if (this.client.inputs.events.mousedown) {
             if (this.client.inputs.events.mousedown[0]) {
-                this.grabbed = this.instancePoint("physical", this.view.x + (this.client.inputs.events.mousedown[0].x * this.view.scale), this.view.y + (this.client.inputs.events.mousedown[0].y * this.view.scale));
+                this.grabbed = this.instancePoint(0, this.view.x + (this.client.inputs.events.mousedown[0].x * this.view.scale), this.view.y + (this.client.inputs.events.mousedown[0].y * this.view.scale));
                 if (this.grabbed) {
                     this.grabbed.sprite.tint = 0xFF0000;
                 }

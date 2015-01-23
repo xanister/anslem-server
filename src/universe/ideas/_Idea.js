@@ -598,10 +598,6 @@ function Idea(categories) {
         if (this.immunityTimeout > 0)
             this.immunityTimeout--;
 
-        // Physics
-        if (this.gravity > 0)
-            this.updatePhysics();
-
         // Sprite
         if (this.sprite && this.sprite.frameSpeed > 0) {
             this.sprite.frame += this.sprite.frameSpeed;
@@ -617,15 +613,12 @@ function Idea(categories) {
         if (this.bubble && this.bubble.time-- <= 0)
             this.bubble = false;
 
+        // Physics
+        if (this.gravity > 0)
+            this.updatePhysics();
+
         // Keep track of changed
         this.changed = ((this.bubble ? oldBubble === false : oldBubble === true) || (this.x !== oldX || this.y !== oldY) || (Math.floor(this.sprite.frame)) !== Math.floor(oldSpriteFrame) || (this.sprite.animation !== oldSpriteAnimation));
-
-        if (this.changed && this.portOffset) {
-            console.log(this.x, oldX);
-            console.log(this.y, oldY);
-            console.log(Math.floor(this.sprite.frame), Math.floor(oldSpriteFrame));
-            console.log(this.sprite.animation, oldSpriteAnimation);
-        }
     };
 
     /**
@@ -818,7 +811,7 @@ function Idea(categories) {
      * @param {Idea} [container=false]
      */
     Idea.prototype.warp = function (targetX, targetY, container) {
-        console.log("[info] warping " + this.slug + (container ? " to " + container.slug : ""));
+        console.log("[info] warping " + this.slug + " to " + (container ? container.slug : " " + targetX + ", " + targetY));
 
         this.changed = true;
 

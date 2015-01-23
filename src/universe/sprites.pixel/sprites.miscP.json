@@ -18,6 +18,15 @@
             "topOffset": 32
         }
     },
+    "sign01": {
+        "default": {
+            "imagePath": "/sprites/pixel/misc/sign01",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
     "skull": {
         "default": {
             "imagePath": "/sprites/pixel/misc/skull",

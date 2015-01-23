@@ -28,6 +28,25 @@
             "topOffset": 48
         }
     },
+    "floor01": {
+        "default": {
+            "imagePath": "/sprites/pixel/landscape/floor01",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true
+        }
+    },
+    "floor02": {
+        "default": {
+            "imagePath": "/sprites/pixel/landscape/floor02",
+            "frameCount": 1,
+            "frameSpeed": 0,
+            "loop": true,
+            "singleImage": true,
+            "topOffset": 48
+        }
+    },
     "mountains01": {
         "default": {
             "imagePath": "/sprites/pixel/landscape/mountains01",

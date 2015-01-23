@@ -57,7 +57,7 @@ function Village(slug) {
     /*
      * Zin defaults
      */
-    this.setSprite("door01");
+    this.setSprite("sign01");
 }
 Village.prototype = new Region();
 Village.prototype.constructor = Village;

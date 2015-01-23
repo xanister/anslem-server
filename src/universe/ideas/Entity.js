@@ -279,7 +279,7 @@ function Entity() {
                     if (!this.inView[0][idea.id])
                         this.inViewAdded.push(idea);
                     else {
-                        if (idea.changed)
+                        if (idea.changed || this.stats.godmode)
                             this.inViewChanged.push(idea);
                         delete this.inView[0][idea.id];
                     }

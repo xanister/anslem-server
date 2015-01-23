@@ -101,7 +101,7 @@ function RegionServer(regionSlug) {
         this.region.init(regionSlug);
         this.region.populate();
 
-        this.log("server started. listening on " + this.port);
+        this.log("started listening on port " + this.port);
 
         var self = this;
         this.regionloopId = gameloop.setGameLoop(function (delta) {

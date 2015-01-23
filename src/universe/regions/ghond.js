@@ -1,7 +1,8 @@
 Regions.ghond = {
-    "container": "universe",
+    "container": "muraii",
     "contents": [
-        "skeletonForest3"
+        "ghondHouse01",
+        "skeletonForest1"
     ],
     "innerHeight": 4096,
     "innerWidth": 10000,
@@ -11,13 +12,46 @@ Regions.ghond = {
     "x": 500
 };
 
-Regions.skeletonForest3 = {
+Regions.ghondHouse01 = {
     "container": "ghond",
     "contents": [],
     "innerHeight": 4096,
     "innerWidth": 10000,
     "portOffset": 0,
-    "slug": "skeletonForest3",
+    "slug": "ghondHouse01",
+    "type": "Building",
+    "x": 1500
+};
+
+Regions.skeletonForest1 = {
+    "container": "ghond",
+    "contents": [],
+    "innerHeight": 4096,
+    "innerWidth": 10000,
+    "portOffset": 0,
+    "slug": "skeletonForest1",
     "type": "SkeletonForest",
     "x": 500
 };
+
+//Regions.skeletonForest2 = {
+//    "container": "ghond",
+//    "contents": [],
+//    "innerHeight": 4096,
+//    "innerWidth": 10000,
+//    "portOffset": 0,
+//    "slug": "skeletonForest2",
+//    "type": "SkeletonForest",
+//    "x": 1500
+//};
+//
+//Regions.skeletonForest3 = {
+//    "container": "ghond",
+//    "contents": [],
+//    "innerHeight": 4096,
+//    "innerWidth": 10000,
+//    "portOffset": 0,
+//    "slug": "skeletonForest3",
+//    "type": "SkeletonForest",
+//    "x": 2500
+//};
