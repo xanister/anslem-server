@@ -61,7 +61,7 @@ function SkeletonForest(slug) {
 //        mountains2.warp(200, mountains.y + 64, this);
 
         // Trees
-        for (var n = 0; n < 20; n++) {
+        for (var n = 0; n < 10; n++) {
             var t = new Tree01();
             do {
                 t.warp(
@@ -83,7 +83,7 @@ function SkeletonForest(slug) {
 //        }
 
         // Monsters
-        for (var n = 0; n < 25; n++) {
+        for (var n = 0; n < 15; n++) {
             var s = new Skeleton();
             s.warp(500 + (Math.random() * (this.innerWidth - 1000)), this.innerHeight - this.buffer.bottom - (s.height / 2), this);
         }
