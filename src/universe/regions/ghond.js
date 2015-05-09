@@ -1,9 +1,6 @@
 Regions.ghond = {
     "container": "muraii",
-    "contents": [
-        "ghondHouse01",
-        "skeletonForest1"
-    ],
+    "contents": [],
     "innerHeight": 4096,
     "innerWidth": 10000,
     "portOffset": 0,

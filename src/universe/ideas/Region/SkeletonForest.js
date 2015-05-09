@@ -61,6 +61,7 @@ function SkeletonForest(slug) {
 //        mountains2.warp(200, mountains.y + 64, this);
 
         // Trees
+        /*
         for (var n = 0; n < 10; n++) {
             var t = new Tree01();
             do {
@@ -71,7 +72,7 @@ function SkeletonForest(slug) {
                         );
             } while (t.instancePlace("tree"));
         }
-
+        */
         // Objects
 //        for (var x = 2048; x < this.innerWidth && x < 8196; x += 512) {
 //            var platform = new Platform();

@@ -39,11 +39,13 @@ function Building(slug) {
         this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
 
         // Midground
+        /*
         var midground = new Landscape();
         midground.setSprite("floor02", true, false, 1);
         midground.z = 100;
         midground.warp(0, this.ground.y - (this.ground.height / 2) - (midground.height / 2) + 32, this);
-
+        */
+        
         // Objects
         for (var x = 2048; x < this.innerWidth && x < 8196; x += 512) {
             var platform = new Platform();

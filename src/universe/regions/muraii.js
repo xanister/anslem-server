@@ -1,8 +1,7 @@
 Regions.muraii = {
     "container": "universe",
     "contents": [
-        "ghond",
-        "zin"
+        "ghond"
     ],
     "innerHeight": 4096,
     "innerWidth": 40000,

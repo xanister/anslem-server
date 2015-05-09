@@ -38,11 +38,13 @@ function Village(slug) {
         this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
 
         // Midground
+        /*
         var midground = new Landscape();
         midground.setSprite("grass02", true, false, 1);
         midground.z = 100;
         midground.warp(0, this.innerHeight - this.buffer.bottom - (midground.height / 2), this);
-
+        */
+        
         // Landscape
         var mountains = new Landscape();
         mountains.warp(0, midground.y - (midground.height / 2) - (mountains.height * 0.25), this);
