@@ -46,9 +46,11 @@ function Village(slug) {
         */
         
         // Landscape
+        /*
         var mountains = new Landscape();
         mountains.warp(0, midground.y - (midground.height / 2) - (mountains.height * 0.25), this);
-
+        */
+        
         // Move inner regions to match new buffer
         for (var index in this.contents.region) {
             var r = this.contents.region[index];
