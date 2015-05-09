@@ -9,6 +9,7 @@ Regions.ghond = {
     "x": 500
 };
 
+/*
 Regions.ghondHouse01 = {
     "container": "ghond",
     "contents": [],
@@ -30,6 +31,7 @@ Regions.skeletonForest1 = {
     "type": "SkeletonForest",
     "x": 500
 };
+*/
 
 //Regions.skeletonForest2 = {
 //    "container": "ghond",
