@@ -19,7 +19,7 @@ Goals.PlayerInput = {
         // Respond to  user input
         if (this.stats.godmode)
             return Goals.Creator.getAction.call(this);
-        if (this.client.info.touchDevice)
+        if (this.client.info.pixelRatio > 1)
             return Goals.RespondToTouch.getAction.call(this);
         return Goals.RespondToKeyboardMouse.getAction.call(this);
     }
