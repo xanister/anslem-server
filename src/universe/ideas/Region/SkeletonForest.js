@@ -35,6 +35,7 @@ function SkeletonForest(slug) {
 
 
         // Ground
+        /*
         this.ground = new Ground();
         this.ground.warp(0, this.innerHeight - (this.ground.sprite.src.default.height / 2), this);
         this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
@@ -43,7 +44,7 @@ function SkeletonForest(slug) {
         var mountains = new Landscape();
         mountains.sprite.scrollSpeed = 0.3;
         mountains.warp(0, this.ground.y - (this.ground.height / 2) - (mountains.height * 0.25), this);
-
+        */
         // Midground
 //        var midground = new Landscape();
 //        midground.setSprite("grass02", true, false, 1);
@@ -84,11 +85,13 @@ function SkeletonForest(slug) {
 //        }
 
         // Monsters
+        /*
         for (var n = 0; n < 15; n++) {
             var s = new Skeleton();
             s.warp(500 + (Math.random() * (this.innerWidth - 1000)), this.innerHeight - this.buffer.bottom - (s.height / 2), this);
         }
-
+        */
+        
         // Move inner regions to match new buffer
         for (var index in this.contents.region) {
             var r = this.contents.region[index];

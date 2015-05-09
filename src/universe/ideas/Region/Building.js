@@ -34,9 +34,11 @@ function Building(slug) {
         Region.prototype.populate.call(this, slug);
 
         // Ground
+        /*
         this.ground = new Floor();
         this.ground.warp(0, this.innerHeight - (this.ground.sprite.src.default.height / 2), this);
         this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
+        */
 
         // Midground
         /*
@@ -47,6 +49,7 @@ function Building(slug) {
         */
         
         // Objects
+        /*
         for (var x = 2048; x < this.innerWidth && x < 8196; x += 512) {
             var platform = new Platform();
             platform.warp(
@@ -55,6 +58,7 @@ function Building(slug) {
                     this
                     );
         }
+        */
     };
 
     /*

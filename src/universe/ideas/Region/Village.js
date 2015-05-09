@@ -33,10 +33,11 @@ function Village(slug) {
         Region.prototype.populate.call(this);
 
         // Ground
+        /*
         this.ground = new Ground();
         this.ground.warp(0, this.innerHeight - (this.ground.sprite.src.default.height / 2), this);
         this.buffer.bottom = this.ground.sprite.src.default.height - this.ground.sprite.src.default.topOffset;
-
+        */
         // Midground
         /*
         var midground = new Landscape();
@@ -50,7 +51,7 @@ function Village(slug) {
         var mountains = new Landscape();
         mountains.warp(0, midground.y - (midground.height / 2) - (mountains.height * 0.25), this);
         */
-        
+
         // Move inner regions to match new buffer
         for (var index in this.contents.region) {
             var r = this.contents.region[index];
