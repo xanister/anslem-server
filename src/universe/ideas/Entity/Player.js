@@ -278,7 +278,7 @@ function Player() {
     /*
      * Player defaults
      */
-    this.setSprite("goblin");
+    this.setSprite("goblin01");
     this.stats.perception *= 4;
     this.stats.strength = 50;
 }
