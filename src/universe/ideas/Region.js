@@ -136,6 +136,9 @@ function Region() {
      * @method populate
      */
     Region.prototype.populate = function () {
+        var skeleton = new Skeleton();
+        skeleton.warp(500, 500, this);
+
         for (var index in Regions[this.slug].contents) {
             // Create it
             var s = Regions[this.slug].contents[index];
