@@ -19,7 +19,7 @@ function Respawn() {
             this.addCategory('physical');
             if (this.client) {
                 this.addCategory("undead");
-                this.setSprite("skeleton02");
+                this.setSprite("skeleton01");
                 this.baseGoal = Goals.PlayerInput;
             } else {
                 this.baseGoal = Goals.EatBrains;
