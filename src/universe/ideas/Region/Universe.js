@@ -31,8 +31,8 @@ function Universe(slug) {
     Universe.prototype.populate = function () {
         Region.prototype.populate.call(this);
 
-        var goblin = new Goblin();
-        goblin.warp(500, 500, this);
+        var skeleton = new Skeleton();
+        skeleton.warp(500, 500, this);
 
         // Move inner regions to match new buffer
         for (var index in this.contents.region) {
